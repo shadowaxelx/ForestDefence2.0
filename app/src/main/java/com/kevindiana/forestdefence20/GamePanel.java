@@ -69,6 +69,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     int spot_number;
     private boolean is_it_first_click = true;
 
+    // Player class stuff
+    Player player;
+
 
     // the main thread for the entire game
     private MainThread thread;
@@ -112,9 +115,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300, 1));
         //shop = new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 1500, 1250, 1);
 
+        // creates array list for popup menue
         mypopupmenus = new ArrayList<MyPopUpMenu>();
 
+        // creates array list for monsters
         monster = new ArrayList<Monster>();
+        // starts calculating the time the first monster spawns
         monsterStartTime = System.nanoTime();
 
         mwaves = new MonsterWave();
@@ -123,6 +129,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         tower = new ArrayList<Tower>();
         towershot = new ArrayList<TowerShot>();
         shotTimer = new long [100];
+
+        player = new Player();
 
         //we can safely start the game loop
         thread.setRunning(true);
@@ -364,8 +372,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
-        // update towershot
+        // update towershot/ Removing monster and adding money to player
         for(int i = 0; i < towershot.size(); i++){
+
+            // This case is incase the monster dies, then get rid of the tower shot following the monster
 
             // gets monster X and Y that the towershot is locked on
            int monster_x = monster.get(towershot.get(i).getMonsterID()).getX();
@@ -378,12 +388,33 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 // sets subtracts bullter damage to monster health
                 monster.get(towershot.get(i).getMonsterID()).setHealth(towershot.get(i).getPower());
 
-                // checks the monster hp if it is less then or = 0 get rid of it
+                // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
                 if(monster.get(towershot.get(i).getMonsterID()).getHealth() <= 0){
+
+                    int deadMonsterID = towershot.get(i).getMonsterID();
+
+                    player.AddMoney(monster.get(towershot.get(i).getMonsterID()).GetMoney());
+
+                    // removes other tower shots
+                    for(int y = 0; y < towershot.size(); y++){
+
+                        // this is so the original shot isnt removed before checking all shots
+                        if(y != i){
+                            if(towershot.get(y).getMonsterID() == towershot.get(i).getMonsterID()){
+                                towershot.remove(y);
+                            }
+                        }
+
+                    }
+
                     monster.remove(towershot.get(i).getMonsterID());
 
                     // remove this last becuase you still need its components before hand
                     towershot.remove(i);
+
+
+
+
                 }
                 else{
                     // remove this last becuase you still need its components before hand
@@ -403,6 +434,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // remove monster when it gets off screen, should also deplete hp
             //if(monster.get(i).getX()<-100){
             if(monster.get(i).getX() > (WIDTH)){
+
+                // removes other tower shots
+                for(int y = 0; y < towershot.size(); y++){
+
+
+                    if(i == towershot.get(y).getMonsterID()){
+
+                            towershot.remove(y);
+                    }
+
+                }
+
                 monster.remove(i);
                 System.out.println("Removing monster");
                 break;
@@ -412,6 +455,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
     }
+
     @Override
     public void draw(Canvas canvas){
 
@@ -421,6 +465,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         red_paintbrush_stroke.setColor(Color.RED);
         red_paintbrush_stroke.setStyle(Paint.Style.STROKE);
         red_paintbrush_stroke.setStrokeWidth(10);
+
+        Paint money_text = new Paint();
+        money_text.setTextSize(86);
+        money_text.setColor(Color.YELLOW);
+
+        Paint health_text = new Paint();
+        health_text.setTextSize(86);
+        health_text.setColor(Color.RED);
 
 
         if(canvas != null){
@@ -461,6 +513,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 }
            // }
 
+            //Money Text/ Bottom Left of Screen *****************************
+            canvas.drawText("" + player.GetHealth(), 135, 1420, health_text);
+            canvas.drawText("" + player.GetMoney(), 395, 1420, money_text);
+
 
             // debugging perpuses horizontal grid lines( up and down lines)
             //for(int i = 0; i < 23; i++){
@@ -476,6 +532,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 // doing this bottom one because the images are about 130 by 130
                 canvas.drawLine( 0 , (float)(i * 130), WIDTH, (float)(i * 130), red_paintbrush_stroke);
             }
+
+
 
             canvas.restoreToCount(savedState);
         }

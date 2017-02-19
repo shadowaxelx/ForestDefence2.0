@@ -13,6 +13,7 @@ import static java.lang.StrictMath.abs;
 public class Monster extends GameObject{
     private Bitmap spritesheet;
     private int health;
+    private int money;
     private int walk_speed;
     private int gridx, gridy;
     // these are changed depending on the direction
@@ -65,6 +66,7 @@ public class Monster extends GameObject{
             case 1:
                 walk_speed = 13;
                 super.health = 7;
+                money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
             case 2:
@@ -114,6 +116,7 @@ public class Monster extends GameObject{
             case 13:
                 walk_speed =5;
                 super.health = 25;
+                money = 20;
                 animation.setDelay(390 - walk_speed);
                 break;
 
@@ -330,6 +333,10 @@ public class Monster extends GameObject{
 
 
         return thisy;
+    }
+
+    public int GetMoney(){
+        return money;
     }
 
 }
