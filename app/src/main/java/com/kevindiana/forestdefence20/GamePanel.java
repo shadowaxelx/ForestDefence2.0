@@ -64,6 +64,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     //PopupMenu Stuff*********
     private ArrayList<MyPopUpMenu> mypopupmenus;
     private boolean PopsUpIsUp = false;
+    private boolean Error = false;
+    private long errorStartTime;
 
     // On click event stuff
     int spot_number;
@@ -109,10 +111,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder){
+
         room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
         currentroom = room1.getroom(1);
         shopitems = new ArrayList<Shop>();
-        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300, 1));
+        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300));
         //shop = new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 1500, 1250, 1);
 
         // creates array list for popup menue
@@ -143,6 +146,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         int eventX = (int)event.getX();
         int eventY = (int)event.getY();
         int second_press_Spot_num = -1;
+
+        // This is to stop ConcurrentModificationExceptions
+        //ArrayList<Tower> ttemp = new ArrayList<Tower>();
 
 
         eventX = getXcoord(eventX);
@@ -194,15 +200,32 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 case 2:
                     // only add tower if the spot is a 0 meaning blank space
                     if(second_press_Spot_num == 0){
-                        tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1));
 
-                        // this makes the empty spot a tower 1 spot now by putting replacing 0 with 11
-                        currentroom[eventY][eventX] = 11;
+                        // check to see if player has enough money
+                        if(player.GetMoney() >= 5 ){
 
-                        // reset first button click
-                        spot_number = -1;
+                            //ttemp.add((new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1)));
+                            tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1));
+
+                            // this makes the empty spot a tower 1 spot now by putting replacing 0 with 11
+                            currentroom[eventY][eventX] = 11;
+
+                            // reset first button click
+                            spot_number = -1;
+
+                            player.SubMoney(5);
+
+                        }
+                        // else create an error message for player for insuficent gold or cant put on thatspot
+                        else{
+
+                            // make error true to start the popup timmer
+                            Error = true;
+                            errorStartTime = System.nanoTime();
+                        }
+
                     }
-                    // else create an error message for player for insuficent gold or cant put on thatspot
+
 
                     is_it_first_click = true;
                     break;
@@ -227,6 +250,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
             }
+
+            // adds everything that was in the temp into the actual array
+            //tower.addAll(ttemp);
 
             for(int i = 0; i <mypopupmenus.size(); i++){
 
@@ -448,6 +474,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         // remove all shots in monster temp list
         monster.removeAll(mtemplist);
 
+        // clean up the lose ends of the 2 temp array
+        System.gc();
+
         // update the monsters
         for(int i = 0; i <monster.size(); i++){
 
@@ -484,6 +513,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void draw(Canvas canvas){
 
+        String errormessage = "Insuficient Gold or";
+        String errormessage2 = "Cant Place Tower There";
+
+
         // to color and make the grid
         Paint red_paintbrush_stroke;
         red_paintbrush_stroke = new Paint();
@@ -498,6 +531,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         Paint health_text = new Paint();
         health_text.setTextSize(86);
         health_text.setColor(Color.RED);
+
+        Paint error_text = new Paint();
+        error_text.setTextSize(125);
+        error_text.setColor(Color.RED);
 
 
         if(canvas != null){
@@ -538,9 +575,23 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 }
            // }
 
+            // Error Message For buying things from shop
+            if(Error){
+                canvas.drawText(errormessage, 750, 770, error_text);
+                canvas.drawText(errormessage2, 700, 900, error_text);
+            }
+            // After seconds make the message dissapear
+            if(TimeUnit.SECONDS.convert(System.nanoTime() - errorStartTime, TimeUnit.NANOSECONDS) >= 3){
+
+                Error = false;
+            }
+
             //Money Text/ Bottom Left of Screen *****************************
             canvas.drawText("" + player.GetHealth(), 135, 1420, health_text);
             canvas.drawText("" + player.GetMoney(), 395, 1420, money_text);
+
+
+
 
 
             // debugging perpuses horizontal grid lines( up and down lines)

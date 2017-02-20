@@ -14,25 +14,13 @@ public class Shop extends GameObject {
     private int gold;
 
     // for now only 3 different towers
-    public Shop(Bitmap res, int x, int y, int towertype){
+    public Shop(Bitmap res, int x, int y){
 
         super.x = x;
         super.y = y;
         super.width = 130;
         super.height = 130;
         image = res;
-        switch(towertype){
-            case 1:
-                gold = 10;
-                setGold(gold);
-                break;
-
-            case 2:
-                break;
-            case 3:
-                break;
-        }
-
     }
 
     public void update(){
