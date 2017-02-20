@@ -18,7 +18,7 @@ public class Player {
     public int GetHealth(){
         return health;
     }
-    public void setHealth(int damage){
+    public void SetHealth(int damage){
 
         health -= damage;
     }

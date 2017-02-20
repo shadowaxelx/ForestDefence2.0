@@ -28,8 +28,11 @@ public class Monster extends GameObject{
     // 0 is to right, 1 is to left, 2 is up, 3 is down
     private int moveDirection = -1;
 
+    // added to make bullet tracking easier
+    private int monsterID;
+
     // x is x coord it will spawn, y is the y coord, w is width of sprit h is height
-    public Monster(Bitmap res, int x, int y, int w, int h, int numFrames, int [][] currentroom, int monstertype){
+    public Monster(Bitmap res, int x, int y, int w, int h, int numFrames, int [][] currentroom, int monstertype, int monsterID){
 
         super.x = x;
         super.y = y;
@@ -38,6 +41,7 @@ public class Monster extends GameObject{
         width = w;
         height = h;
         this.numFrames = numFrames;
+        this.monsterID = monsterID;
 
 
 
@@ -66,6 +70,7 @@ public class Monster extends GameObject{
             case 1:
                 walk_speed = 13;
                 super.health = 7;
+                super.power = 1;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -116,6 +121,7 @@ public class Monster extends GameObject{
             case 13:
                 walk_speed =5;
                 super.health = 25;
+                super.power = 5;
                 money = 20;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -337,6 +343,9 @@ public class Monster extends GameObject{
 
     public int GetMoney(){
         return money;
+    }
+    public int getID(){
+        return monsterID;
     }
 
 }

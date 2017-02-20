@@ -22,7 +22,7 @@ public class TowerShot extends GameObject {
         super.height = 130;
         super.power = damage;
         //super.attack_speed = attackSpeed;
-        shot_Speed = 25;
+        shot_Speed = 35;
         this.monsterID = monsterID;
 
         this.numFrames = numFrames;

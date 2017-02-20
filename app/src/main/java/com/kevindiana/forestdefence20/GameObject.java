@@ -51,7 +51,7 @@ public class GameObject {
     public int getHealth(){return health;}
     // checks if rectangle space is intersecting
     public Rect getRectangle(){
-        return new Rect(x, y, x+width - 65, y+height - 65);
+        return new Rect(x, y, x+width -65, y+height - 65);
     }
 
 

@@ -353,9 +353,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                     // means the shot is in range
                     if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                        towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), j));
-                        System.out.println("Im in range pew pew");
+                        towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID()));
+                        System.out.println("Creating tower shot: " + i);
                         // break afer wards for first monster
+
 
                         shotTimer[i] = System.nanoTime();
                         break;
@@ -372,58 +373,80 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
 
+        // temporary array to hold shots that will be deleated later
+        ArrayList<Monster> mtemplist = new ArrayList<Monster>();
+        ArrayList<TowerShot> tstemplist = new ArrayList<TowerShot>();
+
         // update towershot/ Removing monster and adding money to player
         for(int i = 0; i < towershot.size(); i++){
 
-            // This case is incase the monster dies, then get rid of the tower shot following the monster
+            //if(towershot.get(i) != null){
 
-            // gets monster X and Y that the towershot is locked on
-           int monster_x = monster.get(towershot.get(i).getMonsterID()).getX();
-            int monster_y = monster.get(towershot.get(i).getMonsterID()).getY();
+                // This case is incase the monster dies, then get rid of the tower shot following the monster
 
-            towershot.get(i).update(monster_x, monster_y);
+                // gets monster X and Y that the towershot is locked on
+                for(int k = 0; k < monster.size(); k++){
+                    if(monster.get(k).getID() == towershot.get(i).getMonsterID()){
+                        int monster_x = monster.get(k).getX();
+                        int monster_y = monster.get(k).getY();
 
-            if(collision(towershot.get(i), monster.get(towershot.get(i).getMonsterID()))){
+                        towershot.get(i).update(monster_x, monster_y);
 
-                // sets subtracts bullter damage to monster health
-                monster.get(towershot.get(i).getMonsterID()).setHealth(towershot.get(i).getPower());
+                        if(collision(towershot.get(i), monster.get(k))){
 
-                // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
-                if(monster.get(towershot.get(i).getMonsterID()).getHealth() <= 0){
+                            // sets subtracts bullter damage to monster health
+                            monster.get(k).setHealth(towershot.get(i).getPower());
 
-                    int deadMonsterID = towershot.get(i).getMonsterID();
+                            // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
+                            if(monster.get(k).getHealth() <= 0){
 
-                    player.AddMoney(monster.get(towershot.get(i).getMonsterID()).GetMoney());
+                                player.AddMoney(monster.get(k).GetMoney());
 
-                    // removes other tower shots
-                    for(int y = 0; y < towershot.size(); y++){
+                                // removes other tower shots
+                                for(int y = 0; y < towershot.size(); y++){
 
-                        // this is so the original shot isnt removed before checking all shots
-                        if(y != i){
-                            if(towershot.get(y).getMonsterID() == towershot.get(i).getMonsterID()){
-                                towershot.remove(y);
+                                    // this is so the original shot isnt removed before checking all shots
+                                    if(y != i){
+                                        if(towershot.get(y).getMonsterID() == towershot.get(i).getMonsterID()){
+
+                                            //towershot.remove(y);
+                                            tstemplist.add(towershot.get(y));
+                                            System.out.println("Removing tower shot: " + y);
+
+                                        }
+                                    }
+
+                                }
+
+                                mtemplist.add(monster.get(k));
+                                //monster.remove(k);
+
+                                // remove this last becuase you still need its components before hand
+                                tstemplist.add(towershot.get(i));
+                                //towershot.remove(i);
+                                //System.out.println("Removing tower shot: " + i);
+
+
+
+
+                            }
+                            else{
+                                // remove this last becuase you still need its components before hand
+                                tstemplist.add(towershot.get(i));
+                                //towershot.remove(i);
+                                System.out.println("Removing tower shot: " + i);
                             }
                         }
 
                     }
-
-                    monster.remove(towershot.get(i).getMonsterID());
-
-                    // remove this last becuase you still need its components before hand
-                    towershot.remove(i);
-
-
-
-
                 }
-                else{
-                    // remove this last becuase you still need its components before hand
-                    towershot.remove(i);
-                }
-            }
-
         }
 
+        // remove all tower shots now
+        towershot.removeAll(tstemplist);
+
+        // remove all shots in monster temp list
+        monster.removeAll(mtemplist);
 
         // update the monsters
         for(int i = 0; i <monster.size(); i++){
@@ -445,6 +468,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     }
 
                 }
+
+                player.SetHealth(monster.get(i).getPower());
 
                 monster.remove(i);
                 System.out.println("Removing monster");
@@ -581,7 +606,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         break;
                     case 1:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.red_dot_sprite),
-                                -25 , 520, 125, 130, 8, currentroom, 1));
+                                -25 , 520, 125, 130, 8, currentroom, 1, wavenumber + x));
 
                         monsterwaves[wavenumber][x] = 0;
                         return true;
@@ -609,7 +634,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         return true;
                     case 13:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.horned_monster_prototype),
-                                -25 , 520, 125, 130, 8, currentroom, 13));
+                                -25 , 520, 125, 130, 8, currentroom, 13, wavenumber + x));
                         monsterwaves[wavenumber][x] = 0;
                         return true;
 
