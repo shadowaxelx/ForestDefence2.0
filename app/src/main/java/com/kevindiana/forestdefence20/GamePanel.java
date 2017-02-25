@@ -546,7 +546,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         monster.removeAll(mtemplist);
 
         // clean up the lose ends of the 2 temp array
-        System.gc();
+        //System.gc();
 
         // update the monsters
         for(int i = 0; i <monster.size(); i++){

@@ -60,6 +60,8 @@ public class TowerShot extends GameObject {
             y -= shot_Speed;
         }
 
+        animation.updateShot();
+
     }
 
     public void draw(Canvas canvas) {

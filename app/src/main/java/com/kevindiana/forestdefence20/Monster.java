@@ -305,6 +305,7 @@ public class Monster extends GameObject{
         }
 
         animation.update();
+
     }
 
     public void draw(Canvas canvas){
