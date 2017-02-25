@@ -11,6 +11,8 @@ import static android.R.attr.bitmap;
 
 public class Tower extends GameObject{
     private Bitmap image;
+    // 1 is sniper, 2 double shot, 3 slow
+    private int tower_type;
 
     // tower type 1 sniper, 2 shoots 2, 3 slows
     public Tower(Bitmap res, int x, int y, int towertype){
@@ -32,11 +34,19 @@ public class Tower extends GameObject{
                 super.attack_speed = 1.25;
                 super.upgrade = 8;
                 super.sell = 5;
+                tower_type = towertype;
 
                 break;
 
             // double shot tower
             case 2:
+                super.power = 6;
+                // 3.0 * 130
+                super. range = 390;
+                super.attack_speed = 1.25;
+                super.upgrade = 8;
+                super.sell = 5;
+                tower_type = towertype;
                 break;
             // slow tower
             case 3:
@@ -52,5 +62,9 @@ public class Tower extends GameObject{
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(image, x, y, null);
+    }
+
+    public int getTowerType(){
+        return tower_type;
     }
 }

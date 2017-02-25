@@ -12,15 +12,28 @@ import android.graphics.Paint;
 public class Shop extends GameObject {
     private Bitmap image;
     private int gold;
+    private int cost;
 
     // for now only 3 different towers
-    public Shop(Bitmap res, int x, int y){
+    public Shop(Bitmap res, int x, int y, int towertype){
 
         super.x = x;
         super.y = y;
         super.width = 130;
         super.height = 130;
         image = res;
+
+        switch(towertype){
+            case 1:
+                cost = 5;
+                break;
+            case 2:
+                cost = 5;
+                break;
+            case 3:
+                cost = 5;
+                break;
+        }
     }
 
     public void update(){
@@ -37,5 +50,9 @@ public class Shop extends GameObject {
         //red_paintbrush_stroke.setStrokeWidth(10);
 
         canvas.drawBitmap(image, x, y, null);
+    }
+
+    public int getCost(){
+        return cost;
     }
 }

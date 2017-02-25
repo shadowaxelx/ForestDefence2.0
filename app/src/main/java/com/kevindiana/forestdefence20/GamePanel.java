@@ -115,7 +115,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
         currentroom = room1.getroom(1);
         shopitems = new ArrayList<Shop>();
-        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300));
+        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300, 1));
+        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_shop_buton), 1040, 1300, 2));
         //shop = new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 1500, 1250, 1);
 
         // creates array list for popup menue
@@ -205,7 +206,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         if(player.GetMoney() >= 5 ){
 
                             //ttemp.add((new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1)));
-                            tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1));
+                            tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertower), (eventX * 130), (eventY * 130), 1));
 
                             // this makes the empty spot a tower 1 spot now by putting replacing 0 with 11
                             currentroom[eventY][eventX] = 11;
@@ -231,6 +232,35 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
                 // shop item 2
                 case 3:
+
+                    // only add tower if the spot is a 0 meaning blank space
+                    if(second_press_Spot_num == 0){
+
+                        // check to see if player has enough money
+                        if(player.GetMoney() >= 5 ){
+
+                            tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower), (eventX * 130), (eventY * 130), 2));
+
+                            // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
+                            currentroom[eventY][eventX] = 12;
+
+                            // reset first button click
+                            spot_number = -1;
+
+                            player.SubMoney(5);
+
+                        }
+                        // else create an error message for player for insuficent gold or cant put on thatspot
+                        else{
+
+                            // make error true to start the popup timmer
+                            Error = true;
+                            errorStartTime = System.nanoTime();
+                        }
+
+                    }
+
+                    is_it_first_click = true;
                     break;
                 // shop item 3
                 case 4:
@@ -291,6 +321,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                 // tower type 1
                 case 2:
+                    is_it_first_click = false;
+                    break;
+                case 3:
                     is_it_first_click = false;
                     break;
                 // for tower type 1
@@ -365,6 +398,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             int tower_x = tower.get(i).getX();
             int tower_y = tower.get(i).getY();
             int tower_range = tower.get(i).getRange();
+            int tower_type = tower.get(i).getTowerType();
 
 
             // searching for monster in range
@@ -377,16 +411,53 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 // checks to see if the tower has already shot something 0 means it has not
                 if (shotTimer[i] == 0){
 
-                    // means the shot is in range
-                    if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                        towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID()));
-                        System.out.println("Creating tower shot: " + i);
-                        // break afer wards for first monster
+                    switch(tower_type){
+                        // sniper tower
+                        case 1:
+                            // means the shot is in range
+                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
+                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID()));
+                                System.out.println("Creating tower shot: " + i);
+                                // break afer wards for first monster
 
 
-                        shotTimer[i] = System.nanoTime();
-                        break;
+                                shotTimer[i] = System.nanoTime();
+                                break;
+                            }
+                            break;
+                        // double shot tower
+                        case 2:
+
+                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range){
+                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID()));
+
+                                // THen check to see if a second monsterr can be shot at as well
+
+                                for(int k = 0; k < monster.size(); k++){
+
+                                    // This makes sure we arent going to shoot at the same monster the tower already has targeted
+                                    if(monster.get(k).getID() != monster.get(j).getID()) {
+                                        int monster2_x = monster.get(k).getX();
+                                        int monster2_y = monster.get(k).getY();
+
+                                        if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y) <= tower_range){
+                                            towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(k).getID()));
+
+                                            shotTimer[i] = System.nanoTime();
+                                            break;
+                                        }
+                                    }
+                                }
+                                shotTimer[i] = System.nanoTime();
+                                break;
+                            }
+                            break;
+                        // slow tower
+                        case 3:
+                            break;
+
                     }
+
                 }
                 // check to see if the tower has already waited for its attack speed to shoot again
                 else{
