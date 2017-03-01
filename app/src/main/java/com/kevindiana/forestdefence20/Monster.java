@@ -292,6 +292,10 @@ public class Monster extends GameObject{
 
         }
         // didnt hit a wall
+        // reason for back_on_course is so that 130 is always divisible by monster walk
+        // this way they will never get too far off track and not follow the tracking system
+        // on course gets the remainder from the location x or y, then adds it with the walkspeed to keep
+        // them on course
         else{
             switch(moveDirection){
                 // move right
