@@ -40,9 +40,24 @@ public class Animation {
         }
     }
 
+    public void slowedupdate(){
+        long elapsed = (System.nanoTime()-startTime) / 1000000;
+        //long elapsed = (System.nanoTime() - startTime) / 100000;
+
+        // determins which image in array will be displaed
+        if(elapsed>delay + 15){
+            currentFrame++;
+            startTime = System.nanoTime();
+        }
+        if(currentFrame == frames.length){
+            currentFrame = 0;
+            playedOnce = true;
+        }
+    }
+
     public void updateShot(){
         //long elapsed = (System.nanoTime()-startTime) / 1000000;
-        long elapsed = (System.nanoTime() - startTime) / 10000;
+        long elapsed = (System.nanoTime() - startTime) / 1;
 
         // determins which image in array will be displaed
         if(elapsed>delay){

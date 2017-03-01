@@ -117,6 +117,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         shopitems = new ArrayList<Shop>();
         shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300, 1));
         shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_shop_buton), 1040, 1300, 2));
+        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower_shop_button), 1170, 1300, 3));
         //shop = new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 1500, 1250, 1);
 
         // creates array list for popup menue
@@ -264,6 +265,36 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
                 // shop item 3
                 case 4:
+
+                    // only add tower if the spot is a 0 meaning blank space
+                    if(second_press_Spot_num == 0){
+
+                        // check to see if player has enough money
+                        if(player.GetMoney() >= 5 ){
+
+                            tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower), (eventX * 130), (eventY * 130), 3));
+
+                            // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
+                            currentroom[eventY][eventX] = 13;
+
+                            // reset first button click
+                            spot_number = -1;
+
+                            player.SubMoney(5);
+
+                        }
+                        // else create an error message for player for insuficent gold or cant put on thatspot
+                        else{
+
+                            // make error true to start the popup timmer
+                            Error = true;
+                            errorStartTime = System.nanoTime();
+                        }
+
+                    }
+
+                    is_it_first_click = true;
+
                     break;
                 // shop item 4
                 case 5:
@@ -323,7 +354,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 case 2:
                     is_it_first_click = false;
                     break;
+                // tower type 2
                 case 3:
+                    is_it_first_click = false;
+                    break;
+                // tower type 3
+                case 4:
                     is_it_first_click = false;
                     break;
                 // for tower type 1
@@ -416,7 +452,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         case 1:
                             // means the shot is in range
                             if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID()));
+                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 1));
                                 System.out.println("Creating tower shot: " + i);
                                 // break afer wards for first monster
 
@@ -429,7 +465,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         case 2:
 
                             if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range){
-                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID()));
+                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 2));
 
                                 // THen check to see if a second monsterr can be shot at as well
 
@@ -441,7 +477,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                                         int monster2_y = monster.get(k).getY();
 
                                         if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y) <= tower_range){
-                                            towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(k).getID()));
+                                            towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(k).getID(), 2));
 
                                             shotTimer[i] = System.nanoTime();
                                             break;
@@ -454,6 +490,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             break;
                         // slow tower
                         case 3:
+
+                            // means the shot is in range
+                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
+                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.ice_towr_projectile), tower.get(i).getX(), tower.get(i).getY(), 3, tower.get(i).getPower(), monster.get(j).getID(), 3));
+                                System.out.println("Creating tower shot: " + i);
+                                // break afer wards for first monster
+
+
+                                shotTimer[i] = System.nanoTime();
+                                break;
+                            }
+
                             break;
 
                     }
@@ -462,7 +510,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 // check to see if the tower has already waited for its attack speed to shoot again
                 else{
 
-                    if(TimeUnit.SECONDS.convert(System.nanoTime() - shotTimer[i], TimeUnit.NANOSECONDS) >= tower.get(i).getAttackSpeed() ){
+                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - shotTimer[i], TimeUnit.NANOSECONDS) >= tower.get(i).getAttackSpeed() ){
                         shotTimer[i] = 0;
                     }
                 }
@@ -477,6 +525,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         // update towershot/ Removing monster and adding money to player
         for(int i = 0; i < towershot.size(); i++){
 
+
+
+
             //if(towershot.get(i) != null){
 
                 // This case is incase the monster dies, then get rid of the tower shot following the monster
@@ -487,12 +538,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         int monster_x = monster.get(k).getX();
                         int monster_y = monster.get(k).getY();
 
+
+
+
                         towershot.get(i).update(monster_x, monster_y);
 
+                        // means shot connected and its not an ice tower shot which is 3
                         if(collision(towershot.get(i), monster.get(k))){
 
                             // sets subtracts bullter damage to monster health
                             monster.get(k).setHealth(towershot.get(i).getPower());
+
+                            // if monster got hit by a slow shot slow its movement speed
+                            if(towershot.get(i).getShotType() == 3){
+                                monster.get(k).setSlow_effect();
+                            }
 
                             // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
                             if(monster.get(k).getHealth() <= 0){
@@ -534,6 +594,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                                 System.out.println("Removing tower shot: " + i);
                             }
                         }
+
 
                     }
                 }
@@ -728,7 +789,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         break;
                     case 1:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.red_dot_sprite),
-                                -25 , 520, 125, 130, 8, currentroom, 1, wavenumber + x));
+                                -130 , 520, 125, 130, 8, currentroom, 1, wavenumber + x));
 
                         monsterwaves[wavenumber][x] = 0;
                         return true;
@@ -756,7 +817,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         return true;
                     case 13:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.horned_monster_prototype),
-                                -25 , 520, 125, 130, 8, currentroom, 13, wavenumber + x));
+                                -130 , 520, 125, 130, 8, currentroom, 13, wavenumber + x));
                         monsterwaves[wavenumber][x] = 0;
                         return true;
 

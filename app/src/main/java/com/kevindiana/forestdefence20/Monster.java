@@ -3,6 +3,8 @@ package com.kevindiana.forestdefence20;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import java.util.concurrent.TimeUnit;
+
 import static java.lang.StrictMath.abs;
 
 
@@ -30,6 +32,13 @@ public class Monster extends GameObject{
 
     // added to make bullet tracking easier
     private int monsterID;
+
+    // For the slow tower effect
+    private double slow_effect = 0;
+    // slow effect should last for 1.5 seconds
+    private long slow_timer_count;
+    //gets monster back on a correct corse so its walking doesnt get messed up
+    private int back_on_course;
 
     // x is x coord it will spawn, y is the y coord, w is width of sprit h is height
     public Monster(Bitmap res, int x, int y, int w, int h, int numFrames, int [][] currentroom, int monstertype, int monsterID){
@@ -119,8 +128,8 @@ public class Monster extends GameObject{
                 animation.setDelay(390 - walk_speed);
                 break;
             case 13:
-                walk_speed =5;
-                super.health = 25;
+                walk_speed = 5;
+                super.health = 250;
                 super.power = 5;
                 money = 20;
                 animation.setDelay(390 - walk_speed);
@@ -287,24 +296,63 @@ public class Monster extends GameObject{
             switch(moveDirection){
                 // move right
                 case 0:
-                    x+=walk_speed;
+                    if (slow_effect == 0) {
+                        back_on_course = (x % walk_speed);
+
+                        x += walk_speed + back_on_course;
+                    }
+                    else{
+                        x+=walk_speed - slow_effect;
+                    }
+
                     break;
                 // move left
                 case 1:
-                    x-=walk_speed;
+                    if (slow_effect == 0) {
+                        back_on_course = (x % walk_speed);
+
+                        x -= walk_speed + back_on_course;
+                    }
+                    else{
+                        x-=walk_speed - slow_effect;
+                    }
+                    //x-=walk_speed - slow_effect;
                     break;
                 // move up
                 case 2:
-                    y-=walk_speed;
+                    if (slow_effect == 0) {
+                        back_on_course = (y % walk_speed);
+
+                        y -= walk_speed + back_on_course;
+                    }
+                    else{
+                        y-=walk_speed - slow_effect;
+                    }
+                    //y-=walk_speed - slow_effect;
                     break;
                 // move down
                 case 3:
-                    y+=walk_speed;
+                    if (slow_effect == 0) {
+                        back_on_course = (y % walk_speed);
+
+                        y += walk_speed + back_on_course;
+                    }
+                    else{
+                        y+=walk_speed - slow_effect;
+                    }
+                    //y+=walk_speed - slow_effect;
                     break;
             }
         }
 
+            // resets slow effect back to 0 if slow effect wares off
+        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - slow_timer_count, TimeUnit.NANOSECONDS) >= 500 ){
+            slow_effect = 0;
+        }
+
         animation.update();
+
+
 
     }
 
@@ -347,6 +395,13 @@ public class Monster extends GameObject{
     }
     public int getID(){
         return monsterID;
+    }
+
+    // slow efefects cuts the walkspeed in half
+    public void setSlow_effect(){
+
+        slow_effect = Math.floor(walk_speed / 2.0);
+        slow_timer_count = System.nanoTime();
     }
 
 }

@@ -14,8 +14,10 @@ public class TowerShot extends GameObject {
     private int shot_Speed;
     private int numFrames;
     private int monsterID;
+    // 1 is fire tower, 2 is double shot, 3 is ice tower
+    private int type;
 
-    public TowerShot(Bitmap res, int x, int y, int numFrames, int damage, int monsterID){
+    public TowerShot(Bitmap res, int x, int y, int numFrames, int damage, int monsterID, int type){
         super.x = x;
         super.y = y;
         super.width = 125;
@@ -23,8 +25,8 @@ public class TowerShot extends GameObject {
         super.power = damage;
         //super.attack_speed = attackSpeed;
         shot_Speed = 35;
+        this.type = type;
         this.monsterID = monsterID;
-
         this.numFrames = numFrames;
 
         Bitmap[] image = new Bitmap[numFrames];
@@ -71,4 +73,5 @@ public class TowerShot extends GameObject {
     }
 
     public int getMonsterID(){return monsterID;}
+    public int getShotType(){return type;}
 }
