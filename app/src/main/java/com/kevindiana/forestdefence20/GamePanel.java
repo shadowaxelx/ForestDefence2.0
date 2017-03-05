@@ -70,6 +70,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // On click event stuff
     int spot_number;
     private boolean is_it_first_click = true;
+    private int first_pressX = 0;
+    private int first_pressY = 0;
 
     // Player class stuff
     Player player;
@@ -149,6 +151,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         int eventY = (int)event.getY();
         int second_press_Spot_num = -1;
 
+
         // This is to stop ConcurrentModificationExceptions
         //ArrayList<Tower> ttemp = new ArrayList<Tower>();
 
@@ -182,6 +185,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
         else{
             spot_number = currentroom[eventY][eventX];
+            first_pressX = eventX;
+            first_pressY = eventY;
         }
 
         // this is for being able to place towers down / upgrade them
@@ -189,128 +194,176 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         // means its their second click
         if (is_it_first_click == false){
 
-            switch(spot_number){
+            // if the popup menue has something in it
+            if(mypopupmenus.size() > 0){
+                // if the next click is the same location as the sell button
+                if(eventX == 9 && eventY == 6){
 
-                // blank space
-                case 0:
-                    //PopsUpIsUp = false;
-                    break;
-                // monster path
-                case 1:
-                    break;
-                // shop item 1
-                case 2:
-                    // only add tower if the spot is a 0 meaning blank space
-                    if(second_press_Spot_num == 0){
+                    for(Tower t: tower){
+                        if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
+                            player.AddMoney(t.getSell_cost());
+                            tower.remove(t);
+                            // then remove from the map itself
+                            currentroom[first_pressY][first_pressX] = 0;
 
-                        // check to see if player has enough money
-                        if(player.GetMoney() >= 5 ){
-
-                            //ttemp.add((new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1)));
-                            tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertower), (eventX * 130), (eventY * 130), 1));
-
-                            // this makes the empty spot a tower 1 spot now by putting replacing 0 with 11
-                            currentroom[eventY][eventX] = 11;
-
-                            // reset first button click
                             spot_number = -1;
-
-                            player.SubMoney(5);
-
                         }
-                        // else create an error message for player for insuficent gold or cant put on thatspot
                         else{
-
-                            // make error true to start the popup timmer
-                            Error = true;
-                            errorStartTime = System.nanoTime();
-                        }
-
-                    }
-
-
-                    is_it_first_click = true;
-                    break;
-                // shop item 2
-                case 3:
-
-                    // only add tower if the spot is a 0 meaning blank space
-                    if(second_press_Spot_num == 0){
-
-                        // check to see if player has enough money
-                        if(player.GetMoney() >= 5 ){
-
-                            tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower), (eventX * 130), (eventY * 130), 2));
-
-                            // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
-                            currentroom[eventY][eventX] = 12;
-
-                            // reset first button click
                             spot_number = -1;
-
-                            player.SubMoney(5);
-
                         }
-                        // else create an error message for player for insuficent gold or cant put on thatspot
-                        else{
-
-                            // make error true to start the popup timmer
-                            Error = true;
-                            errorStartTime = System.nanoTime();
-                        }
-
                     }
+                }
+                // upgrade tower
+                else if(eventX == 12 && eventY == 6){
+                    for(Tower t: tower){
+                        if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
+                            // check to see if player has the money to upgrade
+                            if(player.GetMoney() >= t.getUpgrade_cost()){
+                                t.upgrade_tower();
+                                spot_number = -1;
+                            }
+                            // you dont have the money give an error
+                            else{
+                                spot_number = -1;
+                            }
 
-                    is_it_first_click = true;
-                    break;
-                // shop item 3
-                case 4:
-
-                    // only add tower if the spot is a 0 meaning blank space
-                    if(second_press_Spot_num == 0){
-
-                        // check to see if player has enough money
-                        if(player.GetMoney() >= 5 ){
-
-                            tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower), (eventX * 130), (eventY * 130), 3));
-
-                            // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
-                            currentroom[eventY][eventX] = 13;
-
-                            // reset first button click
+                        }
+                        // didnt click on the upgrade button
+                        else{
                             spot_number = -1;
-
-                            player.SubMoney(5);
-
                         }
-                        // else create an error message for player for insuficent gold or cant put on thatspot
-                        else{
-
-                            // make error true to start the popup timmer
-                            Error = true;
-                            errorStartTime = System.nanoTime();
-                        }
-
                     }
-
-                    is_it_first_click = true;
-
-                    break;
-                // shop item 4
-                case 5:
-                    break;
-                // tower 1
-                case 11:
-                    break;
-                // tower 2
-                case 12:
-                    break;
-                // tower 3
-                case 13:
-                    break;
-
-
+                }
+                else{
+                    spot_number = -1;
+                }
             }
+            else{
+                switch(spot_number){
+
+                    // blank space
+                    case 0:
+                        //PopsUpIsUp = false;
+                        break;
+                    // monster path
+                    case 1:
+                        break;
+                    // shop item 1
+                    case 2:
+                        // only add tower if the spot is a 0 meaning blank space
+                        if(second_press_Spot_num == 0){
+
+                            // check to see if player has enough money
+                            if(player.GetMoney() >= 5 ){
+
+                                //ttemp.add((new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1)));
+                                tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertower), (eventX * 130), (eventY * 130), 1));
+
+                                // this makes the empty spot a tower 1 spot now by putting replacing 0 with 11
+                                currentroom[eventY][eventX] = 11;
+
+                                // reset first button click
+                                spot_number = -1;
+
+                                player.SubMoney(5);
+
+                            }
+                            // else create an error message for player for insuficent gold or cant put on thatspot
+                            else{
+
+                                // make error true to start the popup timmer
+                                Error = true;
+                                errorStartTime = System.nanoTime();
+                            }
+
+                        }
+
+
+                        is_it_first_click = true;
+                        break;
+                    // shop item 2
+                    case 3:
+
+                        // only add tower if the spot is a 0 meaning blank space
+                        if(second_press_Spot_num == 0){
+
+                            // check to see if player has enough money
+                            if(player.GetMoney() >= 5 ){
+
+                                tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower), (eventX * 130), (eventY * 130), 2));
+
+                                // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
+                                currentroom[eventY][eventX] = 12;
+
+                                // reset first button click
+                                spot_number = -1;
+
+                                player.SubMoney(5);
+
+                            }
+                            // else create an error message for player for insuficent gold or cant put on thatspot
+                            else{
+
+                                // make error true to start the popup timmer
+                                Error = true;
+                                errorStartTime = System.nanoTime();
+                            }
+
+                        }
+
+                        is_it_first_click = true;
+                        break;
+                    // shop item 3
+                    case 4:
+
+                        // only add tower if the spot is a 0 meaning blank space
+                        if(second_press_Spot_num == 0){
+
+                            // check to see if player has enough money
+                            if(player.GetMoney() >= 5 ){
+
+                                tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower), (eventX * 130), (eventY * 130), 3));
+
+                                // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
+                                currentroom[eventY][eventX] = 13;
+
+                                // reset first button click
+                                spot_number = -1;
+
+                                player.SubMoney(5);
+
+                            }
+                            // else create an error message for player for insuficent gold or cant put on thatspot
+                            else{
+
+                                // make error true to start the popup timmer
+                                Error = true;
+                                errorStartTime = System.nanoTime();
+                            }
+
+                        }
+
+                        is_it_first_click = true;
+
+                        break;
+                    // shop item 4
+                    case 5:
+                        break;
+                    // tower 1
+                    case 11:
+                        break;
+                    // tower 2
+                    case 12:
+                        break;
+                    // tower 3
+                    case 13:
+                        break;
+
+
+                }
+            }
+
+
 
             // adds everything that was in the temp into the actual array
             //tower.addAll(ttemp);
@@ -374,9 +427,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
                 // for tower type 2
                 case 12:
+                    is_it_first_click = false;
                     break;
                 // for tower type 3
                 case 13:
+                    is_it_first_click = false;
                     break;
             }
         }
@@ -433,7 +488,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         for(int i = 0; i < tower.size(); i++){
             int tower_x = tower.get(i).getX();
             int tower_y = tower.get(i).getY();
-            int tower_range = tower.get(i).getRange();
+            double tower_range = tower.get(i).getRange();
             int tower_type = tower.get(i).getTowerType();
 
 
@@ -682,7 +737,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 t.draw(canvas);
                 // draw tower radius for player to see;
 
-                canvas.drawCircle(t.getX() + 65, t.getY() + 65, t.range , red_paintbrush_stroke);
+                canvas.drawCircle(t.getX() + 65, t.getY() + 65, t.getRange(), red_paintbrush_stroke);
             }
 
             // draws shop items

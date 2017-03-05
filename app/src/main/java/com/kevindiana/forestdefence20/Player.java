@@ -11,7 +11,7 @@ public class Player {
 
     public Player(){
         health = 20;
-        money = 10;
+        money = 20;
 
     }
 

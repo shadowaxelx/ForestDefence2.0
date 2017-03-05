@@ -15,8 +15,8 @@ public class GameObject {
     protected int [][]room;
     protected int gold;
     protected int level;
-    protected int range;
-    protected double attack_speed;
+    //protected int range;
+    //protected double attack_speed;
     protected int power;
     protected int upgrade;
     protected int sell;
@@ -37,8 +37,8 @@ public class GameObject {
         return y;
     }
     public int getPower(){return power;}
-    public int getRange() {return range;}
-    public double getAttackSpeed() {return attack_speed;}
+    //public int getRange() {return range;}
+   // public double getAttackSpeed() {return attack_speed;}
     public int getGold(int towerType){return gold;}
     public void setGold(int towerGold) {gold = towerGold;}
     public int getHeight(){
