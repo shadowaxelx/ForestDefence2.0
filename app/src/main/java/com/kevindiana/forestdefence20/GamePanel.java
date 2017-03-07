@@ -219,6 +219,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
                             // check to see if player has the money to upgrade
                             if(player.GetMoney() >= t.getUpgrade_cost()){
+                                player.SubMoney(t.getUpgrade_cost());
                                 t.upgrade_tower();
                                 spot_number = -1;
                             }
@@ -417,13 +418,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
                 // for tower type 1
                 case 11:
+                    // different pop ups for tower lvl 1-4;
+                    switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                        case 1:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_tower_type1_lvl_1)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
 
-                    mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_tower_type1_lvl_1)));
-                    // will only draw if popup is true dont think you need this
-                    //PopsUpIsUp = true;
+                            is_it_first_click = false;
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                    }
 
                     is_it_first_click = false;
-
                     break;
                 // for tower type 2
                 case 12:
@@ -883,5 +895,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
 
         return false;
+    }
+
+    public Tower getTowerByCoord(int x, int y){
+
+        for(int i = 0; i < tower.size(); i++){
+            if (tower.get(i).getX() == (x * 130) && tower.get(i).getY() == (y * 130)){
+                return tower.get(i);
+            }
+        }
+
+        return tower.get(-1);
     }
 }

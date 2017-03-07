@@ -92,6 +92,7 @@ public class Tower extends GameObject{
     public int getUpgrade_cost() {return upgrade_cost; }
     public float getRange() {return range;}
     public double getAttackSpeed() {return attack_speed;}
+    public int getTowerLvl() {return tower_lvl; }
     public void upgrade_tower(){
 
         // sniper tower
