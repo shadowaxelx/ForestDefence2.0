@@ -77,61 +77,106 @@ public class Monster extends GameObject{
         switch (monstertype){
             // red_dot monster
             case 1:
-                walk_speed = 13;
-                super.health = 7;
+               //walk_speed = 13;
+                walk_speed = 26;
+                super.health = 10;
                 super.power = 1;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
+            // green blob momster
             case 2:
-                walk_speed = 50;
+                walk_speed = 10;
+                super.health = 15;
+                super.power = 1;
+                money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
+            // mouse monster
             case 3:
-                walk_speed = 50;
+                walk_speed = 26;
+                super.health = 7;
+                money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
+            // bannana monster
             case 4:
-                walk_speed = 50;
+                walk_speed = 10;
+                super.health = 50;
+                super.power = 1;
+                money = 4;
                 animation.setDelay(390 - walk_speed);
                 break;
+            // lion monster
             case 5:
-                walk_speed = 50;
-                animation.setDelay(390 - walk_speed);
-                break;
-            case 6:
-                walk_speed = 50;
-                animation.setDelay(390 - walk_speed);
-                break;
-            case 7:
-                walk_speed = 50;
-                animation.setDelay(390 - walk_speed);
-                break;
-            case 8:
-                walk_speed = 50;
-                animation.setDelay(390 - walk_speed);
-                break;
-            case 9:
-                walk_speed = 50;
-                animation.setDelay(390 - walk_speed);
-                break;
-            case 10:
-                walk_speed = 50;
-                animation.setDelay(390 - walk_speed);
-                break;
-            case 11:
-                walk_speed = 50;
-                animation.setDelay(390 - walk_speed);
-                break;
-            case 12:
-                walk_speed = 50;
-                animation.setDelay(390 - walk_speed);
-                break;
-            case 13:
                 walk_speed = 5;
+                super.health = 125;
+                super.power = 2;
+                money = 6;
+                animation.setDelay(390 - walk_speed);
+                break;
+            //theif monster // rare monster
+            case 6:
+                walk_speed = 26;
+                super.health = 100;
+                super.power = 1;
+                money = 12;
+                animation.setDelay(390 - walk_speed);
+                break;
+            // white knight
+            case 7:
+                walk_speed = 10;
+                super.health = 175;
+                super.power = 2;
+                money = 6;
+                animation.setDelay(390 - walk_speed);
+                break;
+            // Blue knight
+            case 8:
+                walk_speed = 5;
+                super.health = 300;
+                super.power = 3;
+                money = 8;
+                animation.setDelay(390 - walk_speed);
+                break;
+            // bomb man
+            case 9:
+                walk_speed = 13;
+                super.health = 200;
+                super.power = 2;
+                money = 6;
+                animation.setDelay(390 - walk_speed);
+                break;
+            // fire spirite
+            case 10:
+                walk_speed = 13;
                 super.health = 250;
+                super.power = 2;
+                money = 8;
+                animation.setDelay(390 - walk_speed);
+                break;
+            // baby dragon
+            case 11:
+                walk_speed = 10;
+                super.health = 350;
+                super.power = 2;
+                money = 8;
+                animation.setDelay(390 - walk_speed);
+                break;
+            // silver dragon
+            case 12:
+                walk_speed = 5;
+                super.health = 600;
+                super.power = 4;
+                money = 10;
+                animation.setDelay(390 - walk_speed);
+                break;
+            // King of Beast
+            case 13:
+                walk_speed = 2;
+                super.health = 850;
                 super.power = 5;
-                money = 20;
+                money = 12;
                 animation.setDelay(390 - walk_speed);
                 break;
 

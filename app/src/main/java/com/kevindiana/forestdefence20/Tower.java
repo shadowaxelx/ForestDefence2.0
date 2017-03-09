@@ -31,45 +31,45 @@ public class Tower extends GameObject{
         super.level = 1;
 
         switch(towertype){
-            // sniper tower
+            // sniper tower cost 5
             case 1:
                 this.tower_lvl = 1;
                 // setting the game objects states for this particular tower object
                 super.power = 5;
-                // 3.5 * 130
+                // 3.5 * 130  which is 3 + .5
                 range = 455;
                 // calculated in miliseconds so 1.5 seconds
                 attack_speed = 1500;
                 //super.attack_speed = 1.25;
-                upgrade_cost = 8;
-                sell_cost = 5;
+                upgrade_cost = 10;
+                sell_cost = 3;
                 tower_type = towertype;
 
                 break;
 
-            // double shot tower
+            // double shot tower cost 15
             case 2:
                 this.tower_lvl = 1;
-                super.power = 6;
+                super.power = 7;
                 // 3.0 * 130
                 range = 390;
                 // calculated in miliseconds so 1.25 seconds
-                attack_speed = 1250;
+                attack_speed = 1000;
                 //super.attack_speed = 1.25;
-                upgrade_cost = 8;
+                upgrade_cost = 15;
                 sell_cost = 5;
                 tower_type = towertype;
                 break;
-            // slow tower
+            // slow tower cost 25
             case 3:
                 this.tower_lvl = 1;
                 super.power = 1;
                 //4 * 130
                 range = 520;
                 // has rapid fire attack speed; .10 second attack speed
-                attack_speed = 100;
-                upgrade_cost = 8;
-                sell_cost = 5;
+                attack_speed = 400;
+                upgrade_cost = 30;
+                sell_cost = 10;
                 tower_type = towertype;
                 break;
         }
@@ -98,29 +98,112 @@ public class Tower extends GameObject{
         // sniper tower
         if(tower_type == 1){
             switch (tower_lvl){
+                // lvl 2 tower
                 case 1:
                     tower_lvl = 2;
-                    power = 10;
-                    //3.5 + .5(is the box the tower is actually in)
+                    power = 12;
+                    //3 + .5(is the box the tower is actually in) so range is 3.5
                     range = 520;
                     //1.25 attack speed per second
                     attack_speed = 1250;
-                    upgrade_cost = 16;
-                    sell_cost = 10;
+                    upgrade_cost = 20;
+                    sell_cost = 6;
                     break;
+                // lvl 3
                 case 2:
+                    tower_lvl = 3;
+                    power = 26;
+                    // 4 + .5(is the box the tower is actually in) so range is 2.5
+                    range = 650;
+                    attack_speed = 1000;
+                    upgrade_cost = 40;
+                    sell_cost = 12;
                     break;
                 case 3:
+                    tower_lvl = 4;
+                    power = 55;
+                    // 5 + .5(is the box the tower is actually in)
+                    range = 780;
+                    attack_speed = 750;
+                    // no upgrade cost max lvl
+                    sell_cost = 24;
                     break;
 
             }
         }
         // double shot tower
         else if(tower_type == 2){
+            switch (tower_lvl){
+                // lvl 2 tower
+                case 1:
+                    tower_lvl = 2;
+                    power = 18;
+                    //3.5 + .5(is the box the tower is actually in)
+                    range = 390;
+                    //1.25 attack speed per second
+                    attack_speed = 1000;
+                    upgrade_cost = 30;
+                    sell_cost = 10;
+                    break;
+                // lvl 3
+                case 2:
+                    tower_lvl = 3;
+                    power = 40;
+                    // 4 + .5(is the box the tower is actually in)
+                    range = 455;
+                    attack_speed = 1000;
+                    upgrade_cost = 60;
+                    sell_cost = 20;
+                    break;
+                case 3:
+                    tower_lvl = 4;
+                    power = 50;
+                    // 5 + .5(is the box the tower is actually in)
+                    range = 455;
+                    attack_speed = 1000;
+                    // no upgrade cost max lvl
+                    sell_cost = 40;
+                    break;
+
+            }
 
         }
         // slow/ ice tower
         else if(tower_type == 3){
+
+            switch (tower_lvl){
+                // lvl 2 tower
+                case 1:
+                    tower_lvl = 2;
+                    power = 2;
+                    //4 * 130
+                    range = 520;
+                    //1.25 attack speed per second
+                    attack_speed = 300;
+                    upgrade_cost = 60;
+                    sell_cost = 20;
+                    break;
+                // lvl 3
+                case 2:
+                    tower_lvl = 3;
+                    power = 3;
+                    //4 * 130
+                    range = 520;
+                    attack_speed = 200;
+                    upgrade_cost = 120;
+                    sell_cost = 40;
+                    break;
+                case 3:
+                    tower_lvl = 4;
+                    power = 4;
+                    //4 * 130
+                    range = 520;
+                    attack_speed = 100;
+                    // no upgrade cost max lvl
+                    sell_cost = 80;
+                    break;
+
+            }
 
         }
 

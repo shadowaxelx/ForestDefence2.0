@@ -289,7 +289,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         if(second_press_Spot_num == 0){
 
                             // check to see if player has enough money
-                            if(player.GetMoney() >= 5 ){
+                            if(player.GetMoney() >= 15 ){
 
                                 tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower), (eventX * 130), (eventY * 130), 2));
 
@@ -299,7 +299,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                                 // reset first button click
                                 spot_number = -1;
 
-                                player.SubMoney(5);
+                                player.SubMoney(15);
 
                             }
                             // else create an error message for player for insuficent gold or cant put on thatspot
@@ -321,7 +321,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         if(second_press_Spot_num == 0){
 
                             // check to see if player has enough money
-                            if(player.GetMoney() >= 5 ){
+                            if(player.GetMoney() >= 25 ){
 
                                 tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower), (eventX * 130), (eventY * 130), 3));
 
@@ -331,7 +331,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                                 // reset first button click
                                 spot_number = -1;
 
-                                player.SubMoney(5);
+                                player.SubMoney(25);
 
                             }
                             // else create an error message for player for insuficent gold or cant put on thatspot
