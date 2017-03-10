@@ -157,7 +157,7 @@ public class Tower extends GameObject{
                     break;
                 case 3:
                     tower_lvl = 4;
-                    power = 50;
+                    power = 80;
                     // 5 + .5(is the box the tower is actually in)
                     range = 455;
                     attack_speed = 1000;

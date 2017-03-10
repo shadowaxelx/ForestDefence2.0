@@ -1,6 +1,7 @@
 package com.kevindiana.forestdefence20;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import java.util.concurrent.TimeUnit;
@@ -61,14 +62,14 @@ public class Monster extends GameObject{
         // starts by moving to the right
         moveDirection = 0;
 
-        image[0] = Bitmap.createBitmap(spritesheet, 0, 0*width, width, height);
-        image[1] = Bitmap.createBitmap(spritesheet, 0, 1*width, width, height);
-        image[2] = Bitmap.createBitmap(spritesheet, 0, 0*width, width, height);
-        image[3] = Bitmap.createBitmap(spritesheet, 0, 1*width, width, height);
-        image[4] = Bitmap.createBitmap(spritesheet, 0, 0*width, width, height);
-        image[5] = Bitmap.createBitmap(spritesheet, 0, 1*width, width, height);
-        image[6] = Bitmap.createBitmap(spritesheet, 0, 0*width, width, height);
-        image[7] = Bitmap.createBitmap(spritesheet, 0, 1*width, width, height);
+        image[0] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
+        image[1] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+        image[2] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
+        image[3] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+        image[4] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
+        image[5] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+        image[6] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
+        image[7] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
 
         animation.setFrames(image);
 
@@ -247,14 +248,14 @@ public class Monster extends GameObject{
 
                     Bitmap[] image = new Bitmap[numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 4*width, width, height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 5*width, width, height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 4*width, width, height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 5*width, width, height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 4*width, width, height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 5*width, width, height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 4*width, width, height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 5*width, width, height);
+                    image[0] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
+                    image[1] = Bitmap.createBitmap(spritesheet, 0, 5*height, width, height);
+                    image[2] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
+                    image[3] = Bitmap.createBitmap(spritesheet, 0, 5*height, width, height);
+                    image[4] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
+                    image[5] = Bitmap.createBitmap(spritesheet, 0, 5*height, width, height);
+                    image[6] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
+                    image[7] = Bitmap.createBitmap(spritesheet, 0, 5*height, width, height);
 
                     animation.setFrames(image);
 
@@ -271,14 +272,14 @@ public class Monster extends GameObject{
 
                     Bitmap[] image = new Bitmap[numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 6*width, width, height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 7*width, width, height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 6*width, width, height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 7*width, width, height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 6*width, width, height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 7*width, width, height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 6*width, width, height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 7*width, width, height);
+                    image[0] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
+                    image[1] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
+                    image[2] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
+                    image[3] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
+                    image[4] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
+                    image[5] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
+                    image[6] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
+                    image[7] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
 
                     animation.setFrames(image);
 
@@ -295,14 +296,14 @@ public class Monster extends GameObject{
 
                     Bitmap[] image = new Bitmap[numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 0*width, width, height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 1*width, width, height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 0*width, width, height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 1*width, width, height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 0*width, width, height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 1*width, width, height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 0*width, width, height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 1*width, width, height);
+                    image[0] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
+                    image[1] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+                    image[2] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
+                    image[3] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+                    image[4] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
+                    image[5] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+                    image[6] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
+                    image[7] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
 
                     animation.setFrames(image);
 
@@ -319,14 +320,14 @@ public class Monster extends GameObject{
 
                     Bitmap[] image = new Bitmap[numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 2*width, width, height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 3*width, width, height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 2*width, width, height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 3*width, width, height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 2*width, width, height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 3*width, width, height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 2*width, width, height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 3*width, width, height);
+                    image[0] = Bitmap.createBitmap(spritesheet, 0, 2*height, width, height);
+                    image[1] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
+                    image[2] = Bitmap.createBitmap(spritesheet, 0, 2*height, width, height);
+                    image[3] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
+                    image[4] = Bitmap.createBitmap(spritesheet, 0, 2*height, width, height);
+                    image[5] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
+                    image[6] = Bitmap.createBitmap(spritesheet, 0, 2*height, width, height);
+                    image[7] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
 
                     animation.setFrames(image);
 

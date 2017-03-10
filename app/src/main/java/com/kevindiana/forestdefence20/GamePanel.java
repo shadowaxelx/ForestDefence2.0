@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v7.widget.PopupMenu;
 import android.view.MotionEvent;
@@ -428,10 +429,25 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             is_it_first_click = false;
                             break;
                         case 2:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl2)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
                             break;
                         case 3:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl3)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
                             break;
                         case 4:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl4)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
                             break;
                     }
 
@@ -439,10 +455,76 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
                 // for tower type 2
                 case 12:
+
+                    // different pop ups for tower lvl 1-4;
+                    switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                        case 1:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl1)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
+                            break;
+                        case 2:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl2)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
+                            break;
+                        case 3:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl3)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
+                            break;
+                        case 4:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl4)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
+                            break;
+                    }
+
                     is_it_first_click = false;
                     break;
                 // for tower type 3
                 case 13:
+
+                    // different pop ups for tower lvl 1-4;
+                    switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                        case 1:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl1)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
+                            break;
+                        case 2:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl2)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
+                            break;
+                        case 3:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl3)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
+                            break;
+                        case 4:
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl4)));
+                            // will only draw if popup is true dont think you need this
+                            //PopsUpIsUp = true;
+
+                            is_it_first_click = false;
+                            break;
+                    }
+
                     is_it_first_click = false;
                     break;
             }
@@ -755,12 +837,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // draws shop items
             for(Shop s: shopitems){
                 s.draw(canvas);
+
             }
             //shop.draw(canvas);
 
             // draws the monsters
             for(Monster m: monster){
                 m.draw(canvas);
+
+                //canvas.drawLine(m.getX(), m.getY(), m.getX() + 125, m.getY(), red_paintbrush_stroke);
+                //canvas.drawLine(m.getX(), m.getY() + 130, m.getX() + 125, m.getY() + 130, red_paintbrush_stroke);
+                //canvas.drawLine();
             }
 
             // draws towershot
@@ -792,7 +879,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
 
-
+/*
             // debugging perpuses horizontal grid lines( up and down lines)
             //for(int i = 0; i < 23; i++){
             for(int i = 0; i < 21; i++){
@@ -808,7 +895,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 canvas.drawLine( 0 , (float)(i * 130), WIDTH, (float)(i * 130), red_paintbrush_stroke);
             }
 
-
+*/
 
             canvas.restoreToCount(savedState);
         }
@@ -854,37 +941,93 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     // means already done it
                     case 0:
                         break;
+                    //red dot
                     case 1:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.red_dot_sprite),
-                                -130 , 520, 125, 130, 8, currentroom, 1, wavenumber + x));
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_01_red_dot),
+                                -130 , 520, 125, 128, 8, currentroom, 1, wavenumber + x));
 
                         monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // green blob
                     case 2:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_02_green_blob),
+                                -130 , 520, 125, 128, 8, currentroom, 2, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // mouse
                     case 3:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_03_mouse),
+                                -130 , 520, 125, 128, 8, currentroom, 3, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // bannana man
                     case 4:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_04_bannana_man),
+                                -130 , 520, 125, 128, 8, currentroom, 4, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // lion
                     case 5:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_05_lion),
+                                -130 , 520, 125, 128, 8, currentroom, 5, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // red theif
                     case 6:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_06_red_theif),
+                                -130 , 520, 125, 128, 8, currentroom, 6, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // white knight
                     case 7:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_07_white_knight),
+                                -130 , 520, 125, 128, 8, currentroom, 7, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // blue knight
                     case 8:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_08_blue_knight),
+                                -130 , 520, 125, 128, 8, currentroom, 8, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // bomb man
                     case 9:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_09_bomb_man),
+                                -130 , 520, 125, 128, 8, currentroom, 9, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // fire spirit
                     case 10:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_10_fire_spirit),
+                                -130 , 520, 125, 128, 8, currentroom, 10, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // baby dragon
                     case 11:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_11_baby_dragon),
+                                -130 , 520, 125, 128, 11, currentroom, 2, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // silver dragon
                     case 12:
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_12_silver_dragon),
+                                -130 , 520, 125, 128, 8, currentroom, 12, wavenumber + x));
+
+                        monsterwaves[wavenumber][x] = 0;
                         return true;
                     case 13:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.horned_monster_prototype),
-                                -130 , 520, 125, 130, 8, currentroom, 13, wavenumber + x));
+                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_13_king_of_beast),
+                                -130 , 520, 125, 128, 8, currentroom, 13, wavenumber + x));
                         monsterwaves[wavenumber][x] = 0;
                         return true;
 
