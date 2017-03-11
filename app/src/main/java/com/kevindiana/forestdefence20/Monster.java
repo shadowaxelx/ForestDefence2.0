@@ -16,6 +16,7 @@ import static java.lang.StrictMath.abs;
 public class Monster extends GameObject{
     private Bitmap spritesheet;
     private int health;
+    private int starthealth;
     private int money;
     private int walk_speed;
     private int gridx, gridy;
@@ -80,7 +81,8 @@ public class Monster extends GameObject{
             case 1:
                //walk_speed = 13;
                 walk_speed = 26;
-                super.health = 10;
+                health = 10;
+                starthealth = 10;
                 super.power = 1;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
@@ -88,7 +90,8 @@ public class Monster extends GameObject{
             // green blob momster
             case 2:
                 walk_speed = 10;
-                super.health = 15;
+                health = 15;
+                starthealth = 15;
                 super.power = 1;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
@@ -96,14 +99,16 @@ public class Monster extends GameObject{
             // mouse monster
             case 3:
                 walk_speed = 26;
-                super.health = 7;
+                health = 7;
+                starthealth = 7;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
             // bannana monster
             case 4:
                 walk_speed = 10;
-                super.health = 50;
+                health = 50;
+                starthealth = 50;
                 super.power = 1;
                 money = 4;
                 animation.setDelay(390 - walk_speed);
@@ -111,7 +116,8 @@ public class Monster extends GameObject{
             // lion monster
             case 5:
                 walk_speed = 5;
-                super.health = 125;
+                health = 125;
+                starthealth = 125;
                 super.power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
@@ -119,7 +125,8 @@ public class Monster extends GameObject{
             //theif monster // rare monster
             case 6:
                 walk_speed = 26;
-                super.health = 100;
+                health = 100;
+                starthealth = 100;
                 super.power = 1;
                 money = 12;
                 animation.setDelay(390 - walk_speed);
@@ -127,7 +134,8 @@ public class Monster extends GameObject{
             // white knight
             case 7:
                 walk_speed = 10;
-                super.health = 175;
+                health = 175;
+                starthealth = 175;
                 super.power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
@@ -135,7 +143,8 @@ public class Monster extends GameObject{
             // Blue knight
             case 8:
                 walk_speed = 5;
-                super.health = 300;
+                health = 300;
+                starthealth = 300;
                 super.power = 3;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
@@ -143,7 +152,8 @@ public class Monster extends GameObject{
             // bomb man
             case 9:
                 walk_speed = 13;
-                super.health = 200;
+                health = 200;
+                starthealth = 200;
                 super.power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
@@ -151,7 +161,8 @@ public class Monster extends GameObject{
             // fire spirite
             case 10:
                 walk_speed = 13;
-                super.health = 250;
+                health = 250;
+                starthealth = 250;
                 super.power = 2;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
@@ -159,7 +170,8 @@ public class Monster extends GameObject{
             // baby dragon
             case 11:
                 walk_speed = 10;
-                super.health = 350;
+                health = 350;
+                starthealth = 350;
                 super.power = 2;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
@@ -167,7 +179,8 @@ public class Monster extends GameObject{
             // silver dragon
             case 12:
                 walk_speed = 5;
-                super.health = 600;
+                health = 600;
+                starthealth = 600;
                 super.power = 4;
                 money = 10;
                 animation.setDelay(390 - walk_speed);
@@ -175,7 +188,8 @@ public class Monster extends GameObject{
             // King of Beast
             case 13:
                 walk_speed = 2;
-                super.health = 850;
+                health = 850;
+                starthealth = 850;
                 super.power = 5;
                 money = 12;
                 animation.setDelay(390 - walk_speed);
@@ -446,6 +460,9 @@ public class Monster extends GameObject{
     public int getID(){
         return monsterID;
     }
+    public int getHealth(){return health;}
+    public int getStartHealth(){return starthealth; }
+    public void setHealth(int damage){health -= damage;}
 
     // slow efefects cuts the walkspeed in half
     public void setSlow_effect(){

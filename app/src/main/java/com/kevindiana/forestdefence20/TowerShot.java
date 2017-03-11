@@ -21,7 +21,7 @@ public class TowerShot extends GameObject {
         super.x = x;
         super.y = y;
         super.width = 125;
-        super.height = 130;
+        super.height = 128;
         super.power = damage;
         //super.attack_speed = attackSpeed;
         shot_Speed = 35;
@@ -33,7 +33,7 @@ public class TowerShot extends GameObject {
         spritesheet = res;
 
         for(int i = 0; i < image.length; i++){
-            image[i] = Bitmap.createBitmap(spritesheet, 0, i*width, width, height);
+            image[i] = Bitmap.createBitmap(spritesheet, 0, i*height, width, height);
         }
 
         // sets the animation

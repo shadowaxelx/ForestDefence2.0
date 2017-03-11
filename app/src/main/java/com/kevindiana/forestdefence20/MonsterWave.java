@@ -8,7 +8,7 @@ public class MonsterWave extends GameObject {
 
     // each array contains the wave so the first array is round 1
     private int[][] monsterroom1 = new int[][]{
-            //{4},
+            //{7},
             {1, 1, 1, 1, 1, 1, 1, 1},
             {1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1},
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6},

@@ -1,6 +1,7 @@
 package com.kevindiana.forestdefence20;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -77,6 +78,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // Player class stuff
     Player player;
 
+    //Start_Monster_wave_Icon stuff ****
+    private ArrayList<Start_Monster_Wave_Icon> mIcons;
+
 
     // the main thread for the entire game
     private MainThread thread;
@@ -130,6 +134,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         monster = new ArrayList<Monster>();
         // starts calculating the time the first monster spawns
         monsterStartTime = System.nanoTime();
+
+        mIcons = new ArrayList<Start_Monster_Wave_Icon>();
+        mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
 
         mwaves = new MonsterWave();
         monsterwaves = mwaves.getwave(1);
@@ -405,6 +412,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
             switch(spot_number){
 
+                // means probably clicked on the start wave icon thing
+                case 1:
+                    // if there are icons stored in the array, meaning that they are out and able to click on
+                    if(mIcons.size() > 0){
+
+                        for(Start_Monster_Wave_Icon i: mIcons){
+                            if(getXcoord(i.getX()) == first_pressX && getYcoord(i.getY()) == first_pressY){
+                                mIcons.remove(i);
+                            }
+                        }
+
+                    }
+                    break;
                 // tower type 1
                 case 2:
                     is_it_first_click = false;
@@ -541,12 +561,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     {
         room1.update();
 
+
         // adding the monster on timer
         long monsterElapsed = (System.nanoTime()-monsterStartTime) / 1000000;
 
         //if(!wavesalldone){
-        if (!nextWaveCountdown){
-
+       // if (!nextWaveCountdown){
+        if(mIcons.size() == 0){
             if(monsterElapsed >(875)){
 
                 //if(!nextWaveCountdown){
@@ -556,16 +577,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                         wavenumber++;
                         // next wave will start so start countdown from 8 seconds
-                        nextWaveCountdown = true;
-                        countdown_8sec = System.nanoTime();
+                        //nextWaveCountdown = true;
+                        //countdown_8sec = System.nanoTime();
+                        mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
                     }
                 }
 
                 // reset timer/ wave
                 monsterStartTime = System.nanoTime();
             }
-
         }
+       // }
+        /*
         else{
                 //countdown_8sec -= 1;
                 long timeElapsed = (System.nanoTime() - countdown_8sec);
@@ -576,6 +599,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             //System.out.println(timeElapsed);
             //System.out.println(timeElapsed / 1000000);
         }
+        */
 
         // This is where we will have to check to see if the tower will shoot.. probably make this into a seperate function with everything else
         // need to check every monster and see if it is within any tower range
@@ -758,6 +782,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         // clean up the lose ends of the 2 temp array
         //System.gc();
 
+        //update the monster start wave icon
+        for(int i = 0; i <mIcons.size(); i++){
+            mIcons.get(i).update();
+        }
+
         // update the monsters
         for(int i = 0; i <monster.size(); i++){
 
@@ -829,9 +858,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // draws the towers
             for(Tower t: tower){
                 t.draw(canvas);
-                // draw tower radius for player to see;
+                // draw tower radius for player to see when tower is clicked on
+                if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
+                    canvas.drawCircle(t.getX() + 65, t.getY() + 65, t.getRange(), red_paintbrush_stroke);
+                }
 
-                canvas.drawCircle(t.getX() + 65, t.getY() + 65, t.getRange(), red_paintbrush_stroke);
             }
 
             // draws shop items
@@ -845,7 +876,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             for(Monster m: monster){
                 m.draw(canvas);
 
-                //canvas.drawLine(m.getX(), m.getY(), m.getX() + 125, m.getY(), red_paintbrush_stroke);
+                // the line is 125 pixels long
+                double percentage = (double)125 / (double)m.getStartHealth();
+                // calculates the the missing health
+                double health_difference = m.getStartHealth() - m.getHealth();
+                canvas.drawLine(m.getX(), m.getY(), m.getX() + (float)(125 - (health_difference * percentage)), m.getY(), red_paintbrush_stroke);
                 //canvas.drawLine(m.getX(), m.getY() + 130, m.getX() + 125, m.getY() + 130, red_paintbrush_stroke);
                 //canvas.drawLine();
             }
@@ -860,6 +895,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     mp.draw(canvas);
                 }
            // }
+
+            for(Start_Monster_Wave_Icon i: mIcons){
+                i.draw(canvas);
+            }
 
             // Error Message For buying things from shop
             if(Error){
@@ -876,7 +915,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             canvas.drawText("" + player.GetHealth(), 135, 1420, health_text);
             canvas.drawText("" + player.GetMoney(), 395, 1420, money_text);
 
-
+            // draw the wave number into the bottom right by the shop
+            canvas.drawText("Wave Number: " + wavenumber, 1300,1420, money_text );
 
 
 /*
