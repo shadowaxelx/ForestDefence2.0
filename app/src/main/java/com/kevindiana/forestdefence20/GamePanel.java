@@ -119,8 +119,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder){
 
-        room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
-        currentroom = room1.getroom(1);
+        //room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
+        room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
+        //currentroom = room1.getroom(1);
+        currentroom = room1.getroom(2);
         shopitems = new ArrayList<Shop>();
         shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300, 1));
         shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_shop_buton), 1040, 1300, 2));
@@ -442,7 +444,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     // different pop ups for tower lvl 1-4;
                     switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
                         case 1:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_tower_type1_lvl_1)));
+                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_sniper_lvl_1)));
                             // will only draw if popup is true dont think you need this
                             //PopsUpIsUp = true;
 

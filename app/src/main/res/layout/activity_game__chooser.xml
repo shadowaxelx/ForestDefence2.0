@@ -22,7 +22,7 @@
         android:layout_marginBottom="207dp" />
 
     <RadioButton
-        android:text="RadioButton"
+        android:text="Easy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/radioButton2"
@@ -31,7 +31,7 @@
         android:layout_alignStart="@+id/radioButton" />
 
     <RadioButton
-        android:text="RadioButton"
+        android:text="Normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/radioButton2"
@@ -40,23 +40,21 @@
         android:id="@+id/radioButton3" />
 
     <RadioButton
-        android:text="RadioButton"
+        android:text="Hard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
         android:id="@+id/radioButton"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView" />
+
+    <Button
+        android:text="Map 1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <Button
-        android:text="Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/radioButton3"
-        android:layout_alignLeft="@+id/radioButton3"
-        android:layout_alignStart="@+id/radioButton3"
-        android:id="@+id/button" />
 
 </RelativeLayout>
