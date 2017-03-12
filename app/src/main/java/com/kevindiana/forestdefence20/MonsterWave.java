@@ -7,8 +7,12 @@ package com.kevindiana.forestdefence20;
 public class MonsterWave extends GameObject {
 
     // each array contains the wave so the first array is round 1
+    // numbers 1 - 13 correspond with the monster from the Monster class
+    // 0 means empty space(spawn nothing)
+    // 14 means after all the monsters in the array are gone the game is over
     private int[][] monsterroom1 = new int[][]{
-            //{7},
+            //{14},
+
             {1, 1, 1, 1, 1, 1, 1, 1},
             {1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1},
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6},
@@ -21,7 +25,7 @@ public class MonsterWave extends GameObject {
             {11, 7, 7, 10, 11, 6, 4, 4, 11, 12, 10, 10, 10},
             {12, 12, 11, 11, 12, 11, 12, 11, 12, 12},
             {1, 1, 6, 2, 3, 2, 3, 4, 5, 7, 7, 8, 9, 10, 10, 11, 9, 12, 13},
-            {1, 1, 1, 1, 1, 13, 13, 13, 13, 13, 13, 10, 10, 10, 10, 3, 3, 3, 3}
+            {1, 1, 1, 1, 1, 13, 13, 13, 13, 13, 13, 10, 10, 10, 10, 3, 3, 3, 3, 14}
 
 
     };

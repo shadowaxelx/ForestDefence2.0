@@ -1,6 +1,7 @@
 package com.kevindiana.forestdefence20;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -50,6 +51,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // int next wave countdown 8 seconds
     private long countdown_8sec;
 
+    // end of game stuff ************
+    // true when last monster has spawned and no more monsters are in the array
+    private boolean game_done = false;
+    long fiveSeconds;
+    private boolean end_timer = false;
+    Context mContext;
+
     // shop stuff********************
     private Shop shop;
     private ArrayList<Shop> shopitems;
@@ -88,7 +96,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public GamePanel(Context context)
     {
         super(context);
-
+        mContext = context;
 
         //add the callback to the surfaceholder to intercept events
         getHolder().addCallback(this);
@@ -118,7 +126,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder){
-
         //room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
         room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
         //currentroom = room1.getroom(1);
@@ -563,6 +570,30 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     {
         room1.update();
 
+        // if player has less then 0 health he is dead
+        if (player.GetHealth() <= 0){
+            Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
+            intent.putExtra("Health", "-1");
+            mContext.startActivity(intent);
+        }
+
+        // if game_done is true and there is nothing in monster array wait 5 seconds then go to end screen
+        // set timer and start the 5 second wait
+        if(game_done && monster.size() == 0 && !end_timer){
+            fiveSeconds = System.nanoTime();
+            end_timer = true;
+        }
+        // if all the requirements are ment go to the end screen
+        if(game_done && monster.size() == 0 && end_timer){
+            if(TimeUnit.SECONDS.convert(System.nanoTime() - fiveSeconds, TimeUnit.NANOSECONDS) >= 5 ){
+
+                //Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
+                Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
+                intent.putExtra("Health", Integer.toBinaryString(player.GetHealth()));
+                mContext.startActivity(intent);
+
+            }
+        }
 
         // adding the monster on timer
         long monsterElapsed = (System.nanoTime()-monsterStartTime) / 1000000;
@@ -1067,11 +1098,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                         monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // king of beasts
                     case 13:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_13_king_of_beast),
                                 -130 , 520, 125, 128, 8, currentroom, 13, wavenumber + x));
                         monsterwaves[wavenumber][x] = 0;
                         return true;
+                    // means that the game is over after everything in the monster array is gone
+                    case 14:
+                        game_done = true;
+                        break;
 
                 }
             }
@@ -1093,3 +1129,5 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         return tower.get(-1);
     }
 }
+
+

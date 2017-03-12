@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_end__of__game"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kevindiana.forestdefence20.End_Of_Game">
+
+    <ImageView
+        android:id="@+id/ending"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/menu_button"
+        android:layout_marginBottom="21dp"
+        android:id="@+id/menu"
+        android:onClick="ButtonListener"
+        android:layout_alignBottom="@+id/end_dead_text"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/end_dead_text"
+        android:id="@+id/end_dead_text"
+        android:layout_marginBottom="99dp"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/end_game_win_text"
+        android:id="@+id/five_star_win_text"
+        android:visibility="invisible"
+        android:layout_marginBottom="54dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
+

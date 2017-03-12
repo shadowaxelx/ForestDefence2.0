@@ -1,6 +1,7 @@
 package com.kevindiana.forestdefence20;
 
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -53,9 +54,6 @@ public class MainThread extends Thread
                     catch(Exception e){e.printStackTrace();}
                 }
             }
-
-
-
 
             timeMillis = (System.nanoTime() - startTime) / 1000000;
             waitTime = targetTime-timeMillis;
