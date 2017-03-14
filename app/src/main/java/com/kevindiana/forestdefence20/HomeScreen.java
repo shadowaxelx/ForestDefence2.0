@@ -18,7 +18,7 @@ public class HomeScreen extends AppCompatActivity {
     public void OnClickButtonListener(View view){
         switch(view.getId()){
             case R.id.imageButton:
-                Intent intent = new Intent("com.kevindiana.forestdefence20.Game");
+                Intent intent = new Intent("com.kevindiana.forestdefence20.Game_Chooser");
                 startActivity(intent);
 
                 break;

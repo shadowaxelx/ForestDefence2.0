@@ -89,14 +89,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     //Start_Monster_wave_Icon stuff ****
     private ArrayList<Start_Monster_Wave_Icon> mIcons;
 
+    // The player choosing the map and difficulty string 1 in tens place means map 1, 2 means map 2
+    // # in ones place means difficulty, 1 easy, 2 normal, 3 hard
+    private String m_map_difficulty;
+
 
     // the main thread for the entire game
     private MainThread thread;
 
-    public GamePanel(Context context)
+    public GamePanel(Context context, String map_difficulty)
     {
         super(context);
         mContext = context;
+        m_map_difficulty = map_difficulty;
 
         //add the callback to the surfaceholder to intercept events
         getHolder().addCallback(this);
@@ -126,10 +131,58 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceCreated(SurfaceHolder holder){
-        //room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
-        room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
-        //currentroom = room1.getroom(1);
-        currentroom = room1.getroom(2);
+        // parse string holding information with map number and difficulty into an int
+        int map_difficulty = Integer.parseInt(m_map_difficulty);
+        mwaves = new MonsterWave();
+        if(map_difficulty < 20){
+
+            // setting the map the player will be using
+            room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
+            currentroom = room1.getroom(1);
+
+            switch(map_difficulty % 10){
+                // easy difficulty wave
+                case 1:
+                    monsterwaves = mwaves.getwave(11);
+                    break;
+                // normal diffuclty wave
+                case 2:
+                    monsterwaves = mwaves.getwave(12);
+                    break;
+                // hard difficulty wave
+                case 3:
+                    monsterwaves = mwaves.getwave(13);
+                    break;
+            }
+        }
+        else{
+            // setting the map the player will be using
+            room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
+            currentroom = room1.getroom(2);
+
+            switch(map_difficulty % 10){
+                // easy difficulty wave
+                case 1:
+                    monsterwaves = mwaves.getwave(11);
+                    break;
+                // normal diffuclty wave
+                case 2:
+                    monsterwaves = mwaves.getwave(12);
+                    break;
+                // hard difficulty wave
+                case 3:
+                    monsterwaves = mwaves.getwave(13);
+                    break;
+            }
+        }
+
+
+
+
+
+
+
+
         shopitems = new ArrayList<Shop>();
         shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300, 1));
         shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_shop_buton), 1040, 1300, 2));
@@ -146,9 +199,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         mIcons = new ArrayList<Start_Monster_Wave_Icon>();
         mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
-
-        mwaves = new MonsterWave();
-        monsterwaves = mwaves.getwave(1);
 
         tower = new ArrayList<Tower>();
         towershot = new ArrayList<TowerShot>();

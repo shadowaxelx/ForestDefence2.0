@@ -21,7 +21,10 @@ public class Game extends Activity {
         //set to full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(new GamePanel(this));
+        // this is getting the information to choose the map and diffuculty
+        String map_difficulty = getIntent().getExtras().getString("Chooser");
+
+        setContentView(new GamePanel(this, map_difficulty));
     }
 
 
