@@ -76,6 +76,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private boolean PopsUpIsUp = false;
     private boolean Error = false;
     private long errorStartTime;
+    private boolean paused = false;
 
     // On click event stuff
     int spot_number;
@@ -264,7 +265,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // if the popup menue has something in it
             if(mypopupmenus.size() > 0){
                 // if the next click is the same location as the sell button
-                if(eventX == 9 && eventY == 6){
+                if(paused == true){
+                    // means they pressed the exit button
+                    if((eventX == 9 || eventX == 10 || eventX == 11) && eventY == 4){
+                        // go back to homescreen
+                        //thread.pause_unpause(true);
+                        Intent intent = new Intent(mContext, HomeScreen.class);
+                        mContext.startActivity(intent);
+                    }
+                    // means they pressed the play button so continue on
+                    else if((eventX == 9 || eventX == 10 || eventX == 11) && eventY == 5){
+                        paused = false;
+                        //thread.pause_unpause(false);
+                        spot_number = -1;
+                    }
+                }
+                else if(eventX == 9 && eventY == 6){
 
                     for(Tower t: tower){
                         if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
@@ -448,23 +464,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             return super.onTouchEvent(event);
         }
 
-
-
-/*
-        switch (event.getAction() & MotionEvent.ACTION_MASK){
-
-            case MotionEvent.ACTION_DOWN:
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                break;
-            case MotionEvent.ACTION_MOVE:
-
-                break;
-        }
-        */
-
         // this is for upgrade and selling towers i guess
         // also could be for clicking on monster/ tower and seeing their stats
         if (is_it_first_click == true){
@@ -494,6 +493,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
                 // tower type 3
                 case 4:
+                    is_it_first_click = false;
+                    break;
+                case 6:
+
+                    // then add popup menu
+                    mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.in_game_menu)));
+
+                    paused = true;
+                    // pause the thread
+                    //thread.pause_unpause(true);
+
+
+
                     is_it_first_click = false;
                     break;
                 // for tower type 1
@@ -618,59 +630,60 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     public void update()
     {
-        room1.update();
+        if(!paused){
+            room1.update();
 
-        // if player has less then 0 health he is dead
-        if (player.GetHealth() <= 0){
-            Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
-            intent.putExtra("Health", "-1");
-            mContext.startActivity(intent);
-        }
-
-        // if game_done is true and there is nothing in monster array wait 5 seconds then go to end screen
-        // set timer and start the 5 second wait
-        if(game_done && monster.size() == 0 && !end_timer){
-            fiveSeconds = System.nanoTime();
-            end_timer = true;
-        }
-        // if all the requirements are ment go to the end screen
-        if(game_done && monster.size() == 0 && end_timer){
-            if(TimeUnit.SECONDS.convert(System.nanoTime() - fiveSeconds, TimeUnit.NANOSECONDS) >= 5 ){
-
-                //Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
+            // if player has less then 0 health he is dead
+            if (player.GetHealth() <= 0){
                 Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
-                intent.putExtra("Health", Integer.toBinaryString(player.GetHealth()));
+                intent.putExtra("Health", "-1");
                 mContext.startActivity(intent);
-
             }
-        }
 
-        // adding the monster on timer
-        long monsterElapsed = (System.nanoTime()-monsterStartTime) / 1000000;
+            // if game_done is true and there is nothing in monster array wait 5 seconds then go to end screen
+            // set timer and start the 5 second wait
+            if(game_done && monster.size() == 0 && !end_timer){
+                fiveSeconds = System.nanoTime();
+                end_timer = true;
+            }
+            // if all the requirements are ment go to the end screen
+            if(game_done && monster.size() == 0 && end_timer){
+                if(TimeUnit.SECONDS.convert(System.nanoTime() - fiveSeconds, TimeUnit.NANOSECONDS) >= 5 ){
 
-        //if(!wavesalldone){
-       // if (!nextWaveCountdown){
-        if(mIcons.size() == 0){
-            if(monsterElapsed >(875)){
+                    //Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
+                    Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
+                    intent.putExtra("Health", Integer.toBinaryString(player.GetHealth()));
+                    mContext.startActivity(intent);
 
-                //if(!nextWaveCountdown){
-                if (!wavesalldone){
-                    //System.out.println("making monster!!");
-                    if(!addmonster(wavenumber - 1)){
-
-                        wavenumber++;
-                        // next wave will start so start countdown from 8 seconds
-                        //nextWaveCountdown = true;
-                        //countdown_8sec = System.nanoTime();
-                        mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
-                    }
                 }
-
-                // reset timer/ wave
-                monsterStartTime = System.nanoTime();
             }
-        }
-       // }
+
+            // adding the monster on timer
+            long monsterElapsed = (System.nanoTime()-monsterStartTime) / 1000000;
+
+            //if(!wavesalldone){
+            // if (!nextWaveCountdown){
+            if(mIcons.size() == 0){
+                if(monsterElapsed >(875)){
+
+                    //if(!nextWaveCountdown){
+                    if (!wavesalldone){
+                        //System.out.println("making monster!!");
+                        if(!addmonster(wavenumber - 1)){
+
+                            wavenumber++;
+                            // next wave will start so start countdown from 8 seconds
+                            //nextWaveCountdown = true;
+                            //countdown_8sec = System.nanoTime();
+                            mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
+                        }
+                    }
+
+                    // reset timer/ wave
+                    monsterStartTime = System.nanoTime();
+                }
+            }
+            // }
         /*
         else{
                 //countdown_8sec -= 1;
@@ -684,107 +697,107 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
         */
 
-        // This is where we will have to check to see if the tower will shoot.. probably make this into a seperate function with everything else
-        // need to check every monster and see if it is within any tower range
-        for(int i = 0; i < tower.size(); i++){
-            int tower_x = tower.get(i).getX();
-            int tower_y = tower.get(i).getY();
-            double tower_range = tower.get(i).getRange();
-            int tower_type = tower.get(i).getTowerType();
+            // This is where we will have to check to see if the tower will shoot.. probably make this into a seperate function with everything else
+            // need to check every monster and see if it is within any tower range
+            for(int i = 0; i < tower.size(); i++){
+                int tower_x = tower.get(i).getX();
+                int tower_y = tower.get(i).getY();
+                double tower_range = tower.get(i).getRange();
+                int tower_type = tower.get(i).getTowerType();
 
 
-            // searching for monster in range
-            for(int j = 0; j < monster.size(); j++){
-                int monster_x = monster.get(j).getX();
-                int monster_y = monster.get(j).getY();
+                // searching for monster in range
+                for(int j = 0; j < monster.size(); j++){
+                    int monster_x = monster.get(j).getX();
+                    int monster_y = monster.get(j).getY();
 
 
-                //long timeElapsed = (System.nanoTime() - countdown_8sec);
-                // checks to see if the tower has already shot something 0 means it has not
-                if (shotTimer[i] == 0){
+                    //long timeElapsed = (System.nanoTime() - countdown_8sec);
+                    // checks to see if the tower has already shot something 0 means it has not
+                    if (shotTimer[i] == 0){
 
-                    switch(tower_type){
-                        // sniper tower
-                        case 1:
-                            // means the shot is in range
-                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 1));
-                                System.out.println("Creating tower shot: " + i);
-                                // break afer wards for first monster
+                        switch(tower_type){
+                            // sniper tower
+                            case 1:
+                                // means the shot is in range
+                                if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
+                                    towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 1));
+                                    System.out.println("Creating tower shot: " + i);
+                                    // break afer wards for first monster
 
 
-                                shotTimer[i] = System.nanoTime();
+                                    shotTimer[i] = System.nanoTime();
+                                    break;
+                                }
                                 break;
-                            }
-                            break;
-                        // double shot tower
-                        case 2:
+                            // double shot tower
+                            case 2:
 
-                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range){
-                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 2));
+                                if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range){
+                                    towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 2));
 
-                                // THen check to see if a second monsterr can be shot at as well
+                                    // THen check to see if a second monsterr can be shot at as well
 
-                                for(int k = 0; k < monster.size(); k++){
+                                    for(int k = 0; k < monster.size(); k++){
 
-                                    // This makes sure we arent going to shoot at the same monster the tower already has targeted
-                                    if(monster.get(k).getID() != monster.get(j).getID()) {
-                                        int monster2_x = monster.get(k).getX();
-                                        int monster2_y = monster.get(k).getY();
+                                        // This makes sure we arent going to shoot at the same monster the tower already has targeted
+                                        if(monster.get(k).getID() != monster.get(j).getID()) {
+                                            int monster2_x = monster.get(k).getX();
+                                            int monster2_y = monster.get(k).getY();
 
-                                        if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y) <= tower_range){
-                                            towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(k).getID(), 2));
+                                            if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y) <= tower_range){
+                                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(k).getID(), 2));
 
-                                            shotTimer[i] = System.nanoTime();
-                                            break;
+                                                shotTimer[i] = System.nanoTime();
+                                                break;
+                                            }
                                         }
                                     }
+                                    shotTimer[i] = System.nanoTime();
+                                    break;
                                 }
-                                shotTimer[i] = System.nanoTime();
                                 break;
-                            }
-                            break;
-                        // slow tower
-                        case 3:
+                            // slow tower
+                            case 3:
 
-                            // means the shot is in range
-                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.ice_towr_projectile), tower.get(i).getX(), tower.get(i).getY(), 3, tower.get(i).getPower(), monster.get(j).getID(), 3));
-                                System.out.println("Creating tower shot: " + i);
-                                // break afer wards for first monster
+                                // means the shot is in range
+                                if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
+                                    towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.ice_towr_projectile), tower.get(i).getX(), tower.get(i).getY(), 3, tower.get(i).getPower(), monster.get(j).getID(), 3));
+                                    System.out.println("Creating tower shot: " + i);
+                                    // break afer wards for first monster
 
 
-                                shotTimer[i] = System.nanoTime();
+                                    shotTimer[i] = System.nanoTime();
+                                    break;
+                                }
+
                                 break;
-                            }
 
-                            break;
+                        }
 
+                    }
+                    // check to see if the tower has already waited for its attack speed to shoot again
+                    else{
+
+                        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - shotTimer[i], TimeUnit.NANOSECONDS) >= tower.get(i).getAttackSpeed() ){
+                            shotTimer[i] = 0;
+                        }
                     }
 
                 }
-                // check to see if the tower has already waited for its attack speed to shoot again
-                else{
-
-                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - shotTimer[i], TimeUnit.NANOSECONDS) >= tower.get(i).getAttackSpeed() ){
-                        shotTimer[i] = 0;
-                    }
-                }
-
             }
-        }
 
-        // temporary array to hold shots that will be deleated later
-        ArrayList<Monster> mtemplist = new ArrayList<Monster>();
-        ArrayList<TowerShot> tstemplist = new ArrayList<TowerShot>();
+            // temporary array to hold shots that will be deleated later
+            ArrayList<Monster> mtemplist = new ArrayList<Monster>();
+            ArrayList<TowerShot> tstemplist = new ArrayList<TowerShot>();
 
-        // update towershot/ Removing monster and adding money to player
-        for(int i = 0; i < towershot.size(); i++){
-
+            // update towershot/ Removing monster and adding money to player
+            for(int i = 0; i < towershot.size(); i++){
 
 
 
-            //if(towershot.get(i) != null){
+
+                //if(towershot.get(i) != null){
 
                 // This case is incase the monster dies, then get rid of the tower shot following the monster
 
@@ -854,50 +867,52 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                     }
                 }
-        }
+            }
 
-        // remove all tower shots now
-        towershot.removeAll(tstemplist);
+            // remove all tower shots now
+            towershot.removeAll(tstemplist);
 
-        // remove all shots in monster temp list
-        monster.removeAll(mtemplist);
+            // remove all shots in monster temp list
+            monster.removeAll(mtemplist);
 
-        // clean up the lose ends of the 2 temp array
-        //System.gc();
+            // clean up the lose ends of the 2 temp array
+            //System.gc();
 
-        //update the monster start wave icon
-        for(int i = 0; i <mIcons.size(); i++){
-            mIcons.get(i).update();
-        }
+            //update the monster start wave icon
+            for(int i = 0; i <mIcons.size(); i++){
+                mIcons.get(i).update();
+            }
 
-        // update the monsters
-        for(int i = 0; i <monster.size(); i++){
+            // update the monsters
+            for(int i = 0; i <monster.size(); i++){
 
-            // update monster
-            monster.get(i).update();
+                // update monster
+                monster.get(i).update();
 
-            // remove monster when it gets off screen, should also deplete hp
-            //if(monster.get(i).getX()<-100){
-            if(monster.get(i).getX() > (WIDTH)){
+                // remove monster when it gets off screen, should also deplete hp
+                //if(monster.get(i).getX()<-100){
+                if(monster.get(i).getX() > (WIDTH)){
 
-                // removes other tower shots
-                for(int y = 0; y < towershot.size(); y++){
+                    // removes other tower shots
+                    for(int y = 0; y < towershot.size(); y++){
 
 
-                    if(i == towershot.get(y).getMonsterID()){
+                        if(i == towershot.get(y).getMonsterID()){
 
                             towershot.remove(y);
+                        }
+
                     }
 
+                    player.SetHealth(monster.get(i).getPower());
+
+                    monster.remove(i);
+                    System.out.println("Removing monster");
+                    break;
                 }
-
-                player.SetHealth(monster.get(i).getPower());
-
-                monster.remove(i);
-                System.out.println("Removing monster");
-                break;
             }
         }
+
 
 
 

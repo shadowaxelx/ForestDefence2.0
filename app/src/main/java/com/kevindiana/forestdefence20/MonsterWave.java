@@ -32,9 +32,12 @@ public class MonsterWave extends GameObject {
 
     // map 1 normal
     private int[][] monsterroom12 = new int[][]{
-            {4},
-            /*
-            {1, 1, 1, 1, 1, 1, 1, 1},
+            {5},
+            {5},
+            {5},
+            {5},
+
+            /*{1, 1, 1, 1, 1, 1, 1, 1},
             {1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1},
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6},
             {4, 4, 4, 3, 3, 4, 3, 2, 4, 2},
@@ -48,6 +51,7 @@ public class MonsterWave extends GameObject {
             {1, 1, 6, 2, 3, 2, 3, 4, 5, 7, 7, 8, 9, 10, 10, 11, 9, 12, 13},
             {1, 1, 1, 1, 1, 13, 13, 13, 13, 13, 13, 10, 10, 10, 10, 3, 3, 3, 3, 14}
             */
+
 
     };
     public int [][] getwave(int roomnum){

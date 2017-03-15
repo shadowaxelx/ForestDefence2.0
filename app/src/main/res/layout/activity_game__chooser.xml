@@ -83,15 +83,6 @@
             android:layout_weight="1" />
     </RadioGroup>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/room2"
-        android:id="@+id/imageView2"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/radio_group_map1"
-        android:layout_toStartOf="@+id/radio_group_map1" />
-
     <Button
         android:text="Map 1"
         android:layout_width="wrap_content"
@@ -124,5 +115,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/room2"
+        android:id="@+id/imageView2"
+        android:layout_marginTop="28dp"
+        android:layout_alignTop="@+id/radio_group_map1"
+        android:layout_toLeftOf="@+id/radio_group_map1"
+        android:layout_toStartOf="@+id/radio_group_map1" />
 
 </RelativeLayout>

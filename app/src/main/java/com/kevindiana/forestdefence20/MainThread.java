@@ -13,7 +13,9 @@ public class MainThread extends Thread
     private SurfaceHolder surfaceHolder;
     private GamePanel gamePanel;
     private boolean running;
+    private boolean pause = false;
     public static Canvas canvas;
+
 
     public MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel)
     {
@@ -35,46 +37,48 @@ public class MainThread extends Thread
             startTime = System.nanoTime();
             canvas = null;
 
-            //try locking the canvas for pixel editing
-            try {
-                canvas = this.surfaceHolder.lockCanvas();
-                synchronized (surfaceHolder) {
-                    this.gamePanel.update();
-                    this.gamePanel.draw(canvas);
-                }
-            } catch (Exception e) {
-                Log.e("MYAPP", "exception", e);
-            }
-            finally{
-                if(canvas!=null)
-                {
-                    try {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
+                //try locking the canvas for pixel editing
+                try {
+                    canvas = this.surfaceHolder.lockCanvas();
+                    synchronized (surfaceHolder) {
+                        this.gamePanel.update();
+                        this.gamePanel.draw(canvas);
                     }
-                    catch(Exception e){e.printStackTrace();}
+                } catch (Exception e) {
+                    Log.e("MYAPP", "exception", e);
                 }
-            }
+                finally{
+                    if(canvas!=null)
+                    {
+                        try {
+                            surfaceHolder.unlockCanvasAndPost(canvas);
+                        }
+                        catch(Exception e){e.printStackTrace();}
+                    }
+                }
 
-            timeMillis = (System.nanoTime() - startTime) / 1000000;
-            waitTime = targetTime-timeMillis;
+                timeMillis = (System.nanoTime() - startTime) / 1000000;
+                waitTime = targetTime-timeMillis;
 
-            try{
-                this.sleep(waitTime);
-            }catch(Exception e){}
+                try{
+                    this.sleep(waitTime);
+                }catch(Exception e){}
 
-            totalTime += System.nanoTime()-startTime;
-            frameCount++;
-            if(frameCount == FPS)
-            {
-                averageFPS = 1000/((totalTime/frameCount)/1000000);
-                frameCount =0;
-                totalTime = 0;
-                System.out.println(averageFPS);
-            }
+                totalTime += System.nanoTime()-startTime;
+                frameCount++;
+                if(frameCount == FPS)
+                {
+                    averageFPS = 1000/((totalTime/frameCount)/1000000);
+                    frameCount =0;
+                    totalTime = 0;
+                    System.out.println(averageFPS);
+                }
+
         }
     }
     public void setRunning(boolean b)
     {
         running=b;
     }
+    //public void pause_unpause(boolean p){pause = p;}
 }

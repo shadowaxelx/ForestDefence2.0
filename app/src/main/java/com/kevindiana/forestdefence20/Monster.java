@@ -82,7 +82,7 @@ public class Monster extends GameObject{
                //walk_speed = 13;
                 walk_speed = 26;
                 health = 10;
-                starthealth = 10;
+                starthealth = health;
                 super.power = 1;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
@@ -92,7 +92,7 @@ public class Monster extends GameObject{
                 walk_speed = 10;
                 //health = 15;
                 health = 25;
-                starthealth = 25;
+                starthealth = health;
                 super.power = 1;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
@@ -102,7 +102,7 @@ public class Monster extends GameObject{
                 walk_speed = 26;
                 //health = 7;
                 health = 15;
-                starthealth = 15;
+                starthealth = health;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -111,7 +111,7 @@ public class Monster extends GameObject{
                 walk_speed = 10;
                 //health = 50;
                 health = 100;
-                starthealth = 100;
+                starthealth = health;
                 super.power = 1;
                 money = 4;
                 animation.setDelay(390 - walk_speed);
@@ -121,7 +121,7 @@ public class Monster extends GameObject{
                 walk_speed = 5;
                 //health = 125;
                 health = 275;
-                starthealth = 275;
+                starthealth = health;
                 super.power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
@@ -130,7 +130,7 @@ public class Monster extends GameObject{
             case 6:
                 walk_speed = 26;
                 health = 100;
-                starthealth = 100;
+                starthealth = health;
                 super.power = 1;
                 money = 12;
                 animation.setDelay(390 - walk_speed);
@@ -140,7 +140,7 @@ public class Monster extends GameObject{
                 walk_speed = 10;
                // health = 175;
                 health =350;
-                starthealth = 350;
+                starthealth = health;
                 super.power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
@@ -150,7 +150,7 @@ public class Monster extends GameObject{
                 walk_speed = 5;
                 //health = 300;
                 health = 600;
-                starthealth = 600;
+                starthealth = health;
                 super.power = 3;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
@@ -160,7 +160,7 @@ public class Monster extends GameObject{
                 walk_speed = 13;
                 //health = 200;
                 health = 400;
-                starthealth = 400;
+                starthealth = health;
                 super.power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
@@ -170,7 +170,7 @@ public class Monster extends GameObject{
                 walk_speed = 13;
                 //health = 250;
                 health = 500;
-                starthealth = 500;
+                starthealth = health;
                 super.power = 2;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
@@ -180,7 +180,7 @@ public class Monster extends GameObject{
                 walk_speed = 10;
                 //health = 350;
                 health = 900;
-                starthealth = 900;
+                starthealth = health;
                 super.power = 2;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
@@ -190,7 +190,7 @@ public class Monster extends GameObject{
                 walk_speed = 5;
                // health = 600;
                 health = 1200;
-                starthealth = 1200;
+                starthealth = health;
                 super.power = 4;
                 money = 10;
                 animation.setDelay(390 - walk_speed);
@@ -200,7 +200,7 @@ public class Monster extends GameObject{
                 walk_speed = 2;
                 //health = 850;
                 health = 2000;
-                starthealth = 2000;
+                starthealth = health;
                 super.power = 5;
                 money = 12;
                 animation.setDelay(390 - walk_speed);
@@ -219,6 +219,8 @@ public class Monster extends GameObject{
     // change the direction they are walking
     public void update(){
         // gets the coordinate of the image in grid terms
+        System.out.println("x: " + x);
+        System.out.println("y " + y);
         gridx = getXcoord(x);
         gridy = getYcoord(y);
 
@@ -292,8 +294,8 @@ public class Monster extends GameObject{
                     y -= walk_speed + back_on_course;
                 }
                 else{
-
-                    y-= slow_effect;
+                    back_on_course = (y % (int)slow_effect);
+                    y-= slow_effect + back_on_course;
 
                 }
 
@@ -326,8 +328,8 @@ public class Monster extends GameObject{
                     y += walk_speed + back_on_course;
                 }
                 else{
-
-                    y+= slow_effect;
+                    back_on_course = (y % (int)slow_effect);
+                    y+= slow_effect + back_on_course;
                 }
 
             }
@@ -360,7 +362,8 @@ public class Monster extends GameObject{
                     x += walk_speed + back_on_course;
                 }
                 else{
-                    x+= slow_effect;
+                    back_on_course = (x % (int)slow_effect);
+                    x+= slow_effect + back_on_course;
                 }
 
             }
@@ -392,8 +395,8 @@ public class Monster extends GameObject{
                     x -= walk_speed + back_on_course;
                 }
                 else{
-
-                    x-= slow_effect;
+                    back_on_course = (x % (int)slow_effect);
+                    x-= slow_effect + back_on_course;
 
                 }
 
@@ -418,21 +421,8 @@ public class Monster extends GameObject{
 
                     // slow effect is on, need to track check to stop monster from turning around or going of their trail
                     else{
-
-                        // checking to see if while being slowed the next space over not a path
-                        //if(currentroom[getYcoord(y)][getXcoord(x) + 1] != 1){
-
-                       //     if(x + walk_speed - slow_effect > (getXcoord(x) + 1)*130){
-                       //        int back_on_course = (int)(x + walk_speed - slow_effect -((getXcoord(x) + 1)*130));
-
-                        //        x += walk_speed - slow_effect - back_on_course;
-                       //     }
-
-                      //  }
-                     //   else{
-                            x+= slow_effect;
-                      //  }
-
+                        back_on_course = (x % (int)slow_effect);
+                        x+= slow_effect + back_on_course;
 
                     }
 
@@ -446,19 +436,9 @@ public class Monster extends GameObject{
                         x -= walk_speed + back_on_course;
                     }
                     else{
+                        back_on_course = (x % (int)slow_effect);
+                        x-= slow_effect + back_on_course;
 
-                        // checking to see if while being slowed the next space over not a path
-                      //  if(currentroom[getYcoord(y)][getXcoord(x) - 1] != 1){
-
-                       //     if(x + walk_speed - slow_effect < (getXcoord(x) - 1)*130){
-                       //         int back_on_course = (int)(x + walk_speed - slow_effect -((getXcoord(x) + 1)*130));
-
-                        //        x -= walk_speed - slow_effect - back_on_course;
-                       //     }
-                      //  }
-                     //   else{
-                            x-= slow_effect;
-                     //   }
 
                     }
                     //x-=walk_speed - slow_effect;
@@ -471,20 +451,8 @@ public class Monster extends GameObject{
                         y -= walk_speed + back_on_course;
                     }
                     else{
-
-                        // checking to see if while being slowed the next space over not a path
-                     //   if(currentroom[getYcoord(y) - 1][getXcoord(x)] != 1){
-
-                     //       if(y + walk_speed - slow_effect < (getYcoord(y) - 1)*130){
-                     //           int back_on_course = (int)(y + walk_speed - slow_effect -((getYcoord(y) + 1)*130));
-
-                       //         y -= walk_speed - slow_effect - back_on_course;
-                        //    }
-                     //   }
-                     //   else{
-                            y-=walk_speed - slow_effect;
-                     //   }
-
+                        back_on_course = (y % (int)slow_effect);
+                        y-=  slow_effect + back_on_course;
 
                     }
                     //y-=walk_speed - slow_effect;
@@ -497,20 +465,8 @@ public class Monster extends GameObject{
                         y += walk_speed + back_on_course;
                     }
                     else{
-
-                        // checking to see if while being slowed the next space over not a path
-                     //   if(currentroom[getYcoord(y) + 1][getXcoord(x)] != 1){
-
-                      //      if(y + walk_speed - slow_effect > (getYcoord(y) + 1)*130){
-                      //          int back_on_course = (int)(y + walk_speed - slow_effect -((getYcoord(y) + 1)*130));
-
-                     //           y += walk_speed - slow_effect - back_on_course;
-                     //       }
-                     //   }
-                      //  else{
-                            y+=walk_speed - slow_effect;
-                      //  }
-
+                        back_on_course = (y % (int)slow_effect);
+                        y+= slow_effect + back_on_course;
 
                     }
                     //y+=walk_speed - slow_effect;
