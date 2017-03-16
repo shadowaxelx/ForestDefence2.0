@@ -10,8 +10,8 @@ public class Player {
     private int money;
 
     public Player(){
-        health = 2000;
-        money = 2000;
+        health = 20;
+        money = 20;
 
     }
 

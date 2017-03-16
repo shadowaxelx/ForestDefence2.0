@@ -16,6 +16,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.StrictMath.abs;
@@ -93,6 +94,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // The player choosing the map and difficulty string 1 in tens place means map 1, 2 means map 2
     // # in ones place means difficulty, 1 easy, 2 normal, 3 hard
     private String m_map_difficulty;
+    private boolean infiity = false;
 
 
     // the main thread for the entire game
@@ -156,7 +158,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     break;
             }
         }
-        else{
+        // map 2
+        else if (map_difficulty < 30){
             // setting the map the player will be using
             room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
             currentroom = room1.getroom(2);
@@ -175,6 +178,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     monsterwaves = mwaves.getwave(13);
                     break;
             }
+        }
+        // map 3 and set infinity to true
+        else{
+
         }
 
 
@@ -260,12 +267,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         // this is for being able to place towers down / upgrade them
         // this switch statement will check what number is in the grid the person clicked on
         // means its their second click
-        if (is_it_first_click == false){
+        if (!is_it_first_click){
 
             // if the popup menue has something in it
             if(mypopupmenus.size() > 0){
                 // if the next click is the same location as the sell button
-                if(paused == true){
+                if(paused){
                     // means they pressed the exit button
                     if((eventX == 9 || eventX == 10 || eventX == 11) && eventY == 4){
                         // go back to homescreen
@@ -675,7 +682,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             // next wave will start so start countdown from 8 seconds
                             //nextWaveCountdown = true;
                             //countdown_8sec = System.nanoTime();
-                            mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
+                            if (infiity){
+                                if(wavenumber > 13){
+                                   monsterwaves = mwaves.infinite(wavenumber);
+                                }
+
+                            }
+                                mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
+
                         }
                     }
 
@@ -1068,6 +1082,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // return true if monster is in the array, return false if its not
     public boolean addmonster(int wavenumber){
 
+       //monsterwaves = mwaves.infinite(wavenumber);
         // means that all the waves went
         if(wavenumber + 1 > monsterwaves.length){
             wavesalldone = true;
@@ -1179,6 +1194,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
         }
+
+
 
         return false;
     }

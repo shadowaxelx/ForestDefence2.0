@@ -1,5 +1,7 @@
 package com.kevindiana.forestdefence20;
 
+import java.util.Random;
+
 /**
  * Created by kevin on 1/4/2017.
  */
@@ -31,13 +33,14 @@ public class MonsterWave extends GameObject {
     };
 
     // map 1 normal
+    /*
     private int[][] monsterroom12 = new int[][]{
-            {5},
-            {5},
-            {5},
-            {5},
+           // {5},
+            //{5},
+            //{5},
+            //{5},
 
-            /*{1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1},
             {1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1},
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 6},
             {4, 4, 4, 3, 3, 4, 3, 2, 4, 2},
@@ -50,10 +53,47 @@ public class MonsterWave extends GameObject {
             {12, 12, 11, 11, 12, 11, 12, 11, 12, 12},
             {1, 1, 6, 2, 3, 2, 3, 4, 5, 7, 7, 8, 9, 10, 10, 11, 9, 12, 13},
             {1, 1, 1, 1, 1, 13, 13, 13, 13, 13, 13, 10, 10, 10, 10, 3, 3, 3, 3, 14}
-            */
+
 
 
     };
+    */
+    private int[][] monsterroom12 = new int[][]{
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {5, 5, 5, 5, 5, 5, 5, 5, 5},
+            {6, 6, 6, 6, 6, 6, 6, 6, 6},
+            {7, 7, 7, 7, 7, 7, 7, 7, 7},
+            {8, 8, 8, 8, 8, 8, 8, 8, 8},
+            {9, 9, 9, 9, 9, 9, 9, 9, 9},
+            {10, 10, 10, 10, 10, 10, 10},
+            {11, 11, 11, 11, 11, 11, 11},
+            {12, 12, 12, 12, 12, 12, 12},
+            {13, 13, 13, 13, 13, 13, 13},
+    };
+
+
+
+    public int [][] infinite(int wave_number){
+
+
+        if(wave_number > 13){
+
+            monsterroom12 = new int [1][20];
+
+            for(int i = 0; i < 20; i++){
+                Random rn = new Random();
+                int monster = rn.nextInt(13);
+
+                monsterroom12[0][i] = monster;
+            }
+        }
+
+        return monsterroom12;
+    }
+
     public int [][] getwave(int roomnum){
         switch(roomnum){
             case 11:
@@ -61,6 +101,9 @@ public class MonsterWave extends GameObject {
 
             case 12:
                 return monsterroom12;
+
+            case 30:
+                return monsterroom11;
         }
 
         return monsterroom12;
