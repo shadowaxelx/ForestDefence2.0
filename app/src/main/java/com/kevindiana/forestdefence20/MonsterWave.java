@@ -16,10 +16,10 @@ public class MonsterWave extends GameObject {
     // map 1 easy
     private int[][] monsterroom11 = new int[][]{
 
-            {1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 2, 2, 2, 2, 2},
-            {3, 3, 2, 2, 3, 3, 3, 2},
-            {4, 4, 4, 3, 3, 4, 3, 2},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2},
+            {3, 3, 2, 2, 3, 1, 1, 1, 3, 3, 2},
+            {4, 4, 4, 3, 1, 1, 1, 3, 4, 3, 2},
             {5, 3, 3, 1, 1, 5, 4, 2},
             {4, 4, 7, 4, 7, 2, 3, 3},
             {4, 8, 7, 8, 4, 5, 4, 0, 0 , 6},
@@ -33,12 +33,8 @@ public class MonsterWave extends GameObject {
     };
 
     // map 1 normal
-    /*
     private int[][] monsterroom12 = new int[][]{
-           // {5},
-            //{5},
-            //{5},
-            //{5},
+
 
             {1, 1, 1, 1, 1, 1, 1, 1},
             {1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1},
@@ -57,13 +53,13 @@ public class MonsterWave extends GameObject {
 
 
     };
-    */
-    private int[][] monsterroom12 = new int[][]{
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
-            {4, 4, 4, 4, 4, 4, 4, 4, 4},
-            {5, 5, 5, 5, 5, 5, 5, 5, 5},
+
+    private int[][] monsterroom14 = new int[][]{
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
             {6, 6, 6, 6, 6, 6, 6, 6, 6},
             {7, 7, 7, 7, 7, 7, 7, 7, 7},
             {8, 8, 8, 8, 8, 8, 8, 8, 8},
@@ -96,14 +92,21 @@ public class MonsterWave extends GameObject {
 
     public int [][] getwave(int roomnum){
         switch(roomnum){
+            // easy
             case 11:
                 return monsterroom11;
 
+            // normal
             case 12:
                 return monsterroom12;
 
-            case 30:
-                return monsterroom11;
+            // hard
+            case 13:
+                break;
+
+            // infinite
+            case 14:
+                return monsterroom14;
         }
 
         return monsterroom12;

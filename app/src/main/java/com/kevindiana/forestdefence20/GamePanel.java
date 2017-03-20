@@ -181,7 +181,27 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
         // map 3 and set infinity to true
         else{
+            room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room3));
+            currentroom = room1.getroom(3);
 
+            switch(map_difficulty % 10){
+                // easy difficulty wave
+                case 1:
+                    monsterwaves = mwaves.getwave(11);
+                    break;
+                // normal diffuclty wave
+                case 2:
+                    monsterwaves = mwaves.getwave(12);
+                    break;
+                // hard difficulty wave
+                case 3:
+                    monsterwaves = mwaves.getwave(13);
+                    break;
+                // case for the infinity game mode which is only for map 3
+                case 4:
+                    monsterwaves = mwaves.getwave(14);
+                    infiity = true;
+            }
         }
 
 

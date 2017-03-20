@@ -11,11 +11,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.kevindiana.forestdefence20.Game_Chooser">
 
+    <Button
+        android:text="Map 2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="OnClickButtonListener"
+        android:id="@+id/map2"
+        android:layout_below="@+id/radio_group_map2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/room1"
+        android:id="@+id/imageView"
+        android:adjustViewBounds="true"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/radio_group_map1"
-        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/imageView"
         android:layout_toEndOf="@+id/imageView">
 
@@ -51,12 +74,22 @@
             android:layout_weight="1" />
     </RadioGroup>
 
+    <Button
+        android:text="Map 1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="OnClickButtonListener"
+        android:id="@+id/map1"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/radio_group_map2"
-        android:layout_marginTop="59dp"
-        android:layout_below="@+id/radio_group_map1"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/map1"
         android:layout_toRightOf="@+id/imageView2"
         android:layout_toEndOf="@+id/imageView2">
 
@@ -83,47 +116,75 @@
             android:layout_weight="1" />
     </RadioGroup>
 
-    <Button
-        android:text="Map 1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="OnClickButtonListener"
-        android:id="@+id/map1"
-        android:layout_below="@+id/radio_group_map1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:text="Map 2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="OnClickButtonListener"
-        android:id="@+id/map2"
-        android:layout_below="@+id/radio_group_map2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="28dp" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/room1"
-        android:id="@+id/imageView"
-        android:adjustViewBounds="true"
-        android:maxWidth="200dp"
-        android:maxHeight="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/room2"
         android:id="@+id/imageView2"
-        android:layout_marginTop="28dp"
-        android:layout_alignTop="@+id/radio_group_map1"
+        android:layout_marginTop="43dp"
+        android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/radio_group_map1"
         android:layout_toStartOf="@+id/radio_group_map1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/room3"
+        android:id="@+id/imageView3"
+        android:layout_alignTop="@+id/radio_group_map2"
+        android:layout_toLeftOf="@+id/radio_group_map2"
+        android:layout_toStartOf="@+id/radio_group_map2"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="125dp" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radio_group_map3"
+        android:layout_below="@+id/map2"
+        android:layout_toRightOf="@+id/imageView2"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_marginTop="11dp">
+
+        <RadioButton
+            android:text="Easy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/easy_map3"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="Normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:id="@+id/normal_map3"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="Hard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hard_map3"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:text="Infinite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/infinite_map3"
+            android:layout_weight="1" />
+    </RadioGroup>
+
+    <Button
+        android:text="MAP 3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="OnClickButtonListener"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/map3" />
 
 </RelativeLayout>

@@ -22,7 +22,7 @@ public class Game_Chooser extends AppCompatActivity {
 
         // preset to map 1 difuculty normal
         String extrainfo = "12";
-        RadioButton easy, normal, hard;
+        RadioButton easy, normal, hard, infinity;
 
         switch(view.getId()){
             case R.id.map1:
@@ -45,9 +45,9 @@ public class Game_Chooser extends AppCompatActivity {
                 break;
             case R.id.map2:
 
-                easy = (RadioButton) findViewById(R.id.easy_map1);
-                normal = (RadioButton) findViewById(R.id.normal_map1);
-                hard = (RadioButton) findViewById(R.id.hard_map1);
+                easy = (RadioButton) findViewById(R.id.easy_map2);
+                normal = (RadioButton) findViewById(R.id.normal_map2);
+                hard = (RadioButton) findViewById(R.id.hard_map2);
                 if(easy.isChecked()){
                     extrainfo = "21";
                 }
@@ -59,6 +59,29 @@ public class Game_Chooser extends AppCompatActivity {
                 }
                 intent.putExtra("Chooser",extrainfo);
                 startActivity(intent);
+                break;
+
+            case R.id.map3:
+
+                easy = (RadioButton) findViewById(R.id.easy_map3);
+                normal = (RadioButton) findViewById(R.id.normal_map3);
+                hard = (RadioButton) findViewById(R.id.hard_map3);
+                infinity = (RadioButton) findViewById(R.id.infinite_map3);
+                if(easy.isChecked()){
+                    extrainfo = "31";
+                }
+                else if(normal.isChecked()){
+                    extrainfo ="32";
+                }
+                else if(hard.isChecked()){
+                    extrainfo ="33";
+                }
+                else if(infinity.isChecked()){
+                    extrainfo = "34";
+                }
+                intent.putExtra("Chooser",extrainfo);
+                startActivity(intent);
+
                 break;
         }
     }
