@@ -78,6 +78,10 @@ public class Game_Chooser extends AppCompatActivity {
                 }
                 else if(infinity.isChecked()){
                     extrainfo = "34";
+
+                    //Intent intentIE = new Intent("com.kevindiana.forestdefence20.HeroSelect");
+                   // intentIE.putExtra("Chooser", extrainfo);
+                    //startActivity(intentIE);
                 }
                 intent.putExtra("Chooser",extrainfo);
                 startActivity(intent);

@@ -26,7 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Game_Chooser"
+        <activity
+            android:name=".Game_Chooser"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.kevindiana.forestdefence20.Game_Chooser" />
@@ -34,10 +35,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".End_Of_Game"
+        <activity
+            android:name=".End_Of_Game"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.kevindiana.forestdefence20.End_Of_Game" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".HeroSelect">
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="com.kevindiana.forestdefence20.HeroSelect" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

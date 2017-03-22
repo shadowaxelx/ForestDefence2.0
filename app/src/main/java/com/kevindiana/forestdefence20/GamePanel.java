@@ -317,6 +317,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             currentroom[first_pressY][first_pressX] = 0;
 
                             spot_number = -1;
+                            break;
                         }
                         else{
                             spot_number = -1;
@@ -695,6 +696,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                     //if(!nextWaveCountdown){
                     if (!wavesalldone){
+
+
                         //System.out.println("making monster!!");
                         if(!addmonster(wavenumber - 1)){
 
@@ -702,9 +705,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             // next wave will start so start countdown from 8 seconds
                             //nextWaveCountdown = true;
                             //countdown_8sec = System.nanoTime();
+
                             if (infiity){
-                                if(wavenumber > 13){
-                                   monsterwaves = mwaves.infinite(wavenumber);
+                                if(wavenumber >= 12){
+                                    monsterwaves = mwaves.infinite(wavenumber);
                                 }
 
                             }
@@ -1102,107 +1106,117 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // return true if monster is in the array, return false if its not
     public boolean addmonster(int wavenumber){
 
-       //monsterwaves = mwaves.infinite(wavenumber);
-        // means that all the waves went
-        if(wavenumber + 1 > monsterwaves.length){
+        // is used for infinity mode, when the wave goes over 13 waves, the limit is turned on
+        int infinityFactor = 0;
+        int hp_mult = 1;
+       if(infiity){
+           if( wavenumber / 7 >= 2){
+               hp_mult = wavenumber / 7;
+           }
+           // >= 12 because it starts at 0 so wave 12 is wave 13
+           if(wavenumber >= 12){
+               infinityFactor = wavenumber;
+           }
+       }
+        if(wavenumber + 1 > monsterwaves.length && !infiity){
             wavesalldone = true;
             return false;
         }
         else{
-            for(int x = 0; x < monsterwaves[wavenumber].length; x++){
-                switch(monsterwaves[wavenumber][x]){
+            for(int x = 0; x < monsterwaves[wavenumber - infinityFactor].length; x++){
+                switch(monsterwaves[wavenumber - infinityFactor][x]){
                     // means already done it
                     case 0:
                         break;
                     //red dot
                     case 1:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_01_red_dot),
-                                -130 , 520, 125, 128, 8, currentroom, 1, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 1, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // green blob
                     case 2:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_02_green_blob),
-                                -130 , 520, 125, 128, 8, currentroom, 2, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 2, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // mouse
                     case 3:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_03_mouse),
-                                -130 , 520, 125, 128, 8, currentroom, 3, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 3, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // bannana man
                     case 4:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_04_bannana_man),
-                                -130 , 520, 125, 128, 8, currentroom, 4, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 4, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // lion
                     case 5:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_05_lion),
-                                -130 , 520, 125, 128, 8, currentroom, 5, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 5, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // red theif
                     case 6:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_06_red_theif),
-                                -130 , 520, 125, 128, 8, currentroom, 6, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 6, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // white knight
                     case 7:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_07_white_knight),
-                                -130 , 520, 125, 128, 8, currentroom, 7, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 7, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // blue knight
                     case 8:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_08_blue_knight),
-                                -130 , 520, 125, 128, 8, currentroom, 8, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 8, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // bomb man
                     case 9:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_09_bomb_man),
-                                -130 , 520, 125, 128, 8, currentroom, 9, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 9, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // fire spirit
                     case 10:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_10_fire_spirit),
-                                -130 , 520, 125, 128, 8, currentroom, 10, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 10, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // baby dragon
                     case 11:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_11_baby_dragon),
-                                -130 , 520, 125, 128, 11, currentroom, 2, wavenumber + x));
+                                -130 , 520, 125, 128, 11, currentroom, 11, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // silver dragon
                     case 12:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_12_silver_dragon),
-                                -130 , 520, 125, 128, 8, currentroom, 12, wavenumber + x));
+                                -130 , 520, 125, 128, 8, currentroom, 12, wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber][x] = 0;
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // king of beasts
                     case 13:
                         monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_13_king_of_beast),
-                                -130 , 520, 125, 128, 8, currentroom, 13, wavenumber + x));
-                        monsterwaves[wavenumber][x] = 0;
+                                -130 , 520, 125, 128, 8, currentroom, 13, wavenumber + x, hp_mult));
+                        monsterwaves[wavenumber - infinityFactor][x] = 0;
                         return true;
                     // means that the game is over after everything in the monster array is gone
                     case 14:
