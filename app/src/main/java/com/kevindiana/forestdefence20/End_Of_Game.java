@@ -19,7 +19,9 @@ public class End_Of_Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end__of__game);
+        // extra info being passed from other activity
         String passedLife = getIntent().getExtras().getString("Health");
+
         // get reference to gif image in layour
         ImageView endingView = (ImageView) findViewById(R.id.ending);
         // set animation gif as background resource for view

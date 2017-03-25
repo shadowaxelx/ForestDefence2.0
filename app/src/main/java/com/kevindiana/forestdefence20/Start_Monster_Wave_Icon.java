@@ -14,7 +14,9 @@ public class Start_Monster_Wave_Icon extends GameObject {
     Start_Monster_Wave_Icon(Bitmap res, int x, int y, int numframes ){
         super.x = x;
         super.y = y;
-        super.width = 125;
+       // super.width = 32;
+        //super.height = 32;
+        super.width = 128;
         super.height = 128;
 
         Bitmap image[] = new Bitmap[numframes];

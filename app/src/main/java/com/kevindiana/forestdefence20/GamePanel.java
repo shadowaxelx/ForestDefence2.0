@@ -95,6 +95,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // # in ones place means difficulty, 1 easy, 2 normal, 3 hard
     private String m_map_difficulty;
     private boolean infiity = false;
+    private ArrayList<Hero> m_hero;
 
 
     // the main thread for the entire game
@@ -137,78 +138,154 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         // parse string holding information with map number and difficulty into an int
         int map_difficulty = Integer.parseInt(m_map_difficulty);
         mwaves = new MonsterWave();
-        if(map_difficulty < 20){
 
-            // setting the map the player will be using
-            room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
-            currentroom = room1.getroom(1);
 
-            switch(map_difficulty % 10){
-                // easy difficulty wave
+        // Check to see if the game mode is infinity, map_difficulty > 100
+        if(map_difficulty > 100){
+            infiity = true;
+
+            // create a new herro array list
+            m_hero = new ArrayList<Hero>();
+
+            // seeing which map it will be played on
+
+            switch((map_difficulty % 100)/10){
+
+                // map 1
                 case 1:
-                    monsterwaves = mwaves.getwave(11);
-                    break;
-                // normal diffuclty wave
-                case 2:
-                    monsterwaves = mwaves.getwave(12);
-                    break;
-                // hard difficulty wave
-                case 3:
-                    monsterwaves = mwaves.getwave(13);
-                    break;
-            }
-        }
-        // map 2
-        else if (map_difficulty < 30){
-            // setting the map the player will be using
-            room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
-            currentroom = room1.getroom(2);
-
-            switch(map_difficulty % 10){
-                // easy difficulty wave
-                case 1:
-                    monsterwaves = mwaves.getwave(11);
-                    break;
-                // normal diffuclty wave
-                case 2:
-                    monsterwaves = mwaves.getwave(12);
-                    break;
-                // hard difficulty wave
-                case 3:
-                    monsterwaves = mwaves.getwave(13);
-                    break;
-            }
-        }
-        // map 3 and set infinity to true
-        else{
-            room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room3));
-            currentroom = room1.getroom(3);
-
-            switch(map_difficulty % 10){
-                // easy difficulty wave
-                case 1:
-                    monsterwaves = mwaves.getwave(11);
-                    break;
-                // normal diffuclty wave
-                case 2:
-                    monsterwaves = mwaves.getwave(12);
-                    break;
-                // hard difficulty wave
-                case 3:
-                    monsterwaves = mwaves.getwave(13);
-                    break;
-                // case for the infinity game mode which is only for map 3
-                case 4:
+                    // setting the map the player will be using
+                    room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
+                    currentroom = room1.getroom(1);
+                    // 14 is infinite wave
                     monsterwaves = mwaves.getwave(14);
-                    infiity = true;
+
+                    // means hero is knight
+                    if(map_difficulty < 200){
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_knight_sprite), 1170, 650, 1));
+                    }
+                    // means her is archer
+                    else if(map_difficulty < 300){
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_archer_sprite), 1170, 650, 2));
+                    }
+                    // hero is wizard
+                    else{
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_wizard_sprite), 1170, 650, 3));
+                    }
+                    break;
+                // map 2
+                case 2:
+                    // setting the map the player will be using
+                    room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
+                    currentroom = room1.getroom(2);
+                    // 14 is infinite wave
+                    monsterwaves = mwaves.getwave(14);
+
+                    // means hero is knight
+                    if(map_difficulty < 200){
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_knight_sprite), 1170, 650, 1));
+                    }
+                    // means her is archer
+                    else if(map_difficulty < 300){
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_archer_sprite), 1170, 650, 2));
+                    }
+                    // hero is wizard
+                    else{
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_wizard_sprite), 1170, 650, 3));
+                    }
+                    break;
+                // map 3
+                case 3:
+                    // setting the map the player will be using
+                    room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room3));
+                    currentroom = room1.getroom(3);
+                    // 14 is infinite wave
+                    monsterwaves = mwaves.getwave(14);
+
+                    // means hero is knight
+                    if(map_difficulty < 200){
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_knight_sprite), 1170, 650, 1));
+                    }
+                    // means her is archer
+                    else if(map_difficulty < 300){
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_archer_sprite), 1170, 650, 2));
+                    }
+                    // hero is wizard
+                    else{
+                        m_hero.add(new Hero(BitmapFactory.decodeResource(getResources(), R.drawable.hero_wizard_sprite), 1170, 650, 3));
+                    }
+                    break;
             }
         }
 
+        else{
+            // map 1
+            if(map_difficulty < 20){
 
+                // setting the map the player will be using
+                room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
+                currentroom = room1.getroom(1);
 
+                switch(map_difficulty % 10){
+                    // easy difficulty wave
+                    case 1:
+                        monsterwaves = mwaves.getwave(11);
+                        break;
+                    // normal diffuclty wave
+                    case 2:
+                        monsterwaves = mwaves.getwave(12);
+                        break;
+                    // hard difficulty wave
+                    case 3:
+                        monsterwaves = mwaves.getwave(13);
+                        break;
+                }
+            }
+            // map 2
+            else if (map_difficulty < 30){
+                // setting the map the player will be using
+                room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
+                currentroom = room1.getroom(2);
 
+                switch(map_difficulty % 10){
+                    // easy difficulty wave
+                    case 1:
+                        monsterwaves = mwaves.getwave(11);
+                        break;
+                    // normal diffuclty wave
+                    case 2:
+                        monsterwaves = mwaves.getwave(12);
+                        break;
+                    // hard difficulty wave
+                    case 3:
+                        monsterwaves = mwaves.getwave(13);
+                        break;
+                }
+            }
+            // map 3 and set infinity to true
+            else{
+                room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room3));
+                currentroom = room1.getroom(3);
 
-
+                switch(map_difficulty % 10){
+                    // easy difficulty wave
+                    case 1:
+                        monsterwaves = mwaves.getwave(11);
+                        break;
+                    // normal diffuclty wave
+                    case 2:
+                        monsterwaves = mwaves.getwave(12);
+                        break;
+                    // hard difficulty wave
+                    case 3:
+                        monsterwaves = mwaves.getwave(13);
+                        break;
+                    // case for the infinity game mode which is only for map 3
+                   // case 4:
+                    //    monsterwaves = mwaves.getwave(14);
+                     //   infiity = true;
+                }
+            }
+        }
 
 
         shopitems = new ArrayList<Shop>();
@@ -535,6 +612,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
                     is_it_first_click = false;
+                    break;
+                case 7:
+                    if (infiity){
+
+                    }
                     break;
                 // for tower type 1
                 case 11:
@@ -1006,7 +1088,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 s.draw(canvas);
 
             }
-            //shop.draw(canvas);
+
+            // draws hero
+            if(infiity){
+                for(Hero h: m_hero){
+                    h.draw(canvas);
+
+                    if(spot_number == 7){
+                        canvas.drawCircle(h.getX() + 65, h.getY() + 65, h.getRange(), red_paintbrush_stroke);
+                    }
+
+                }
+            }
+
 
             // draws the monsters
             for(Monster m: monster){

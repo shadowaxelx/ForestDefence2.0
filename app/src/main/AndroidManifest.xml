@@ -44,7 +44,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".HeroSelect">
+        <activity android:name=".HeroSelect"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="com.kevindiana.forestdefence20.HeroSelect" />

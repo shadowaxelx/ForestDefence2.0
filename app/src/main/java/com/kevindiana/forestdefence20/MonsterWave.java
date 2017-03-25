@@ -88,7 +88,7 @@ public class MonsterWave extends GameObject {
 
             for(int i = 0; i < 20; i++){
                 Random rn = new Random();
-                int monster = rn.nextInt(13);
+                int monster = rn.nextInt(13) + 1;
 
                 monsterroom12[0][i] = monster;
             }
