@@ -96,7 +96,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private String m_map_difficulty;
     private boolean infiity = false;
     private ArrayList<Hero> m_hero;
-
+    private boolean heroselected = false;
 
     // the main thread for the entire game
     private MainThread thread;
@@ -316,6 +316,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         thread.start();
 
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -352,8 +353,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         */
 
         // this gets the spot number only for the second click and holds it
-        if (is_it_first_click == false){
+        if (!is_it_first_click){
             second_press_Spot_num = currentroom[eventY][eventX];
+
         }
         else{
             spot_number = currentroom[eventY][eventX];
@@ -364,6 +366,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         // this is for being able to place towers down / upgrade them
         // this switch statement will check what number is in the grid the person clicked on
         // means its their second click
+        // also move hero
         if (!is_it_first_click){
 
             // if the popup menue has something in it
@@ -425,6 +428,16 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 }
                 else{
                     spot_number = -1;
+                }
+            }
+            if(heroselected){
+                if(infiity){
+                    // if the person didnt reclick the button to deselect hero
+                    if(currentroom[eventY][eventX] != 7){
+
+                        // there is only 1 hero so
+                        m_hero.get(0).move_to( eventX, eventY);
+                    }
                 }
             }
             else{
@@ -538,6 +551,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     // shop item 4
                     case 5:
                         break;
+                    // hero movement
+                    case 7:
+
+                        //is_it_first_click = true;
+
+                        break;
                     // tower 1
                     case 11:
                         break;
@@ -571,164 +590,189 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         // this is for upgrade and selling towers i guess
         // also could be for clicking on monster/ tower and seeing their stats
-        if (is_it_first_click == true){
+        if (is_it_first_click){
 
-            switch(spot_number){
+            // move hero until deslected
+            if(heroselected && currentroom[eventY][eventX] != 7){
+                    if(infiity){
+                        // if the person didnt reclick the button to deselect hero
+                        if(currentroom[eventY][eventX] != 7){
 
-                // means probably clicked on the start wave icon thing
-                case 1:
-                    // if there are icons stored in the array, meaning that they are out and able to click on
-                    if(mIcons.size() > 0){
+                            // there is only 1 hero so
+                            m_hero.get(0).move_to( eventX, eventY);
+                        }
+                    }
 
-                        for(Start_Monster_Wave_Icon i: mIcons){
-                            if(getXcoord(i.getX()) == first_pressX && getYcoord(i.getY()) == first_pressY){
-                                mIcons.remove(i);
+            }
+            else{
+                switch(spot_number){
+
+                    // means probably clicked on the start wave icon thing
+                    case 1:
+                        // if there are icons stored in the array, meaning that they are out and able to click on
+                        if(mIcons.size() > 0){
+
+                            for(Start_Monster_Wave_Icon i: mIcons){
+                                if(getXcoord(i.getX()) == first_pressX && getYcoord(i.getY()) == first_pressY){
+                                    mIcons.remove(i);
+                                }
                             }
+
+                        }
+                        break;
+                    // tower type 1
+                    case 2:
+                        is_it_first_click = false;
+                        break;
+                    // tower type 2
+                    case 3:
+                        is_it_first_click = false;
+                        break;
+                    // tower type 3
+                    case 4:
+                        is_it_first_click = false;
+                        break;
+                    case 6:
+
+                        // then add popup menu
+                        mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.in_game_menu)));
+
+                        paused = true;
+                        // pause the thread
+                        //thread.pause_unpause(true);
+
+
+
+                        is_it_first_click = false;
+                        break;
+                    case 7:
+                        // every time hero hits a monster gains experience
+                        // show text showing the heros stats
+                        if (infiity){
+                            if(!heroselected){
+                                heroselected = true;
+                            }
+                            else{
+                                heroselected = false;
+                            }
+
+                            is_it_first_click = false;
                         }
 
-                    }
-                    break;
-                // tower type 1
-                case 2:
-                    is_it_first_click = false;
-                    break;
-                // tower type 2
-                case 3:
-                    is_it_first_click = false;
-                    break;
-                // tower type 3
-                case 4:
-                    is_it_first_click = false;
-                    break;
-                case 6:
+                        break;
+                    // for tower type 1
+                    case 11:
+                        // different pop ups for tower lvl 1-4;
+                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                            case 1:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_sniper_lvl_1)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                    // then add popup menu
-                    mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.in_game_menu)));
+                                is_it_first_click = false;
+                                break;
+                            case 2:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl2)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                    paused = true;
-                    // pause the thread
-                    //thread.pause_unpause(true);
+                                is_it_first_click = false;
+                                break;
+                            case 3:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl3)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
+                                is_it_first_click = false;
+                                break;
+                            case 4:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl4)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
+                                is_it_first_click = false;
+                                break;
+                        }
 
-                    is_it_first_click = false;
-                    break;
-                case 7:
-                    if (infiity){
+                        is_it_first_click = false;
+                        break;
+                    // for tower type 2
+                    case 12:
 
-                    }
-                    break;
-                // for tower type 1
-                case 11:
-                    // different pop ups for tower lvl 1-4;
-                    switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
-                        case 1:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_sniper_lvl_1)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
+                        // different pop ups for tower lvl 1-4;
+                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                            case 1:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl1)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                            is_it_first_click = false;
-                            break;
-                        case 2:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl2)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
+                                is_it_first_click = false;
+                                break;
+                            case 2:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl2)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                            is_it_first_click = false;
-                            break;
-                        case 3:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl3)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
+                                is_it_first_click = false;
+                                break;
+                            case 3:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl3)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                            is_it_first_click = false;
-                            break;
-                        case 4:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl4)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
+                                is_it_first_click = false;
+                                break;
+                            case 4:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl4)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                            is_it_first_click = false;
-                            break;
-                    }
+                                is_it_first_click = false;
+                                break;
+                        }
 
-                    is_it_first_click = false;
-                    break;
-                // for tower type 2
-                case 12:
+                        is_it_first_click = false;
+                        break;
+                    // for tower type 3
+                    case 13:
 
-                    // different pop ups for tower lvl 1-4;
-                    switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
-                        case 1:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl1)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
+                        // different pop ups for tower lvl 1-4;
+                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                            case 1:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl1)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                            is_it_first_click = false;
-                            break;
-                        case 2:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl2)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
+                                is_it_first_click = false;
+                                break;
+                            case 2:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl2)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                            is_it_first_click = false;
-                            break;
-                        case 3:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl3)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
+                                is_it_first_click = false;
+                                break;
+                            case 3:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl3)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                            is_it_first_click = false;
-                            break;
-                        case 4:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl4)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
+                                is_it_first_click = false;
+                                break;
+                            case 4:
+                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl4)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
 
-                            is_it_first_click = false;
-                            break;
-                    }
+                                is_it_first_click = false;
+                                break;
+                        }
 
-                    is_it_first_click = false;
-                    break;
-                // for tower type 3
-                case 13:
-
-                    // different pop ups for tower lvl 1-4;
-                    switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
-                        case 1:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl1)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
-
-                            is_it_first_click = false;
-                            break;
-                        case 2:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl2)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
-
-                            is_it_first_click = false;
-                            break;
-                        case 3:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl3)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
-
-                            is_it_first_click = false;
-                            break;
-                        case 4:
-                            mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl4)));
-                            // will only draw if popup is true dont think you need this
-                            //PopsUpIsUp = true;
-
-                            is_it_first_click = false;
-                            break;
-                    }
-
-                    is_it_first_click = false;
-                    break;
+                        is_it_first_click = false;
+                        break;
+                }
             }
+
         }
 
         //is_it_first_click = false;
@@ -736,6 +780,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         //spot_number = currentroom[eventY][eventX];
 
         return super.onTouchEvent(event);
+    }
+
+    public void get_hero_movement(int oldx, int oldy, int newx, int newy){
+
     }
 
     public void update()
@@ -1003,6 +1051,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 mIcons.get(i).update();
             }
 
+            // update hero
+            if(infiity){
+                //update the monster start wave icon
+                for(int i = 0; i <m_hero.size(); i++){
+                    m_hero.get(i).update();
+                }
+            }
+
+
             // update the monsters
             for(int i = 0; i <monster.size(); i++){
 
@@ -1094,7 +1151,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 for(Hero h: m_hero){
                     h.draw(canvas);
 
-                    if(spot_number == 7){
+                    if(heroselected){
                         canvas.drawCircle(h.getX() + 65, h.getY() + 65, h.getRange(), red_paintbrush_stroke);
                     }
 
@@ -1338,6 +1395,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         return tower.get(-1);
     }
+
+
 }
 
 
