@@ -97,6 +97,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private boolean infiity = false;
     private ArrayList<Hero> m_hero;
     private boolean heroselected = false;
+    // wait time for hero's next attack after the last one
+    private long attack_timer;
+    private ArrayList<HeroAttack> m_hero_attack;
+    private boolean knight_attack_animation_start = false;
 
     // the main thread for the entire game
     private MainThread thread;
@@ -146,6 +150,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
             // create a new herro array list
             m_hero = new ArrayList<Hero>();
+            m_hero_attack = new ArrayList<HeroAttack>();
 
             // seeing which map it will be played on
 
@@ -782,9 +787,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         return super.onTouchEvent(event);
     }
 
-    public void get_hero_movement(int oldx, int oldy, int newx, int newy){
-
-    }
 
     public void update()
     {
@@ -837,7 +839,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             //countdown_8sec = System.nanoTime();
 
                             if (infiity){
-                                if(wavenumber >= 12){
+                                if(wavenumber >= 13){
                                     monsterwaves = mwaves.infinite(wavenumber);
                                 }
 
@@ -865,186 +867,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
         */
 
-            // This is where we will have to check to see if the tower will shoot.. probably make this into a seperate function with everything else
-            // need to check every monster and see if it is within any tower range
-            for(int i = 0; i < tower.size(); i++){
-                int tower_x = tower.get(i).getX();
-                int tower_y = tower.get(i).getY();
-                double tower_range = tower.get(i).getRange();
-                int tower_type = tower.get(i).getTowerType();
+            // tower attack animation and update stuff
+            tower_Attack();
 
+            if(infiity){
+                // This is for hero attack aimation stuff
+                    hero_Attack();
 
-                // searching for monster in range
-                for(int j = 0; j < monster.size(); j++){
-                    int monster_x = monster.get(j).getX();
-                    int monster_y = monster.get(j).getY();
-
-
-                    //long timeElapsed = (System.nanoTime() - countdown_8sec);
-                    // checks to see if the tower has already shot something 0 means it has not
-                    if (shotTimer[i] == 0){
-
-                        switch(tower_type){
-                            // sniper tower
-                            case 1:
-                                // means the shot is in range
-                                if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                    towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 1));
-                                    System.out.println("Creating tower shot: " + i);
-                                    // break afer wards for first monster
-
-
-                                    shotTimer[i] = System.nanoTime();
-                                    break;
-                                }
-                                break;
-                            // double shot tower
-                            case 2:
-
-                                if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range){
-                                    towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 2));
-
-                                    // THen check to see if a second monsterr can be shot at as well
-
-                                    for(int k = 0; k < monster.size(); k++){
-
-                                        // This makes sure we arent going to shoot at the same monster the tower already has targeted
-                                        if(monster.get(k).getID() != monster.get(j).getID()) {
-                                            int monster2_x = monster.get(k).getX();
-                                            int monster2_y = monster.get(k).getY();
-
-                                            if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y) <= tower_range){
-                                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(k).getID(), 2));
-
-                                                shotTimer[i] = System.nanoTime();
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    shotTimer[i] = System.nanoTime();
-                                    break;
-                                }
-                                break;
-                            // slow tower
-                            case 3:
-
-                                // means the shot is in range
-                                if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                    towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.ice_towr_projectile), tower.get(i).getX(), tower.get(i).getY(), 3, tower.get(i).getPower(), monster.get(j).getID(), 3));
-                                    System.out.println("Creating tower shot: " + i);
-                                    // break afer wards for first monster
-
-
-                                    shotTimer[i] = System.nanoTime();
-                                    break;
-                                }
-
-                                break;
-
-                        }
-
-                    }
-                    // check to see if the tower has already waited for its attack speed to shoot again
-                    else{
-
-                        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - shotTimer[i], TimeUnit.NANOSECONDS) >= tower.get(i).getAttackSpeed() ){
-                            shotTimer[i] = 0;
-                        }
-                    }
-
-                }
             }
 
-            // temporary array to hold shots that will be deleated later
-            ArrayList<Monster> mtemplist = new ArrayList<Monster>();
-            ArrayList<TowerShot> tstemplist = new ArrayList<TowerShot>();
-
-            // update towershot/ Removing monster and adding money to player
-            for(int i = 0; i < towershot.size(); i++){
-
-
-
-
-                //if(towershot.get(i) != null){
-
-                // This case is incase the monster dies, then get rid of the tower shot following the monster
-
-                // gets monster X and Y that the towershot is locked on
-                for(int k = 0; k < monster.size(); k++){
-                    if(monster.get(k).getID() == towershot.get(i).getMonsterID()){
-                        int monster_x = monster.get(k).getX();
-                        int monster_y = monster.get(k).getY();
-
-
-
-
-                        towershot.get(i).update(monster_x, monster_y);
-
-                        // means shot connected and its not an ice tower shot which is 3
-                        if(collision(towershot.get(i), monster.get(k))){
-
-                            // sets subtracts bullter damage to monster health
-                            monster.get(k).setHealth(towershot.get(i).getPower());
-
-                            // if monster got hit by a slow shot slow its movement speed
-                            if(towershot.get(i).getShotType() == 3){
-                                monster.get(k).setSlow_effect();
-                            }
-
-                            // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
-                            if(monster.get(k).getHealth() <= 0){
-
-                                player.AddMoney(monster.get(k).GetMoney());
-
-                                // removes other tower shots
-                                for(int y = 0; y < towershot.size(); y++){
-
-                                    // this is so the original shot isnt removed before checking all shots
-                                    if(y != i){
-                                        if(towershot.get(y).getMonsterID() == towershot.get(i).getMonsterID()){
-
-                                            //towershot.remove(y);
-                                            tstemplist.add(towershot.get(y));
-                                            System.out.println("Removing tower shot: " + y);
-
-                                        }
-                                    }
-
-                                }
-
-                                mtemplist.add(monster.get(k));
-                                //monster.remove(k);
-
-                                // remove this last becuase you still need its components before hand
-                                tstemplist.add(towershot.get(i));
-                                //towershot.remove(i);
-                                //System.out.println("Removing tower shot: " + i);
-
-
-
-
-                            }
-                            else{
-                                // remove this last becuase you still need its components before hand
-                                tstemplist.add(towershot.get(i));
-                                //towershot.remove(i);
-                                System.out.println("Removing tower shot: " + i);
-                            }
-                        }
-
-
-                    }
-                }
-            }
-
-            // remove all tower shots now
-            towershot.removeAll(tstemplist);
-
-            // remove all shots in monster temp list
-            monster.removeAll(mtemplist);
-
-            // clean up the lose ends of the 2 temp array
-            //System.gc();
 
             //update the monster start wave icon
             for(int i = 0; i <mIcons.size(); i++){
@@ -1053,7 +884,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
             // update hero
             if(infiity){
-                //update the monster start wave icon
                 for(int i = 0; i <m_hero.size(); i++){
                     m_hero.get(i).update();
                 }
@@ -1095,6 +925,430 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
+    // checks to see if the hero needs to attack or not
+    // basically same as tower shot function
+    public void hero_Attack(){
+        // gets hero x and y cords
+
+            int hero_x = m_hero.get(0).getX();
+            int hero_y = m_hero.get(0).getY();
+        if (!m_hero.get(0).isMoving()){
+
+            for(int i = 0; i < monster.size(); i++){
+
+                // gets monster x and y coords
+                int monster_x = monster.get(i).getX();
+                int monster_y = monster.get(i).getY();
+
+                if(attack_timer == 0){
+                    if(abs(monster_x - hero_x) + abs(monster_y - hero_y) <= m_hero.get(0).getRange() ){
+
+                        switch(m_hero.get(0).getType()){
+                            // knight
+                            case 1:
+                                // will jsut draw his attack on canvas using circles
+                                knight_attack_animation_start = true;
+                                attack_timer = System.nanoTime();
+
+                                //knights attack is different so gatta do this
+                                getKnightsdamage(hero_x, hero_y);
+                                break;
+                            // archer
+                            case 2:
+                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource(getResources(), R.drawable.attack_archer), hero_x, hero_y, 2, m_hero.get(0).getDamage(), monster.get(i).getID(), 2));
+                                System.out.println("Creating Heroattack: " + i);
+                                attack_timer = System.nanoTime();
+                                break;
+                            // mage
+                            case 3:
+                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource(getResources(), R.drawable.attack_wizard), hero_x, hero_y, 2,  m_hero.get(0).getDamage(), monster.get(i).getID(), 3));
+                                System.out.println("Creating Heroattack: " + i);
+                                attack_timer = System.nanoTime();
+                                break;
+                        }
+
+                    }
+
+                }
+                else{
+
+                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS) >= m_hero.get(0).getAttack_speed()){
+                        attack_timer = 0;
+                    }
+                }
+
+
+            }
+
+        }
+
+
+        // now update the attack and store monster and attack to be deleted later
+        ArrayList<Monster> mtemplist = new ArrayList<Monster>();
+        ArrayList<HeroAttack> hatemplist = new ArrayList<HeroAttack>();
+        ArrayList<TowerShot> tstemplist = new ArrayList<TowerShot>();
+
+
+        for(int i = 0; i < m_hero_attack.size(); i++){
+
+            for (int j = 0; j < monster.size(); j++){
+
+                if(m_hero_attack.get(i).getMonsterID() == monster.get(j).getMonsterID()){
+                    int monster_x = monster.get(j).getX();
+                    int monster_y = monster.get(j).getY();
+
+                    m_hero_attack.get(i).update(monster_x, monster_y);
+
+                    // checking to see if attack hit
+                    if(collision(m_hero_attack.get(i), monster.get(j))){
+
+                        // sets subtracts bullter damage to monster health
+                        monster.get(j).setHealth(m_hero_attack.get(i).getPower());
+
+                        // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
+                        if(monster.get(j).getHealth() <= 0){
+
+                            // gain 4 exp for monster kill
+                            m_hero.get(0).gainExp(4);
+
+                            player.AddMoney(monster.get(j).GetMoney());
+
+                            // removes other tower shots
+                            for(int y = 0; y < m_hero_attack.size(); y++){
+
+                                // this is so the original shot isnt removed before checking all shots
+                                if(y != i){
+                                    if(m_hero_attack.get(y).getMonsterID() == m_hero_attack.get(i).getMonsterID()){
+
+                                        //towershot.remove(y);
+                                        hatemplist.add(m_hero_attack.get(y));
+                                        System.out.println("Removing tower shot: " + y);
+
+                                    }
+                                }
+
+                            }
+
+                            // removes other tower shots
+                            for(int y = 0; y < towershot.size(); y++){
+
+                                // this is so the original shot isnt removed before checking all shots
+                                if(y != i){
+                                    if(towershot.get(y).getMonsterID() == m_hero_attack.get(i).getMonsterID()){
+
+                                        //towershot.remove(y);
+                                        tstemplist.add(towershot.get(y));
+                                        System.out.println("Removing tower shot: " + y);
+
+                                    }
+                                }
+
+                            }
+
+                            mtemplist.add(monster.get(j));
+                            //monster.remove(k);
+
+                            // remove this last becuase you still need its components before hand
+                            hatemplist.add(m_hero_attack.get(i));
+                            //towershot.remove(i);
+                            //System.out.println("Removing tower shot: " + i);
+
+
+
+
+                        }
+                        else{
+
+                            // gain 2 exp for monster hit;
+                            m_hero.get(0).gainExp(2);
+                            // remove this last becuase you still need its components before hand
+                            hatemplist.add(m_hero_attack.get(i));
+                            //towershot.remove(i);
+                            System.out.println("Removing tower shot: " + i);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // lastly remove everthing that was in the temp lists from the real lists
+        // remove all tower shots now
+        m_hero_attack.removeAll(hatemplist);
+
+        // remove all shots in monster temp list
+        monster.removeAll(mtemplist);
+
+        towershot.removeAll(tstemplist);
+
+
+    }
+
+    public void  getKnightsdamage(int hero_x, int hero_y){
+
+        // now update the attack and store monster and attack to be deleted later
+        ArrayList<Monster> mtemplist = new ArrayList<Monster>();
+        ArrayList<TowerShot> tstemplist = new ArrayList<TowerShot>();
+
+        for(int i = 0; i < monster.size(); i++){
+            int monster_x = monster.get(i).getX();
+            int monster_y = monster.get(i).getY();
+
+            // monster is in range
+            if(abs(monster_x - hero_x) + abs(monster_y - hero_y) <= m_hero.get(0).getRange() ){
+
+                // sets subtracts bullter damage to monster health
+                monster.get(i).setHealth(m_hero.get(0).getDamage());
+
+                if(monster.get(i).getHealth() <= 0){
+
+                    // gain 4 exp for monster kill
+                    m_hero.get(0).gainExp(4);
+
+                    player.AddMoney(monster.get(i).GetMoney());
+
+                    // removes other tower shots
+                    for(int y = 0; y < towershot.size(); y++){
+
+                        // this is so the original shot isnt removed before checking all shots
+                        if(y != i){
+                            if(towershot.get(y).getMonsterID() == monster.get(i).getMonsterID()){
+
+                                //towershot.remove(y);
+                                tstemplist.add(towershot.get(y));
+                                System.out.println("Removing tower shot: " + y);
+
+                            }
+                        }
+
+                    }
+
+                    mtemplist.add(monster.get(i));
+                    //monster.remove(k);
+
+                }
+                else{
+                    // gain 2 exp for monster hit;
+                    m_hero.get(0).gainExp(2);
+                }
+            }
+
+        }
+
+        // remove all shots in monster temp list
+        monster.removeAll(mtemplist);
+
+        // remove tower shots
+        towershot.removeAll(tstemplist);
+    }
+
+    public void tower_Attack(){
+        // This is where we will have to check to see if the tower will shoot.. probably make this into a seperate function with everything else
+        // need to check every monster and see if it is within any tower range
+        for(int i = 0; i < tower.size(); i++){
+            int tower_x = tower.get(i).getX();
+            int tower_y = tower.get(i).getY();
+            double tower_range = tower.get(i).getRange();
+            int tower_type = tower.get(i).getTowerType();
+
+
+            // searching for monster in range
+            for(int j = 0; j < monster.size(); j++){
+                int monster_x = monster.get(j).getX();
+                int monster_y = monster.get(j).getY();
+
+
+                //long timeElapsed = (System.nanoTime() - countdown_8sec);
+                // checks to see if the tower has already shot something 0 means it has not
+                if (shotTimer[i] == 0){
+
+                    switch(tower_type){
+                        // sniper tower
+                        case 1:
+                            // means the shot is in range
+                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
+                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 1));
+                                System.out.println("Creating tower shot: " + i);
+                                // break afer wards for first monster
+
+
+                                shotTimer[i] = System.nanoTime();
+                                break;
+                            }
+                            break;
+                        // double shot tower
+                        case 2:
+
+                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range){
+                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 2));
+
+                                // THen check to see if a second monsterr can be shot at as well
+
+                                for(int k = 0; k < monster.size(); k++){
+
+                                    // This makes sure we arent going to shoot at the same monster the tower already has targeted
+                                    if(monster.get(k).getID() != monster.get(j).getID()) {
+                                        int monster2_x = monster.get(k).getX();
+                                        int monster2_y = monster.get(k).getY();
+
+                                        if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y) <= tower_range){
+                                            towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(k).getID(), 2));
+
+                                            shotTimer[i] = System.nanoTime();
+                                            break;
+                                        }
+                                    }
+                                }
+                                shotTimer[i] = System.nanoTime();
+                                break;
+                            }
+                            break;
+                        // slow tower
+                        case 3:
+
+                            // means the shot is in range
+                            if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
+                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.ice_towr_projectile), tower.get(i).getX(), tower.get(i).getY(), 3, tower.get(i).getPower(), monster.get(j).getID(), 3));
+                                System.out.println("Creating tower shot: " + i);
+                                // break afer wards for first monster
+
+
+                                shotTimer[i] = System.nanoTime();
+                                break;
+                            }
+
+                            break;
+
+                    }
+
+                }
+                // check to see if the tower has already waited for its attack speed to shoot again
+                else{
+
+                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - shotTimer[i], TimeUnit.NANOSECONDS) >= tower.get(i).getAttackSpeed() ){
+                        shotTimer[i] = 0;
+                    }
+                }
+
+            }
+        }
+
+        // temporary array to hold shots that will be deleated later
+        ArrayList<Monster> mtemplist = new ArrayList<Monster>();
+        ArrayList<TowerShot> tstemplist = new ArrayList<TowerShot>();
+        ArrayList<HeroAttack>hatemplist = new ArrayList<HeroAttack>();
+
+
+        // update towershot/ Removing monster and adding money to player
+        for(int i = 0; i < towershot.size(); i++){
+
+
+
+
+            //if(towershot.get(i) != null){
+
+            // This case is incase the monster dies, then get rid of the tower shot following the monster
+
+            // gets monster X and Y that the towershot is locked on
+            for(int k = 0; k < monster.size(); k++){
+                if(monster.get(k).getID() == towershot.get(i).getMonsterID()){
+                    int monster_x = monster.get(k).getX();
+                    int monster_y = monster.get(k).getY();
+
+
+
+
+                    towershot.get(i).update(monster_x, monster_y);
+
+                    // means shot connected and its not an ice tower shot which is 3
+                    if(collision(towershot.get(i), monster.get(k))){
+
+                        // sets subtracts bullter damage to monster health
+                        monster.get(k).setHealth(towershot.get(i).getPower());
+
+                        // if monster got hit by a slow shot slow its movement speed
+                        if(towershot.get(i).getShotType() == 3){
+                            monster.get(k).setSlow_effect();
+                        }
+
+                        // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
+                        if(monster.get(k).getHealth() <= 0){
+
+                            player.AddMoney(monster.get(k).GetMoney());
+
+                            // removes other tower shots
+                            for(int y = 0; y < towershot.size(); y++){
+
+                                // this is so the original shot isnt removed before checking all shots
+                                if(y != i){
+                                    if(towershot.get(y).getMonsterID() == towershot.get(i).getMonsterID()){
+
+                                        //towershot.remove(y);
+                                        tstemplist.add(towershot.get(y));
+                                        System.out.println("Removing tower shot: " + y);
+
+                                    }
+                                }
+
+                            }
+
+                            if(infiity){
+                                // removes other tower shots
+                                for(int y = 0; y < m_hero_attack.size(); y++){
+
+                                    // this is so the original shot isnt removed before checking all shots
+                                    if(y != i){
+                                        if(m_hero_attack.get(y).getMonsterID() == m_hero_attack.get(i).getMonsterID()){
+
+                                            //towershot.remove(y);
+                                            hatemplist.add(m_hero_attack.get(y));
+                                            System.out.println("Removing tower shot: " + y);
+
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            mtemplist.add(monster.get(k));
+                            //monster.remove(k);
+
+                            // remove this last becuase you still need its components before hand
+                            tstemplist.add(towershot.get(i));
+                            //towershot.remove(i);
+                            //System.out.println("Removing tower shot: " + i);
+
+
+
+
+                        }
+                        else{
+                            // remove this last becuase you still need its components before hand
+                            tstemplist.add(towershot.get(i));
+                            //towershot.remove(i);
+                            System.out.println("Removing tower shot: " + i);
+                        }
+                    }
+
+
+                }
+            }
+        }
+
+        // remove all tower shots now
+        towershot.removeAll(tstemplist);
+
+        if(infiity){
+            // remove all hero attacks
+            m_hero_attack.removeAll(hatemplist);
+        }
+
+
+        // remove all shots in monster temp list
+        monster.removeAll(mtemplist);
+
+    }
+
     @Override
     public void draw(Canvas canvas){
 
@@ -1108,6 +1362,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         red_paintbrush_stroke.setColor(Color.RED);
         red_paintbrush_stroke.setStyle(Paint.Style.STROKE);
         red_paintbrush_stroke.setStrokeWidth(10);
+
+        Paint gray_paintbrush_stroke;
+        gray_paintbrush_stroke = new Paint();
+        gray_paintbrush_stroke.setColor(Color.GRAY);
+        gray_paintbrush_stroke.setStyle(Paint.Style.STROKE);
+        gray_paintbrush_stroke.setStrokeWidth(10);
+
+        Paint yellow_paintbrush_stroke;
+        yellow_paintbrush_stroke = new Paint();
+        yellow_paintbrush_stroke.setColor(Color.YELLOW);
+        yellow_paintbrush_stroke.setStyle(Paint.Style.STROKE);
+        yellow_paintbrush_stroke.setStrokeWidth(10);
 
         Paint money_text = new Paint();
         money_text.setTextSize(86);
@@ -1151,8 +1417,25 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 for(Hero h: m_hero){
                     h.draw(canvas);
 
+                    double percentage = (double)125 / (double)h.getNeededExp();
+                    double exp_difference = h.getNeededExp() - h.getEXP();
+                    canvas.drawLine(h.getX(), h.getY(), h.getX() + (float)((exp_difference * percentage)), h.getY(), gray_paintbrush_stroke);
+
                     if(heroselected){
-                        canvas.drawCircle(h.getX() + 65, h.getY() + 65, h.getRange(), red_paintbrush_stroke);
+                        canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()), red_paintbrush_stroke);
+                    }
+
+                    // do knight animation attack
+                    if(h.getType() == 1 && attack_timer != 0 && knight_attack_animation_start){
+                            canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()), yellow_paintbrush_stroke);
+                            canvas.drawCircle(h.getX() + 55, h.getY() + 55, (h.getRange()), yellow_paintbrush_stroke);
+                            canvas.drawCircle(h.getX() + 50, h.getY() + 50, (h.getRange()), yellow_paintbrush_stroke);
+                            canvas.drawCircle(h.getX() + 35, h.getY() + 35, (h.getRange()), yellow_paintbrush_stroke);
+                    }
+                    else{
+                        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS) >= (m_hero.get(0).getAttack_speed() / 4)){
+                            knight_attack_animation_start = false;
+                        }
                     }
 
                 }
@@ -1175,6 +1458,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // draws towershot
             for (TowerShot ts: towershot){
                 ts.draw(canvas);
+            }
+
+            // draws hero attacks
+            if(infiity){
+                for(HeroAttack a: m_hero_attack){
+                    a.draw(canvas);
+                }
             }
 
            // if(PopsUpIsUp == true){

@@ -24,6 +24,10 @@ public class Hero extends GameObject {
     // 0 is stay still, 1 is left, 2 is right, 3 is up, 4 is down;
     private int direction = 0;
     private static final int still = 0, left = 1, right = 2, up = 3, down = 4;
+    private int type;
+    private int exp;
+    private int lvl;
+    private int neededExp;
 
 
     Hero(Bitmap res, int x, int y, int hero_type){
@@ -33,6 +37,7 @@ public class Hero extends GameObject {
         newyLocation = y;
         super.width = 128;
         super.height = 128;
+        type = hero_type;
 
         // hero starts out standing still so not moving
         moving = false;
@@ -61,6 +66,9 @@ public class Hero extends GameObject {
                 // miliseconds
                 attack_speed = 500;
                 move_speed = 30;
+                lvl = 1;
+                neededExp = 10 + (5 * (lvl - 1));
+                exp = 0;
                 animation.setDelay(390 - move_speed);
                 break;
             // archer
@@ -70,6 +78,9 @@ public class Hero extends GameObject {
                 damage = 4;
                 attack_speed = 1250;
                 move_speed = 17;
+                lvl = 1;
+                neededExp = 10 + (5 * (lvl - 1));
+                exp = 0;
                 animation.setDelay(390 - move_speed);
                 break;
             // wizard
@@ -80,6 +91,9 @@ public class Hero extends GameObject {
                 // miliseconds
                 attack_speed = 1250;
                 move_speed = 17;
+                lvl = 1;
+                neededExp = 10 + (5 * (lvl - 1));
+                exp = 0;
                 animation.setDelay(390 - move_speed);
                 break;
         }
@@ -90,6 +104,8 @@ public class Hero extends GameObject {
     public void move_to(int newx, int newy){
         newxLocation = (newx * 130);
         newyLocation = (newy * 130);
+        direction = still;
+        moving = true;
     }
 
     public void update(){
@@ -108,6 +124,7 @@ public class Hero extends GameObject {
                     // function for switching direction
                     switchdirection(direction);
                 }
+                moving = true;
             }
             // move in they y direction first
             else if((abs(newxLocation - x) < abs(newyLocation - y))){
@@ -121,17 +138,19 @@ public class Hero extends GameObject {
                     // function for switching direction
                     switchdirection(direction);
                 }
-
+                moving = true;
             }
             // no comand/ finsihed moving
             else{
                 direction = still;
+                moving = true;
                 // function for switching direction
                 switchdirection(direction);
             }
         }
         // stay in the same direction
         else{
+            moving = true;
             samedirection(direction);
 
         }
@@ -189,6 +208,7 @@ public class Hero extends GameObject {
                 }
                 break;
             case still:
+                moving = false;
                 break;
 
 
@@ -260,12 +280,68 @@ public class Hero extends GameObject {
                 }
                 break;
             case still:
+                moving = false;
                 break;
 
 
         }
 
     }
+
+    public int getNeededExp(){return neededExp;}
+    public int getEXP(){return exp;}
+
+    public void gainExp(int gainEXP){
+        exp += gainEXP;
+        if(exp >= neededExp){
+            lvlUP();
+        }
+    }
+
+    private void lvlUP(){
+        switch(type){
+            // knight lvl up
+            case 1:
+                damage += 10;
+                lvl += 1;
+                neededExp += 10;
+                exp = 0;
+                break;
+            // archer lvl up
+            case 2:
+                damage += 4;
+                lvl += 1;
+                exp = 0;
+                neededExp += 10;
+                switch(lvl){
+                    case 3:
+                        attack_speed -= 150;
+                        break;
+                    case 6:
+                        attack_speed -= 150;
+                        break;
+                }
+
+                break;
+            // mage lvl up
+            case 3:
+                damage += 6;
+                lvl += 1;
+                exp = 0;
+                neededExp += 10;
+                break;
+        }
+    }
+
+    public int getDamage(){return damage;}
+
+    public float getRange(){return range;}
+
+    public double getAttack_speed(){return attack_speed;}
+
+    public int getType(){return type;}
+
+    public boolean isMoving(){return moving;}
 
     public void draw(Canvas canvas){
 
@@ -275,7 +351,4 @@ public class Hero extends GameObject {
 
     }
 
-    public float getRange(){
-        return range;
-    }
 }

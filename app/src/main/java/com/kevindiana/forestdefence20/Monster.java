@@ -587,6 +587,7 @@ public class Monster extends GameObject{
     public int getStartHealth(){return starthealth; }
     public void setHealth(int damage){health -= damage;}
     public int getMoveSpeed(){return  walk_speed;}
+    public int getMonsterID(){return monsterID;}
 
     // slow efefects cuts the walkspeed in half
     public void setSlow_effect(){
