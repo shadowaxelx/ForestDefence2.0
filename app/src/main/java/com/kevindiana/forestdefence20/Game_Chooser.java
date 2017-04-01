@@ -30,6 +30,7 @@ public class Game_Chooser extends AppCompatActivity {
                 easy = (RadioButton) findViewById(R.id.easy_map1);
                 normal = (RadioButton) findViewById(R.id.normal_map1);
                 hard = (RadioButton) findViewById(R.id.hard_map1);
+                infinity = (RadioButton) findViewById(R.id.infinite_map1);
                 if(easy.isChecked()){
                     extrainfo = "11";
                 }
@@ -39,6 +40,14 @@ public class Game_Chooser extends AppCompatActivity {
                 else if(hard.isChecked()){
                     extrainfo ="13";
                  }
+                else if(infinity.isChecked()){
+                    extrainfo = "14";
+
+                    Intent intentIE = new Intent("com.kevindiana.forestdefence20.HeroSelect");
+                    intentIE.putExtra("Chooser", extrainfo);
+                    startActivity(intentIE);
+                    break;
+                }
                 intent.putExtra("Chooser",extrainfo);
                 startActivity(intent);
 
@@ -48,6 +57,7 @@ public class Game_Chooser extends AppCompatActivity {
                 easy = (RadioButton) findViewById(R.id.easy_map2);
                 normal = (RadioButton) findViewById(R.id.normal_map2);
                 hard = (RadioButton) findViewById(R.id.hard_map2);
+                infinity = (RadioButton) findViewById(R.id.infinite_map2);
                 if(easy.isChecked()){
                     extrainfo = "21";
                 }
@@ -56,6 +66,14 @@ public class Game_Chooser extends AppCompatActivity {
                 }
                 else if(hard.isChecked()){
                     extrainfo ="23";
+                }
+                else if(infinity.isChecked()){
+                    extrainfo = "24";
+
+                    Intent intentIE = new Intent("com.kevindiana.forestdefence20.HeroSelect");
+                    intentIE.putExtra("Chooser", extrainfo);
+                    startActivity(intentIE);
+                    break;
                 }
                 intent.putExtra("Chooser",extrainfo);
                 startActivity(intent);

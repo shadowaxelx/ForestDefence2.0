@@ -101,6 +101,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private long attack_timer;
     private ArrayList<HeroAttack> m_hero_attack;
     private boolean knight_attack_animation_start = false;
+    private ArrayList<Hero_Icon> m_h_icon;
 
     // the main thread for the entire game
     private MainThread thread;
@@ -151,6 +152,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // create a new herro array list
             m_hero = new ArrayList<Hero>();
             m_hero_attack = new ArrayList<HeroAttack>();
+            m_h_icon = new ArrayList<Hero_Icon>();
+            m_h_icon.add(new Hero_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.hero_icon), 2340, 1300));
+
 
             // seeing which map it will be played on
 
@@ -391,6 +395,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         //thread.pause_unpause(false);
                         spot_number = -1;
                     }
+                    else{
+
+                    }
+
                 }
                 else if(eventX == 9 && eventY == 6){
 
@@ -421,6 +429,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             }
                             // you dont have the money give an error
                             else{
+                                // make error true to start the popup timmer
+                                Error = true;
+                                errorStartTime = System.nanoTime();
                                 spot_number = -1;
                             }
 
@@ -432,7 +443,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     }
                 }
                 else{
-                    spot_number = -1;
+                        spot_number = -1;
+
                 }
             }
             if(heroselected){
@@ -442,6 +454,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                         // there is only 1 hero so
                         m_hero.get(0).move_to( eventX, eventY);
+                    }
+                    else{
+                        heroselected = false;
                     }
                 }
             }
@@ -558,8 +573,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         break;
                     // hero movement
                     case 7:
-
-                        //is_it_first_click = true;
+                        heroselected = false;
+                        is_it_first_click = true;
 
                         break;
                     // tower 1
@@ -1008,8 +1023,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
                         if(monster.get(j).getHealth() <= 0){
 
-                            // gain 4 exp for monster kill
-                            m_hero.get(0).gainExp(4);
+                            // gain 2 exp for monster kill
+                            m_hero.get(0).gainExp(2);
 
                             player.AddMoney(monster.get(j).GetMoney());
 
@@ -1059,8 +1074,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         }
                         else{
 
-                            // gain 2 exp for monster hit;
-                            m_hero.get(0).gainExp(2);
+                            // gain 1 exp for monster hit;
+                            m_hero.get(0).gainExp(1);
                             // remove this last becuase you still need its components before hand
                             hatemplist.add(m_hero_attack.get(i));
                             //towershot.remove(i);
@@ -1102,8 +1117,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                 if(monster.get(i).getHealth() <= 0){
 
-                    // gain 4 exp for monster kill
-                    m_hero.get(0).gainExp(4);
+                    // gain 2 exp for monster kill
+                    m_hero.get(0).gainExp(2);
 
                     player.AddMoney(monster.get(i).GetMoney());
 
@@ -1128,8 +1143,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                 }
                 else{
-                    // gain 2 exp for monster hit;
-                    m_hero.get(0).gainExp(2);
+                    // gain 1 exp for monster hit;
+                    m_hero.get(0).gainExp(1);
                 }
             }
 
@@ -1412,8 +1427,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
             }
 
-            // draws hero
+            // draws hero and hero icon
             if(infiity){
+
+                for(Hero_Icon h: m_h_icon){
+                    h.draw(canvas);
+                }
+
                 for(Hero h: m_hero){
                     h.draw(canvas);
 
@@ -1511,8 +1531,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 // doing this bottom one because the images are about 130 by 130
                 canvas.drawLine( 0 , (float)(i * 130), WIDTH, (float)(i * 130), red_paintbrush_stroke);
             }
-
 */
+
 
             canvas.restoreToCount(savedState);
         }
