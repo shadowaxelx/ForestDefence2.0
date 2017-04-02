@@ -14,4 +14,25 @@
         android:layout_centerInParent="true"
         />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/arrow"
+        android:id="@+id/right_arrow"
+        android:onClick="ButtonListener"
+        android:layout_alignTop="@+id/left_arrow"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/arrow2"
+        android:id="@+id/left_arrow"
+        android:onClick="ButtonListener"
+        android:layout_marginBottom="57dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

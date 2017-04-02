@@ -54,7 +54,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".How2"
-            android:screenOrientation="landscape">
+            android:configChanges="keyboardHidden|orientation|screenSize">
+
             <intent-filter>
                 <action android:name="com.kevindiana.forestdefence20.How2" />
 
