@@ -44,10 +44,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".HeroSelect"
+        <activity
+            android:name=".HeroSelect"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="com.kevindiana.forestdefence20.HeroSelect" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".How2"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="com.kevindiana.forestdefence20.How2" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

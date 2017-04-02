@@ -35,6 +35,11 @@ public class HomeScreen extends AppCompatActivity {
                 startActivity(intent);
 
                 break;
+
+            case R.id.imageButton2:
+                Intent intent2 = new Intent("com.kevindiana.forestdefence20.How2");
+                startActivity(intent2);
+                break;
         }
     }
 
