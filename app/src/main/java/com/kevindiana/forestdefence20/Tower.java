@@ -10,67 +10,68 @@ import static android.R.attr.bitmap;
  */
 
 public class Tower extends GameObject{
-    private Bitmap image;
+    private Bitmap m_image;
     // 1 is sniper, 2 double shot, 3 slow
-    private int tower_type;
-    private int tower_lvl;
-    private int sell_cost;
-    private int upgrade_cost;
-    private float range;
+    private int m_tower_type;
+    private int m_tower_lvl;
+    private int m_sell_cost;
+    private int m_upgrade_cost;
+    private float m_range;
     // it is in milla seconds
-    private double attack_speed;
+    private double m_attack_speed;
 
     // tower type 1 sniper, 2 shoots 2, 3 slows
-    public Tower(Bitmap res, int x, int y, int towertype){
-        super.x = x;
-        super.y = y;
-        super.width = 130;
-        super.height = 130;
-        image = res;
+    public Tower(Bitmap a_res, int a_x, int a_y, int a_towertype){
+        m_x = a_x;
+        m_y = a_y;
+        m_width = 130;
+        m_height = 130;
+        m_image = a_res;
         // sets the tower lvl automatically to 1
-        super.level = 1;
+        m_level = 1;
+        m_tower_type = a_towertype;
 
-        switch(towertype){
+        switch(a_towertype){
             // sniper tower cost 5
             case 1:
-                this.tower_lvl = 1;
+                m_tower_lvl = 1;
                 // setting the game objects states for this particular tower object
-                super.power = 5;
+                m_power = 5;
                 // 3.5 * 130  which is 3 + .5
-                range = 455;
+                m_range = 455;
                 // calculated in miliseconds so 1.5 seconds
-                attack_speed = 1500;
+                m_attack_speed = 1500;
                 //super.attack_speed = 1.25;
-                upgrade_cost = 10;
-                sell_cost = 3;
-                tower_type = towertype;
+                m_upgrade_cost = 10;
+                m_sell_cost = 3;
+                
 
                 break;
 
             // double shot tower cost 15
             case 2:
-                this.tower_lvl = 1;
-                super.power = 7;
+                m_tower_lvl = 1;
+                m_power = 7;
                 // 3.0 * 130
-                range = 390;
+                m_range = 390;
                 // calculated in miliseconds so 1.25 seconds
-                attack_speed = 1000;
+                m_attack_speed = 1000;
                 //super.attack_speed = 1.25;
-                upgrade_cost = 15;
-                sell_cost = 5;
-                tower_type = towertype;
+                m_upgrade_cost = 15;
+                m_sell_cost = 5;
+                
                 break;
             // slow tower cost 25
             case 3:
-                this.tower_lvl = 1;
-                super.power = 1;
+                m_tower_lvl = 1;
+                m_power = 1;
                 //4 * 130
-                range = 520;
+                m_range = 520;
                 // has rapid fire attack speed; .10 second attack speed
-                attack_speed = 400;
-                upgrade_cost = 30;
-                sell_cost = 10;
-                tower_type = towertype;
+                m_attack_speed = 400;
+                m_upgrade_cost = 30;
+                m_sell_cost = 10;
+                
                 break;
         }
 
@@ -82,125 +83,126 @@ public class Tower extends GameObject{
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(image, x, y, null);
+        canvas.drawBitmap(m_image, m_x, m_y, null);
     }
 
     public int getTowerType(){
-        return tower_type;
+        return m_tower_type;
     }
-    public int getSell_cost() {return sell_cost; }
-    public int getUpgrade_cost() {return upgrade_cost; }
-    public float getRange() {return range;}
-    public double getAttackSpeed() {return attack_speed;}
-    public int getTowerLvl() {return tower_lvl; }
+    public int getSell_cost() {return m_sell_cost; }
+    public int getUpgrade_cost() {return m_upgrade_cost; }
+    public float getRange() {return m_range;}
+    public double getAttackSpeed() {return m_attack_speed;}
+    public int getTowerLvl() {return m_tower_lvl; }
+
     public void upgrade_tower(){
 
         // sniper tower
-        if(tower_type == 1){
-            switch (tower_lvl){
+        if(m_tower_type == 1){
+            switch (m_tower_lvl){
                 // lvl 2 tower
                 case 1:
-                    tower_lvl = 2;
-                    power = 12;
-                    //3 + .5(is the box the tower is actually in) so range is 3.5
-                    range = 520;
+                    m_tower_lvl = 2;
+                    m_power = 12;
+                    //3 + .5(is the box the tower is actually in) so m_range is 3.5
+                    m_range = 520;
                     //1.25 attack speed per second
-                    attack_speed = 1250;
-                    upgrade_cost = 20;
-                    sell_cost = 6;
+                    m_attack_speed = 1250;
+                    m_upgrade_cost = 20;
+                    m_sell_cost = 6;
                     break;
                 // lvl 3
                 case 2:
-                    tower_lvl = 3;
-                    power = 26;
-                    // 4 + .5(is the box the tower is actually in) so range is 2.5
-                    range = 650;
-                    attack_speed = 1000;
-                    upgrade_cost = 40;
-                    sell_cost = 12;
+                    m_tower_lvl = 3;
+                    m_power = 26;
+                    // 4 + .5(is the box the tower is actually in) so m_range is 2.5
+                    m_range = 650;
+                    m_attack_speed = 1000;
+                    m_upgrade_cost = 40;
+                    m_sell_cost = 12;
                     break;
                 case 3:
-                    tower_lvl = 4;
-                    power = 55;
+                    m_tower_lvl = 4;
+                    m_power = 55;
                     // 5 + .5(is the box the tower is actually in)
-                    range = 780;
-                    attack_speed = 750;
+                    m_range = 780;
+                    m_attack_speed = 750;
                     // no upgrade cost max lvl
-                    sell_cost = 24;
+                    m_sell_cost = 24;
                     break;
 
             }
         }
         // double shot tower
-        else if(tower_type == 2){
-            switch (tower_lvl){
+        else if(m_tower_type == 2){
+            switch (m_tower_lvl){
                 // lvl 2 tower
                 case 1:
-                    tower_lvl = 2;
-                    power = 18;
+                    m_tower_lvl = 2;
+                    m_power = 18;
                     //3.5 + .5(is the box the tower is actually in)
-                    range = 390;
+                    m_range = 390;
                     //1.25 attack speed per second
-                    attack_speed = 1000;
-                    upgrade_cost = 30;
-                    sell_cost = 10;
+                    m_attack_speed = 1000;
+                    m_upgrade_cost = 30;
+                    m_sell_cost = 10;
                     break;
                 // lvl 3
                 case 2:
-                    tower_lvl = 3;
-                    power = 40;
+                    m_tower_lvl = 3;
+                    m_power = 40;
                     // 4 + .5(is the box the tower is actually in)
-                    range = 455;
-                    attack_speed = 1000;
-                    upgrade_cost = 60;
-                    sell_cost = 20;
+                    m_range = 455;
+                    m_attack_speed = 1000;
+                    m_upgrade_cost = 60;
+                    m_sell_cost = 20;
                     break;
                 case 3:
-                    tower_lvl = 4;
-                    power = 80;
+                    m_tower_lvl = 4;
+                    m_power = 80;
                     // 5 + .5(is the box the tower is actually in)
-                    range = 455;
-                    attack_speed = 1000;
+                    m_range = 455;
+                    m_attack_speed = 1000;
                     // no upgrade cost max lvl
-                    sell_cost = 40;
+                    m_sell_cost = 40;
                     break;
 
             }
 
         }
         // slow/ ice tower
-        else if(tower_type == 3){
+        else if(m_tower_type == 3){
 
-            switch (tower_lvl){
+            switch (m_tower_lvl){
                 // lvl 2 tower
                 case 1:
-                    tower_lvl = 2;
-                    power = 2;
+                    m_tower_lvl = 2;
+                    m_power = 2;
                     //4 * 130
-                    range = 520;
+                    m_range = 520;
                     //1.25 attack speed per second
-                    attack_speed = 300;
-                    upgrade_cost = 60;
-                    sell_cost = 20;
+                    m_attack_speed = 300;
+                    m_upgrade_cost = 60;
+                    m_sell_cost = 20;
                     break;
                 // lvl 3
                 case 2:
-                    tower_lvl = 3;
-                    power = 3;
+                    m_tower_lvl = 3;
+                    m_power = 3;
                     //4 * 130
-                    range = 520;
-                    attack_speed = 200;
-                    upgrade_cost = 120;
-                    sell_cost = 40;
+                    m_range = 520;
+                    m_attack_speed = 200;
+                    m_upgrade_cost = 120;
+                    m_sell_cost = 40;
                     break;
                 case 3:
-                    tower_lvl = 4;
-                    power = 4;
+                    m_tower_lvl = 4;
+                    m_power = 4;
                     //4 * 130
-                    range = 520;
-                    attack_speed = 100;
+                    m_range = 520;
+                    m_attack_speed = 100;
                     // no upgrade cost max lvl
-                    sell_cost = 80;
+                    m_sell_cost = 80;
                     break;
 
             }

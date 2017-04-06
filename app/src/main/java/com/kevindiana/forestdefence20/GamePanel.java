@@ -29,59 +29,55 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public static final int HEIGHT = 1500;
 
     //getting the room******************
-    private Room room1;
-    private int [][]currentroom;
+    private Room m_room;
+    private int [][]m_currentroom;
 
     // monster stuff***********************
     // vector that holds monsters
-    private ArrayList<Monster> monster;
+    private ArrayList<Monster> m_monster;
     // number for monster start time
-    private long monsterStartTime;
+    private long m_monsterStartTime;
 
     // monster wave stuff*************************
     // the number of waves that have passes, starts at 1
-    private int wavenumber = 1;
+    private int m_wavenumber = 1;
     // creates monsterwave object
-    private MonsterWave mwaves;
+    private MonsterWave m_monster_waves;
     // the array that holds every monster wave for the map
-    private int [][]monsterwaves;
+    private int [][]m_monster_wavesArray;
     // if every way is done then the game is over
-    boolean wavesalldone = false;
-    // a countdown for the next wave to come 8 seconds
-    boolean nextWaveCountdown = false;
-    // int next wave countdown 8 seconds
-    private long countdown_8sec;
+    private boolean m_wavesalldone = false;
 
     // end of game stuff ************
     // true when last monster has spawned and no more monsters are in the array
-    private boolean game_done = false;
-    long fiveSeconds;
-    private boolean end_timer = false;
-    Context mContext;
+    private boolean m_game_done = false;
+    private long m_fiveSeconds;
+    private boolean m_end_timer = false;
+    Context m_Context;
 
     // shop stuff********************
-    private Shop shop;
-    private ArrayList<Shop> shopitems;
+    private ArrayList<Shop> m_shopitems;
 
     // Tower stuff*****************
     //private Tower tower;
-    private ArrayList<Tower> tower;
+    private ArrayList<Tower> m_tower;
 
     // TowerShot stuff**************
-    private ArrayList<TowerShot> towershot;
+    private ArrayList<TowerShot> m_towershot;
     // to have towers shoot at appropriate times
-    private long shotTimer [];
+    private long m_shotTimer [];
 
     //PopupMenu Stuff*********
-    private ArrayList<MyPopUpMenu> mypopupmenus;
+    private ArrayList<MyPopUpMenu> m_mypopupmenus;
     private boolean PopsUpIsUp = false;
-    private boolean Error = false;
-    private long errorStartTime;
-    private boolean paused = false;
+    private boolean m_Error = false;
+    private long m_errorStartTime;
+    private boolean m_paused = false;
 
     // On click event stuff
-    int spot_number;
-    private boolean is_it_first_click = true;
+    private int m_spot_number;
+    private int m_second_press_Spot_num = -1;
+    private boolean m_is_it_first_click = true;
     private int first_pressX = 0;
     private int first_pressY = 0;
 
@@ -94,7 +90,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // The player choosing the map and difficulty string 1 in tens place means map 1, 2 means map 2
     // # in ones place means difficulty, 1 easy, 2 normal, 3 hard
     private String m_map_difficulty;
-    private boolean infiity = false;
+    private boolean m_infiity = false;
     private ArrayList<Hero> m_hero;
     private boolean heroselected = false;
     // wait time for hero's next attack after the last one
@@ -104,33 +100,33 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private ArrayList<Hero_Icon> m_h_icon;
 
     // the main thread for the entire game
-    private MainThread thread;
+    private MainThread m_thread;
 
-    public GamePanel(Context context, String map_difficulty)
+    public GamePanel(Context a_context, String a_map_difficulty)
     {
-        super(context);
-        mContext = context;
-        m_map_difficulty = map_difficulty;
+        super(a_context);
+        m_Context = a_context;
+        m_map_difficulty = a_map_difficulty;
 
         //add the callback to the surfaceholder to intercept events
         getHolder().addCallback(this);
 
-        thread = new MainThread(getHolder(), this);
+        m_thread = new MainThread(getHolder(), this);
 
         //make gamePanel focusable so it can handle events
         setFocusable(true);
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){}
+    public void surfaceChanged(SurfaceHolder holder, int a_format, int a_width, int a_height){}
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder){
+    public void surfaceDestroyed(SurfaceHolder a_holder){
         boolean retry = true;
         while(retry)
         {
-            try{thread.setRunning(false);
-                thread.join();
+            try{m_thread.setRunning(false);
+                m_thread.join();
 
             }catch(InterruptedException e){e.printStackTrace();}
             retry = false;
@@ -139,15 +135,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder){
+    public void surfaceCreated(SurfaceHolder a_holder){
         // parse string holding information with map number and difficulty into an int
         int map_difficulty = Integer.parseInt(m_map_difficulty);
-        mwaves = new MonsterWave();
+        m_monster_waves = new MonsterWave();
 
 
         // Check to see if the game mode is infinity, map_difficulty > 100
         if(map_difficulty > 100){
-            infiity = true;
+            m_infiity = true;
 
             // create a new herro array list
             m_hero = new ArrayList<Hero>();
@@ -157,16 +153,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
             // seeing which map it will be played on
-
             switch((map_difficulty % 100)/10){
 
                 // map 1
                 case 1:
                     // setting the map the player will be using
-                    room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
-                    currentroom = room1.getroom(1);
+                    m_room = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
+                    m_currentroom = m_room.getroom(1);
                     // 14 is infinite wave
-                    monsterwaves = mwaves.getwave(14);
+                    m_monster_wavesArray = m_monster_waves.getwave(14);
 
                     // means hero is knight
                     if(map_difficulty < 200){
@@ -184,10 +179,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 // map 2
                 case 2:
                     // setting the map the player will be using
-                    room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
-                    currentroom = room1.getroom(2);
+                    m_room = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
+                    m_currentroom = m_room.getroom(2);
                     // 14 is infinite wave
-                    monsterwaves = mwaves.getwave(14);
+                    m_monster_wavesArray = m_monster_waves.getwave(14);
 
                     // means hero is knight
                     if(map_difficulty < 200){
@@ -205,10 +200,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 // map 3
                 case 3:
                     // setting the map the player will be using
-                    room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room3));
-                    currentroom = room1.getroom(3);
+                    m_room = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room3));
+                    m_currentroom = m_room.getroom(3);
                     // 14 is infinite wave
-                    monsterwaves = mwaves.getwave(14);
+                    m_monster_wavesArray = m_monster_waves.getwave(14);
 
                     // means hero is knight
                     if(map_difficulty < 200){
@@ -231,111 +226,103 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             if(map_difficulty < 20){
 
                 // setting the map the player will be using
-                room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
-                currentroom = room1.getroom(1);
+                m_room = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room1));
+                m_currentroom = m_room.getroom(1);
 
                 switch(map_difficulty % 10){
                     // easy difficulty wave
                     case 1:
-                        monsterwaves = mwaves.getwave(11);
+                        m_monster_wavesArray = m_monster_waves.getwave(11);
                         break;
                     // normal diffuclty wave
                     case 2:
-                        monsterwaves = mwaves.getwave(12);
+                        m_monster_wavesArray = m_monster_waves.getwave(12);
                         break;
                     // hard difficulty wave
                     case 3:
-                        monsterwaves = mwaves.getwave(13);
+                        m_monster_wavesArray = m_monster_waves.getwave(13);
                         break;
                 }
             }
             // map 2
             else if (map_difficulty < 30){
                 // setting the map the player will be using
-                room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
-                currentroom = room1.getroom(2);
+                m_room = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room2));
+                m_currentroom = m_room.getroom(2);
 
                 switch(map_difficulty % 10){
                     // easy difficulty wave
                     case 1:
-                        monsterwaves = mwaves.getwave(11);
+                        m_monster_wavesArray = m_monster_waves.getwave(11);
                         break;
                     // normal diffuclty wave
                     case 2:
-                        monsterwaves = mwaves.getwave(12);
+                        m_monster_wavesArray = m_monster_waves.getwave(12);
                         break;
                     // hard difficulty wave
                     case 3:
-                        monsterwaves = mwaves.getwave(13);
+                        m_monster_wavesArray = m_monster_waves.getwave(13);
                         break;
                 }
             }
             // map 3 and set infinity to true
             else{
-                room1 = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room3));
-                currentroom = room1.getroom(3);
+                m_room = new Room(BitmapFactory.decodeResource(getResources(), R.drawable.room3));
+                m_currentroom = m_room.getroom(3);
 
                 switch(map_difficulty % 10){
                     // easy difficulty wave
                     case 1:
-                        monsterwaves = mwaves.getwave(11);
+                        m_monster_wavesArray = m_monster_waves.getwave(11);
                         break;
                     // normal diffuclty wave
                     case 2:
-                        monsterwaves = mwaves.getwave(12);
+                        m_monster_wavesArray = m_monster_waves.getwave(12);
                         break;
                     // hard difficulty wave
                     case 3:
-                        monsterwaves = mwaves.getwave(13);
+                        m_monster_wavesArray = m_monster_waves.getwave(13);
                         break;
-                    // case for the infinity game mode which is only for map 3
-                   // case 4:
-                    //    monsterwaves = mwaves.getwave(14);
-                     //   infiity = true;
+
                 }
             }
         }
 
 
-        shopitems = new ArrayList<Shop>();
-        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300, 1));
-        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_shop_buton), 1040, 1300, 2));
-        shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower_shop_button), 1170, 1300, 3));
-        //shop = new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 1500, 1250, 1);
+        m_shopitems = new ArrayList<Shop>();
+        m_shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), 910, 1300, 1));
+        m_shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_shop_buton), 1040, 1300, 2));
+        m_shopitems.add(new Shop(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower_shop_button), 1170, 1300, 3));
+
 
         // creates array list for popup menue
-        mypopupmenus = new ArrayList<MyPopUpMenu>();
+        m_mypopupmenus = new ArrayList<MyPopUpMenu>();
 
         // creates array list for monsters
-        monster = new ArrayList<Monster>();
+        m_monster = new ArrayList<Monster>();
         // starts calculating the time the first monster spawns
-        monsterStartTime = System.nanoTime();
+        m_monsterStartTime = System.nanoTime();
 
         mIcons = new ArrayList<Start_Monster_Wave_Icon>();
         mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
 
-        tower = new ArrayList<Tower>();
-        towershot = new ArrayList<TowerShot>();
-        shotTimer = new long [100];
+        m_tower = new ArrayList<Tower>();
+        m_towershot = new ArrayList<TowerShot>();
+        m_shotTimer = new long [250];
 
         player = new Player();
 
         //we can safely start the game loop
-        thread.setRunning(true);
-        thread.start();
+        m_thread.setRunning(true);
+        m_thread.start();
 
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event)
+    public boolean onTouchEvent(MotionEvent a_event)
     {
-        int eventX = (int)event.getX();
-        int eventY = (int)event.getY();
-        int second_press_Spot_num = -1;
-
-
-        // This is to stop ConcurrentModificationExceptions
-        //ArrayList<Tower> ttemp = new ArrayList<Tower>();
+        int eventX = (int)a_event.getX();
+        int eventY = (int)a_event.getY();
 
 
         eventX = getXcoord(eventX);
@@ -351,23 +338,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         //System.out.println("Width of shop item");
        // System.out.println(shop.getWidth());
 
-        /*
-        for (Shop s: shopitems){
-           int shopitemx = s.getX();
-           int shopitemy = s.getY();
-
-            System.out.println(getXcoord(shopitemx));
-            System.out.println(getYcoord(shopitemy));
-        }
-        */
-
         // this gets the spot number only for the second click and holds it
-        if (!is_it_first_click){
-            second_press_Spot_num = currentroom[eventY][eventX];
+        if (!m_is_it_first_click){
+            m_second_press_Spot_num = m_currentroom[eventY][eventX];
 
         }
         else{
-            spot_number = currentroom[eventY][eventX];
+            m_spot_number = m_currentroom[eventY][eventX];
             first_pressX = eventX;
             first_pressY = eventY;
         }
@@ -376,84 +353,286 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         // this switch statement will check what number is in the grid the person clicked on
         // means its their second click
         // also move hero
-        if (!is_it_first_click){
+
+        // if its true then it was second button press
+        if(second_ButtonPress(eventX, eventY)){
+            return super.onTouchEvent(a_event);
+        }
+
+        // this is for upgrade and selling towers i guess
+        // also could be for clicking on monster/ tower and seeing their stats
+
+        first_ButtonPress(eventX, eventY);
+
+        return super.onTouchEvent(a_event);
+    }
+
+    public void first_ButtonPress(int a_eventX, int a_eventY){
+        if (m_is_it_first_click){
+
+            // move hero until deslected
+            if(heroselected && m_currentroom[a_eventY][a_eventX] != 7){
+                if(m_infiity){
+                    // if the person didnt reclick the button to deselect hero
+                    if(m_currentroom[a_eventY][a_eventX] != 7){
+
+                        // there is only 1 hero so
+                        m_hero.get(0).move_to( a_eventX, a_eventY);
+                    }
+                }
+
+            }
+            else{
+                switch(m_spot_number){
+
+                    // means probably clicked on the start wave icon thing
+                    case 1:
+                        // if there are icons stored in the array, meaning that they are out and able to click on
+                        if(mIcons.size() > 0){
+
+                            for(Start_Monster_Wave_Icon i: mIcons){
+                                if(getXcoord(i.getX()) == first_pressX && getYcoord(i.getY()) == first_pressY){
+                                    mIcons.remove(i);
+                                }
+                            }
+
+                        }
+                        break;
+                    // tower type 1
+                    case 2:
+                        m_is_it_first_click = false;
+                        break;
+                    // tower type 2
+                    case 3:
+                        m_is_it_first_click = false;
+                        break;
+                    // tower type 3
+                    case 4:
+                        m_is_it_first_click = false;
+                        break;
+                    case 6:
+
+                        // then add popup menu
+                        m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.in_game_menu)));
+
+                        m_paused = true;
+                        // pause the thread
+                        //thread.pause_unpause(true);
+
+
+
+                        m_is_it_first_click = false;
+                        break;
+                    case 7:
+                        // every time hero hits a monster gains experience
+                        // show text showing the heros stats
+                        if (m_infiity){
+                            if(!heroselected){
+                                heroselected = true;
+                            }
+                            else{
+                                heroselected = false;
+                            }
+
+                            m_is_it_first_click = false;
+                        }
+
+                        break;
+                    // for tower type 1
+                    case 11:
+                        // different pop ups for tower lvl 1-4;
+                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                            case 1:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_sniper_lvl_1)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 2:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl2)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 3:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl3)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 4:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl4)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                        }
+
+                        m_is_it_first_click = false;
+                        break;
+                    // for tower type 2
+                    case 12:
+
+                        // different pop ups for tower lvl 1-4;
+                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                            case 1:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl1)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 2:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl2)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 3:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl3)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 4:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl4)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                        }
+
+                        m_is_it_first_click = false;
+                        break;
+                    // for tower type 3
+                    case 13:
+
+                        // different pop ups for tower lvl 1-4;
+                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
+                            case 1:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl1)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 2:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl2)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 3:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl3)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                            case 4:
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl4)));
+                                // will only draw if popup is true dont think you need this
+                                //PopsUpIsUp = true;
+
+                                m_is_it_first_click = false;
+                                break;
+                        }
+
+                        m_is_it_first_click = false;
+                        break;
+                }
+            }
+
+        }
+    }
+
+    public boolean second_ButtonPress(int a_eventX, int a_eventY){
+        if (!m_is_it_first_click){
 
             // if the popup menue has something in it
-            if(mypopupmenus.size() > 0){
+            if(m_mypopupmenus.size() > 0){
                 // if the next click is the same location as the sell button
-                if(paused){
+                if(m_paused){
                     // means they pressed the exit button
-                    if((eventX == 9 || eventX == 10 || eventX == 11) && eventY == 4){
+                    if((a_eventX == 9 || a_eventX == 10 || a_eventX == 11) && a_eventY == 4){
                         // go back to homescreen
                         //thread.pause_unpause(true);
-                        Intent intent = new Intent(mContext, HomeScreen.class);
-                        mContext.startActivity(intent);
+                        Intent intent = new Intent(m_Context, HomeScreen.class);
+                        m_Context.startActivity(intent);
                     }
                     // means they pressed the play button so continue on
-                    else if((eventX == 9 || eventX == 10 || eventX == 11) && eventY == 5){
-                        paused = false;
+                    else if((a_eventX == 9 || a_eventX == 10 || a_eventX == 11) && a_eventY == 5){
+                        m_paused = false;
                         //thread.pause_unpause(false);
-                        spot_number = -1;
+                        m_spot_number = -1;
                     }
                     else{
 
                     }
 
                 }
-                else if(eventX == 9 && eventY == 6){
+                else if(a_eventX == 9 && a_eventY == 6){
 
-                    for(Tower t: tower){
+                    for(Tower t: m_tower){
                         if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
                             player.AddMoney(t.getSell_cost());
-                            tower.remove(t);
+                            m_tower.remove(t);
                             // then remove from the map itself
-                            currentroom[first_pressY][first_pressX] = 0;
+                            m_currentroom[first_pressY][first_pressX] = 0;
 
-                            spot_number = -1;
+                            m_spot_number = -1;
                             break;
                         }
                         else{
-                            spot_number = -1;
+                            m_spot_number = -1;
                         }
                     }
                 }
                 // upgrade tower
-                else if(eventX == 12 && eventY == 6){
-                    for(Tower t: tower){
+                else if(a_eventX == 12 && a_eventY == 6){
+                    for(Tower t: m_tower){
                         if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
                             // check to see if player has the money to upgrade
                             if(player.GetMoney() >= t.getUpgrade_cost()){
                                 player.SubMoney(t.getUpgrade_cost());
                                 t.upgrade_tower();
-                                spot_number = -1;
+                                m_spot_number = -1;
                             }
                             // you dont have the money give an error
                             else{
                                 // make error true to start the popup timmer
-                                Error = true;
-                                errorStartTime = System.nanoTime();
-                                spot_number = -1;
+                                m_Error = true;
+                                m_errorStartTime = System.nanoTime();
+                                m_spot_number = -1;
                             }
 
                         }
                         // didnt click on the upgrade button
                         else{
-                            spot_number = -1;
+                            m_spot_number = -1;
                         }
                     }
                 }
                 else{
-                        spot_number = -1;
+                    m_spot_number = -1;
 
                 }
             }
             if(heroselected){
-                if(infiity){
+                if(m_infiity){
                     // if the person didnt reclick the button to deselect hero
-                    if(currentroom[eventY][eventX] != 7){
+                    if(m_currentroom[a_eventY][a_eventX] != 7){
 
                         // there is only 1 hero so
-                        m_hero.get(0).move_to( eventX, eventY);
+                        m_hero.get(0).move_to( a_eventX, a_eventY);
                     }
                     else{
                         heroselected = false;
@@ -461,7 +640,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 }
             }
             else{
-                switch(spot_number){
+                switch(m_spot_number){
 
                     // blank space
                     case 0:
@@ -473,19 +652,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     // shop item 1
                     case 2:
                         // only add tower if the spot is a 0 meaning blank space
-                        if(second_press_Spot_num == 0){
+                        if(m_second_press_Spot_num == 0){
 
                             // check to see if player has enough money
                             if(player.GetMoney() >= 5 ){
 
                                 //ttemp.add((new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1)));
-                                tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertower), (eventX * 130), (eventY * 130), 1));
+                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertower), (a_eventX * 130), (a_eventY * 130), 1));
 
                                 // this makes the empty spot a tower 1 spot now by putting replacing 0 with 11
-                                currentroom[eventY][eventX] = 11;
+                                m_currentroom[a_eventY][a_eventX] = 11;
 
                                 // reset first button click
-                                spot_number = -1;
+                                m_spot_number = -1;
 
                                 player.SubMoney(5);
 
@@ -494,31 +673,31 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             else{
 
                                 // make error true to start the popup timmer
-                                Error = true;
-                                errorStartTime = System.nanoTime();
+                                m_Error = true;
+                                m_errorStartTime = System.nanoTime();
                             }
 
                         }
 
 
-                        is_it_first_click = true;
+                        m_is_it_first_click = true;
                         break;
                     // shop item 2
                     case 3:
 
                         // only add tower if the spot is a 0 meaning blank space
-                        if(second_press_Spot_num == 0){
+                        if(m_second_press_Spot_num == 0){
 
                             // check to see if player has enough money
                             if(player.GetMoney() >= 15 ){
 
-                                tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower), (eventX * 130), (eventY * 130), 2));
+                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower), (a_eventX * 130), (a_eventY * 130), 2));
 
                                 // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
-                                currentroom[eventY][eventX] = 12;
+                                m_currentroom[a_eventY][a_eventX] = 12;
 
                                 // reset first button click
-                                spot_number = -1;
+                                m_spot_number = -1;
 
                                 player.SubMoney(15);
 
@@ -527,30 +706,30 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             else{
 
                                 // make error true to start the popup timmer
-                                Error = true;
-                                errorStartTime = System.nanoTime();
+                                m_Error = true;
+                                m_errorStartTime = System.nanoTime();
                             }
 
                         }
 
-                        is_it_first_click = true;
+                        m_is_it_first_click = true;
                         break;
                     // shop item 3
                     case 4:
 
                         // only add tower if the spot is a 0 meaning blank space
-                        if(second_press_Spot_num == 0){
+                        if(m_second_press_Spot_num == 0){
 
                             // check to see if player has enough money
                             if(player.GetMoney() >= 25 ){
 
-                                tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower), (eventX * 130), (eventY * 130), 3));
+                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower), (a_eventX * 130), (a_eventY * 130), 3));
 
                                 // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
-                                currentroom[eventY][eventX] = 13;
+                                m_currentroom[a_eventY][a_eventX] = 13;
 
                                 // reset first button click
-                                spot_number = -1;
+                                m_spot_number = -1;
 
                                 player.SubMoney(25);
 
@@ -559,13 +738,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             else{
 
                                 // make error true to start the popup timmer
-                                Error = true;
-                                errorStartTime = System.nanoTime();
+                                m_Error = true;
+                                m_errorStartTime = System.nanoTime();
                             }
 
                         }
 
-                        is_it_first_click = true;
+                        m_is_it_first_click = true;
 
                         break;
                     // shop item 4
@@ -574,7 +753,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     // hero movement
                     case 7:
                         heroselected = false;
-                        is_it_first_click = true;
+                        m_is_it_first_click = true;
 
                         break;
                     // tower 1
@@ -596,245 +775,57 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // adds everything that was in the temp into the actual array
             //tower.addAll(ttemp);
 
-            for(int i = 0; i <mypopupmenus.size(); i++){
+            for(int i = 0; i <m_mypopupmenus.size(); i++){
 
                 // remove monster when it gets off screen, should also deplete hp
-                mypopupmenus.remove(i);
+                m_mypopupmenus.remove(i);
                 //System.out.println("Removing monster");
 
             }
 
-            is_it_first_click = true;
-            return super.onTouchEvent(event);
+            m_is_it_first_click = true;
+
+            return true;
+            //return super.onTouchEvent(event);
         }
-
-        // this is for upgrade and selling towers i guess
-        // also could be for clicking on monster/ tower and seeing their stats
-        if (is_it_first_click){
-
-            // move hero until deslected
-            if(heroselected && currentroom[eventY][eventX] != 7){
-                    if(infiity){
-                        // if the person didnt reclick the button to deselect hero
-                        if(currentroom[eventY][eventX] != 7){
-
-                            // there is only 1 hero so
-                            m_hero.get(0).move_to( eventX, eventY);
-                        }
-                    }
-
-            }
-            else{
-                switch(spot_number){
-
-                    // means probably clicked on the start wave icon thing
-                    case 1:
-                        // if there are icons stored in the array, meaning that they are out and able to click on
-                        if(mIcons.size() > 0){
-
-                            for(Start_Monster_Wave_Icon i: mIcons){
-                                if(getXcoord(i.getX()) == first_pressX && getYcoord(i.getY()) == first_pressY){
-                                    mIcons.remove(i);
-                                }
-                            }
-
-                        }
-                        break;
-                    // tower type 1
-                    case 2:
-                        is_it_first_click = false;
-                        break;
-                    // tower type 2
-                    case 3:
-                        is_it_first_click = false;
-                        break;
-                    // tower type 3
-                    case 4:
-                        is_it_first_click = false;
-                        break;
-                    case 6:
-
-                        // then add popup menu
-                        mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.in_game_menu)));
-
-                        paused = true;
-                        // pause the thread
-                        //thread.pause_unpause(true);
-
-
-
-                        is_it_first_click = false;
-                        break;
-                    case 7:
-                        // every time hero hits a monster gains experience
-                        // show text showing the heros stats
-                        if (infiity){
-                            if(!heroselected){
-                                heroselected = true;
-                            }
-                            else{
-                                heroselected = false;
-                            }
-
-                            is_it_first_click = false;
-                        }
-
-                        break;
-                    // for tower type 1
-                    case 11:
-                        // different pop ups for tower lvl 1-4;
-                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
-                            case 1:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_sniper_lvl_1)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 2:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl2)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 3:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl3)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 4:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl4)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                        }
-
-                        is_it_first_click = false;
-                        break;
-                    // for tower type 2
-                    case 12:
-
-                        // different pop ups for tower lvl 1-4;
-                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
-                            case 1:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl1)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 2:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl2)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 3:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl3)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 4:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl4)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                        }
-
-                        is_it_first_click = false;
-                        break;
-                    // for tower type 3
-                    case 13:
-
-                        // different pop ups for tower lvl 1-4;
-                        switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
-                            case 1:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl1)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 2:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl2)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 3:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl3)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                            case 4:
-                                mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl4)));
-                                // will only draw if popup is true dont think you need this
-                                //PopsUpIsUp = true;
-
-                                is_it_first_click = false;
-                                break;
-                        }
-
-                        is_it_first_click = false;
-                        break;
-                }
-            }
-
+        else{
+            return false;
         }
-
-        //is_it_first_click = false;
-        // this gets the spot number for the first click and holds it
-        //spot_number = currentroom[eventY][eventX];
-
-        return super.onTouchEvent(event);
     }
 
 
     public void update()
     {
-        if(!paused){
-            room1.update();
+        if(!m_paused){
+            m_room.update();
 
             // if player has less then 0 health he is dead
             if (player.GetHealth() <= 0){
                 Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
                 intent.putExtra("Health", "-1");
-                mContext.startActivity(intent);
+                m_Context.startActivity(intent);
             }
 
             // if game_done is true and there is nothing in monster array wait 5 seconds then go to end screen
             // set timer and start the 5 second wait
-            if(game_done && monster.size() == 0 && !end_timer){
-                fiveSeconds = System.nanoTime();
-                end_timer = true;
+            if(m_game_done && m_monster.size() == 0 && !m_end_timer){
+                m_fiveSeconds = System.nanoTime();
+                m_end_timer = true;
             }
             // if all the requirements are ment go to the end screen
-            if(game_done && monster.size() == 0 && end_timer){
-                if(TimeUnit.SECONDS.convert(System.nanoTime() - fiveSeconds, TimeUnit.NANOSECONDS) >= 5 ){
+            if(m_game_done && m_monster.size() == 0 && m_end_timer){
+                if(TimeUnit.SECONDS.convert(System.nanoTime() - m_fiveSeconds, TimeUnit.NANOSECONDS) >= 5 ){
 
                     //Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
                     Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
                     intent.putExtra("Health", Integer.toBinaryString(player.GetHealth()));
-                    mContext.startActivity(intent);
+                    m_Context.startActivity(intent);
 
                 }
             }
 
             // adding the monster on timer
-            long monsterElapsed = (System.nanoTime()-monsterStartTime) / 1000000;
+            long monsterElapsed = (System.nanoTime()-m_monsterStartTime) / 1000000;
 
             //if(!wavesalldone){
             // if (!nextWaveCountdown){
@@ -842,20 +833,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 if(monsterElapsed >(875)){
 
                     //if(!nextWaveCountdown){
-                    if (!wavesalldone){
+                    if (!m_wavesalldone){
 
 
                         //System.out.println("making monster!!");
-                        if(!addmonster(wavenumber - 1)){
+                        if(!addmonster(m_wavenumber - 1)){
 
-                            wavenumber++;
+                            m_wavenumber++;
+                            knight_attack_animation_start = false;
                             // next wave will start so start countdown from 8 seconds
                             //nextWaveCountdown = true;
                             //countdown_8sec = System.nanoTime();
 
-                            if (infiity){
-                                if(wavenumber >= 13){
-                                    monsterwaves = mwaves.infinite(wavenumber);
+                            if (m_infiity){
+                                if(m_wavenumber >= 13){
+                                    m_monster_wavesArray = m_monster_waves.infinite();
                                 }
 
                             }
@@ -865,7 +857,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                     }
 
                     // reset timer/ wave
-                    monsterStartTime = System.nanoTime();
+                    m_monsterStartTime = System.nanoTime();
                 }
             }
             // }
@@ -885,7 +877,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // tower attack animation and update stuff
             tower_Attack();
 
-            if(infiity){
+            if(m_infiity){
                 // This is for hero attack aimation stuff
                     hero_Attack();
 
@@ -898,7 +890,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
 
             // update hero
-            if(infiity){
+            if(m_infiity){
                 for(int i = 0; i <m_hero.size(); i++){
                     m_hero.get(i).update();
                 }
@@ -906,29 +898,29 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
             // update the monsters
-            for(int i = 0; i <monster.size(); i++){
+            for(int i = 0; i < m_monster.size(); i++){
 
                 // update monster
-                monster.get(i).update();
+                m_monster.get(i).update();
 
                 // remove monster when it gets off screen, should also deplete hp
                 //if(monster.get(i).getX()<-100){
-                if(monster.get(i).getX() > (WIDTH)){
+                if(m_monster.get(i).getX() > (WIDTH)){
 
                     // removes other tower shots
-                    for(int y = 0; y < towershot.size(); y++){
+                    for(int y = 0; y < m_towershot.size(); y++){
 
 
-                        if(i == towershot.get(y).getMonsterID()){
+                        if(i == m_towershot.get(y).getMonsterID()){
 
-                            towershot.remove(y);
+                            m_towershot.remove(y);
                         }
 
                     }
 
-                    player.SetHealth(monster.get(i).getPower());
+                    player.SetHealth(m_monster.get(i).getPower());
 
-                    monster.remove(i);
+                    m_monster.remove(i);
                     System.out.println("Removing monster");
                     break;
                 }
@@ -949,11 +941,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             int hero_y = m_hero.get(0).getY();
         if (!m_hero.get(0).isMoving()){
 
-            for(int i = 0; i < monster.size(); i++){
+            for(int i = 0; i < m_monster.size(); i++){
 
                 // gets monster x and y coords
-                int monster_x = monster.get(i).getX();
-                int monster_y = monster.get(i).getY();
+                int monster_x = m_monster.get(i).getX();
+                int monster_y = m_monster.get(i).getY();
 
                 if(attack_timer == 0){
                     if(abs(monster_x - hero_x) + abs(monster_y - hero_y) <= m_hero.get(0).getRange() ){
@@ -970,13 +962,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                                 break;
                             // archer
                             case 2:
-                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource(getResources(), R.drawable.attack_archer), hero_x, hero_y, 2, m_hero.get(0).getDamage(), monster.get(i).getID(), 2));
+                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource(getResources(), R.drawable.attack_archer), hero_x, hero_y, 2, m_hero.get(0).getDamage(), m_monster.get(i).getID(), 2));
                                 System.out.println("Creating Heroattack: " + i);
                                 attack_timer = System.nanoTime();
                                 break;
                             // mage
                             case 3:
-                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource(getResources(), R.drawable.attack_wizard), hero_x, hero_y, 2,  m_hero.get(0).getDamage(), monster.get(i).getID(), 3));
+                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource(getResources(), R.drawable.attack_wizard), hero_x, hero_y, 2,  m_hero.get(0).getDamage(), m_monster.get(i).getID(), 3));
                                 System.out.println("Creating Heroattack: " + i);
                                 attack_timer = System.nanoTime();
                                 break;
@@ -996,6 +988,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
 
         }
+        else{
+            attack_timer = 0;
+        }
+
 
 
         // now update the attack and store monster and attack to be deleted later
@@ -1006,27 +1002,27 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         for(int i = 0; i < m_hero_attack.size(); i++){
 
-            for (int j = 0; j < monster.size(); j++){
+            for (int j = 0; j < m_monster.size(); j++){
 
-                if(m_hero_attack.get(i).getMonsterID() == monster.get(j).getMonsterID()){
-                    int monster_x = monster.get(j).getX();
-                    int monster_y = monster.get(j).getY();
+                if(m_hero_attack.get(i).getMonsterID() == m_monster.get(j).getMonsterID()){
+                    int monster_x = m_monster.get(j).getX();
+                    int monster_y = m_monster.get(j).getY();
 
                     m_hero_attack.get(i).update(monster_x, monster_y);
 
                     // checking to see if attack hit
-                    if(collision(m_hero_attack.get(i), monster.get(j))){
+                    if(collision(m_hero_attack.get(i), m_monster.get(j))){
 
                         // sets subtracts bullter damage to monster health
-                        monster.get(j).setHealth(m_hero_attack.get(i).getPower());
+                        m_monster.get(j).setHealth(m_hero_attack.get(i).getPower());
 
                         // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
-                        if(monster.get(j).getHealth() <= 0){
+                        if(m_monster.get(j).getHealth() <= 0){
 
                             // gain 2 exp for monster kill
                             m_hero.get(0).gainExp(2);
 
-                            player.AddMoney(monster.get(j).GetMoney());
+                            player.AddMoney(m_monster.get(j).GetMoney());
 
                             // removes other tower shots
                             for(int y = 0; y < m_hero_attack.size(); y++){
@@ -1045,22 +1041,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                             }
 
                             // removes other tower shots
-                            for(int y = 0; y < towershot.size(); y++){
+                            for(int y = 0; y < m_towershot.size(); y++){
 
                                 // this is so the original shot isnt removed before checking all shots
-                                if(y != i){
-                                    if(towershot.get(y).getMonsterID() == m_hero_attack.get(i).getMonsterID()){
+                                    if(m_towershot.get(y).getMonsterID() == m_hero_attack.get(i).getMonsterID()){
 
                                         //towershot.remove(y);
-                                        tstemplist.add(towershot.get(y));
+                                        tstemplist.add(m_towershot.get(y));
                                         System.out.println("Removing tower shot: " + y);
 
                                     }
-                                }
+
 
                             }
 
-                            mtemplist.add(monster.get(j));
+                            mtemplist.add(m_monster.get(j));
                             //monster.remove(k);
 
                             // remove this last becuase you still need its components before hand
@@ -1092,53 +1087,52 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         m_hero_attack.removeAll(hatemplist);
 
         // remove all shots in monster temp list
-        monster.removeAll(mtemplist);
+        m_monster.removeAll(mtemplist);
 
-        towershot.removeAll(tstemplist);
+        m_towershot.removeAll(tstemplist);
 
 
     }
 
-    public void  getKnightsdamage(int hero_x, int hero_y){
+    public void  getKnightsdamage(int a_hero_x, int a_hero_y){
 
         // now update the attack and store monster and attack to be deleted later
         ArrayList<Monster> mtemplist = new ArrayList<Monster>();
         ArrayList<TowerShot> tstemplist = new ArrayList<TowerShot>();
 
-        for(int i = 0; i < monster.size(); i++){
-            int monster_x = monster.get(i).getX();
-            int monster_y = monster.get(i).getY();
+        for(int i = 0; i < m_monster.size(); i++){
+            int m_monster_x = m_monster.get(i).getX();
+            int m_monster_y = m_monster.get(i).getY();
 
-            // monster is in range
-            if(abs(monster_x - hero_x) + abs(monster_y - hero_y) <= m_hero.get(0).getRange() ){
+            // m_monster is in range
+            if(abs(m_monster_x - a_hero_x) + abs(m_monster_y - a_hero_y) <= m_hero.get(0).getRange() ){
 
-                // sets subtracts bullter damage to monster health
-                monster.get(i).setHealth(m_hero.get(0).getDamage());
+                // sets subtracts bullter damage to m_monster health
+                m_monster.get(i).setHealth(m_hero.get(0).getDamage());
 
-                if(monster.get(i).getHealth() <= 0){
+                if(m_monster.get(i).getHealth() <= 0){
 
-                    // gain 2 exp for monster kill
+                    // gain 2 exp for m_monster kill
                     m_hero.get(0).gainExp(2);
 
-                    player.AddMoney(monster.get(i).GetMoney());
+                    player.AddMoney(m_monster.get(i).GetMoney());
 
                     // removes other tower shots
-                    for(int y = 0; y < towershot.size(); y++){
+                    for(int y = 0; y < m_towershot.size(); y++){
 
                         // this is so the original shot isnt removed before checking all shots
-                        if(y != i){
-                            if(towershot.get(y).getMonsterID() == monster.get(i).getMonsterID()){
+
+                            if(m_towershot.get(y).getMonsterID() == m_monster.get(i).getMonsterID()){
 
                                 //towershot.remove(y);
-                                tstemplist.add(towershot.get(y));
+                                tstemplist.add(m_towershot.get(y));
                                 System.out.println("Removing tower shot: " + y);
 
                             }
-                        }
 
                     }
 
-                    mtemplist.add(monster.get(i));
+                    mtemplist.add(m_monster.get(i));
                     //monster.remove(k);
 
                 }
@@ -1151,43 +1145,43 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
 
         // remove all shots in monster temp list
-        monster.removeAll(mtemplist);
+        m_monster.removeAll(mtemplist);
 
         // remove tower shots
-        towershot.removeAll(tstemplist);
+        m_towershot.removeAll(tstemplist);
     }
 
     public void tower_Attack(){
         // This is where we will have to check to see if the tower will shoot.. probably make this into a seperate function with everything else
         // need to check every monster and see if it is within any tower range
-        for(int i = 0; i < tower.size(); i++){
-            int tower_x = tower.get(i).getX();
-            int tower_y = tower.get(i).getY();
-            double tower_range = tower.get(i).getRange();
-            int tower_type = tower.get(i).getTowerType();
+        for(int i = 0; i < m_tower.size(); i++){
+            int tower_x = m_tower.get(i).getX();
+            int tower_y = m_tower.get(i).getY();
+            double tower_range = m_tower.get(i).getRange();
+            int tower_type = m_tower.get(i).getTowerType();
 
 
             // searching for monster in range
-            for(int j = 0; j < monster.size(); j++){
-                int monster_x = monster.get(j).getX();
-                int monster_y = monster.get(j).getY();
+            for(int j = 0; j < m_monster.size(); j++){
+                int monster_x = m_monster.get(j).getX();
+                int monster_y = m_monster.get(j).getY();
 
 
                 //long timeElapsed = (System.nanoTime() - countdown_8sec);
                 // checks to see if the tower has already shot something 0 means it has not
-                if (shotTimer[i] == 0){
+                if (m_shotTimer[i] == 0){
 
                     switch(tower_type){
                         // sniper tower
                         case 1:
                             // means the shot is in range
                             if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 1));
+                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), m_tower.get(i).getX(), m_tower.get(i).getY(), 2, m_tower.get(i).getPower(), m_monster.get(j).getID(), 1));
                                 System.out.println("Creating tower shot: " + i);
                                 // break afer wards for first monster
 
 
-                                shotTimer[i] = System.nanoTime();
+                                m_shotTimer[i] = System.nanoTime();
                                 break;
                             }
                             break;
@@ -1195,26 +1189,26 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         case 2:
 
                             if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range){
-                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(j).getID(), 2));
+                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), m_tower.get(i).getX(), m_tower.get(i).getY(), 2, m_tower.get(i).getPower(), m_monster.get(j).getID(), 2));
 
                                 // THen check to see if a second monsterr can be shot at as well
 
-                                for(int k = 0; k < monster.size(); k++){
+                                for(int k = 0; k < m_monster.size(); k++){
 
                                     // This makes sure we arent going to shoot at the same monster the tower already has targeted
-                                    if(monster.get(k).getID() != monster.get(j).getID()) {
-                                        int monster2_x = monster.get(k).getX();
-                                        int monster2_y = monster.get(k).getY();
+                                    if(m_monster.get(k).getID() != m_monster.get(j).getID()) {
+                                        int monster2_x = m_monster.get(k).getX();
+                                        int monster2_y = m_monster.get(k).getY();
 
                                         if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y) <= tower_range){
-                                            towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), tower.get(i).getX(), tower.get(i).getY(), 2, tower.get(i).getPower(), monster.get(k).getID(), 2));
+                                            m_towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), m_tower.get(i).getX(), m_tower.get(i).getY(), 2, m_tower.get(i).getPower(), m_monster.get(k).getID(), 2));
 
-                                            shotTimer[i] = System.nanoTime();
+                                            m_shotTimer[i] = System.nanoTime();
                                             break;
                                         }
                                     }
                                 }
-                                shotTimer[i] = System.nanoTime();
+                                m_shotTimer[i] = System.nanoTime();
                                 break;
                             }
                             break;
@@ -1223,12 +1217,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                             // means the shot is in range
                             if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.ice_towr_projectile), tower.get(i).getX(), tower.get(i).getY(), 3, tower.get(i).getPower(), monster.get(j).getID(), 3));
+                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.ice_towr_projectile), m_tower.get(i).getX(), m_tower.get(i).getY(), 3, m_tower.get(i).getPower(), m_monster.get(j).getID(), 3));
                                 System.out.println("Creating tower shot: " + i);
                                 // break afer wards for first monster
 
 
-                                shotTimer[i] = System.nanoTime();
+                                m_shotTimer[i] = System.nanoTime();
                                 break;
                             }
 
@@ -1240,8 +1234,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 // check to see if the tower has already waited for its attack speed to shoot again
                 else{
 
-                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - shotTimer[i], TimeUnit.NANOSECONDS) >= tower.get(i).getAttackSpeed() ){
-                        shotTimer[i] = 0;
+                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - m_shotTimer[i], TimeUnit.NANOSECONDS) >= m_tower.get(i).getAttackSpeed() ){
+                        m_shotTimer[i] = 0;
                     }
                 }
 
@@ -1255,7 +1249,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
         // update towershot/ Removing monster and adding money to player
-        for(int i = 0; i < towershot.size(); i++){
+        for(int i = 0; i < m_towershot.size(); i++){
 
 
 
@@ -1265,41 +1259,41 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             // This case is incase the monster dies, then get rid of the tower shot following the monster
 
             // gets monster X and Y that the towershot is locked on
-            for(int k = 0; k < monster.size(); k++){
-                if(monster.get(k).getID() == towershot.get(i).getMonsterID()){
-                    int monster_x = monster.get(k).getX();
-                    int monster_y = monster.get(k).getY();
+            for(int k = 0; k < m_monster.size(); k++){
+                if(m_monster.get(k).getID() == m_towershot.get(i).getMonsterID()){
+                    int m_monster_x = m_monster.get(k).getX();
+                    int m_monster_y = m_monster.get(k).getY();
 
 
 
 
-                    towershot.get(i).update(monster_x, monster_y);
+                    m_towershot.get(i).update(m_monster_x, m_monster_y);
 
                     // means shot connected and its not an ice tower shot which is 3
-                    if(collision(towershot.get(i), monster.get(k))){
+                    if(collision(m_towershot.get(i), m_monster.get(k))){
 
-                        // sets subtracts bullter damage to monster health
-                        monster.get(k).setHealth(towershot.get(i).getPower());
+                        // sets subtracts bullter damage to m_monster health
+                        m_monster.get(k).setHealth(m_towershot.get(i).getPower());
 
-                        // if monster got hit by a slow shot slow its movement speed
-                        if(towershot.get(i).getShotType() == 3){
-                            monster.get(k).setSlow_effect();
+                        // if m_monster got hit by a slow shot slow its movement speed
+                        if(m_towershot.get(i).getShotType() == 3){
+                            m_monster.get(k).setSlow_effect();
                         }
 
-                        // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
-                        if(monster.get(k).getHealth() <= 0){
+                        // checks the m_monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
+                        if(m_monster.get(k).getHealth() <= 0){
 
-                            player.AddMoney(monster.get(k).GetMoney());
+                            player.AddMoney(m_monster.get(k).GetMoney());
 
                             // removes other tower shots
-                            for(int y = 0; y < towershot.size(); y++){
+                            for(int y = 0; y < m_towershot.size(); y++){
 
                                 // this is so the original shot isnt removed before checking all shots
                                 if(y != i){
-                                    if(towershot.get(y).getMonsterID() == towershot.get(i).getMonsterID()){
+                                    if(m_towershot.get(y).getMonsterID() == m_towershot.get(i).getMonsterID()){
 
                                         //towershot.remove(y);
-                                        tstemplist.add(towershot.get(y));
+                                        tstemplist.add(m_towershot.get(y));
                                         System.out.println("Removing tower shot: " + y);
 
                                     }
@@ -1307,29 +1301,27 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
                             }
 
-                            if(infiity){
+                            if(m_infiity){
                                 // removes other tower shots
                                 for(int y = 0; y < m_hero_attack.size(); y++){
 
                                     // this is so the original shot isnt removed before checking all shots
-                                    if(y != i){
-                                        if(m_hero_attack.get(y).getMonsterID() == m_hero_attack.get(i).getMonsterID()){
+                                        if(m_hero_attack.get(y).getMonsterID() == m_towershot.get(i).getMonsterID()){
 
                                             //towershot.remove(y);
                                             hatemplist.add(m_hero_attack.get(y));
                                             System.out.println("Removing tower shot: " + y);
 
                                         }
-                                    }
 
                                 }
                             }
 
-                            mtemplist.add(monster.get(k));
+                            mtemplist.add(m_monster.get(k));
                             //monster.remove(k);
 
                             // remove this last becuase you still need its components before hand
-                            tstemplist.add(towershot.get(i));
+                            tstemplist.add(m_towershot.get(i));
                             //towershot.remove(i);
                             //System.out.println("Removing tower shot: " + i);
 
@@ -1339,7 +1331,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                         }
                         else{
                             // remove this last becuase you still need its components before hand
-                            tstemplist.add(towershot.get(i));
+                            tstemplist.add(m_towershot.get(i));
                             //towershot.remove(i);
                             System.out.println("Removing tower shot: " + i);
                         }
@@ -1351,21 +1343,21 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
 
         // remove all tower shots now
-        towershot.removeAll(tstemplist);
+        m_towershot.removeAll(tstemplist);
 
-        if(infiity){
+        if(m_infiity){
             // remove all hero attacks
             m_hero_attack.removeAll(hatemplist);
         }
 
 
         // remove all shots in monster temp list
-        monster.removeAll(mtemplist);
+        m_monster.removeAll(mtemplist);
 
     }
 
     @Override
-    public void draw(Canvas canvas){
+    public void draw(Canvas a_canvas){
 
         String errormessage = "Insuficient Gold or";
         String errormessage2 = "Cant Place Tower There";
@@ -1377,6 +1369,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         red_paintbrush_stroke.setColor(Color.RED);
         red_paintbrush_stroke.setStyle(Paint.Style.STROKE);
         red_paintbrush_stroke.setStrokeWidth(10);
+
+        Paint Herostats = new Paint();
+        Herostats.setTextSize(86);
+        Herostats.setColor(Color.BLACK);
 
         Paint gray_paintbrush_stroke;
         gray_paintbrush_stroke = new Paint();
@@ -1403,57 +1399,64 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         error_text.setColor(Color.RED);
 
 
-        if(canvas != null){
+        if(a_canvas != null){
 
             // before scale create a saved state
-            final int savedState = canvas.save();
+            final int savedState = a_canvas.save();
 
             // draws the level or room player is playing on
-            room1.draw(canvas);
+            m_room.draw(a_canvas);
 
             // draws the towers
-            for(Tower t: tower){
-                t.draw(canvas);
+            for(Tower t: m_tower){
+                t.draw(a_canvas);
                 // draw tower radius for player to see when tower is clicked on
                 if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
-                    canvas.drawCircle(t.getX() + 65, t.getY() + 65, t.getRange(), red_paintbrush_stroke);
+                    a_canvas.drawCircle(t.getX() + 65, t.getY() + 65, t.getRange(), red_paintbrush_stroke);
                 }
 
             }
 
             // draws shop items
-            for(Shop s: shopitems){
-                s.draw(canvas);
+            for(Shop s: m_shopitems){
+                s.draw(a_canvas);
 
             }
 
             // draws hero and hero icon
-            if(infiity){
+            if(m_infiity){
 
                 for(Hero_Icon h: m_h_icon){
-                    h.draw(canvas);
+                    h.draw(a_canvas);
                 }
 
                 for(Hero h: m_hero){
-                    h.draw(canvas);
+                    h.draw(a_canvas);
 
+                    // show exp bar
                     double percentage = (double)125 / (double)h.getNeededExp();
-                    double exp_difference = h.getNeededExp() - h.getEXP();
-                    canvas.drawLine(h.getX(), h.getY(), h.getX() + (float)((exp_difference * percentage)), h.getY(), gray_paintbrush_stroke);
+                    double exp_difference = h.getEXP();
+                    a_canvas.drawLine(h.getX(), h.getY(), h.getX() + (float)((exp_difference * percentage)), h.getY(), gray_paintbrush_stroke);
 
                     if(heroselected){
-                        canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()), red_paintbrush_stroke);
+                        a_canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()), red_paintbrush_stroke);
+
+                        // while selcted see stats
+                        a_canvas.drawText("Level: " + h.getLevel(), 2000, 1290, Herostats);
+                        a_canvas.drawText("Range: " + (((h.getRange() / 130) + .5)-1), 2000, 1210, Herostats);
+                        a_canvas.drawText("Power: " + h.getDamage(), 2000, 1130, Herostats);
+                        a_canvas.drawText("AttackSp: " + (h.getAttack_speed()/1000), 2000, 1050, Herostats);
                     }
 
                     // do knight animation attack
                     if(h.getType() == 1 && attack_timer != 0 && knight_attack_animation_start){
-                            canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()), yellow_paintbrush_stroke);
-                            canvas.drawCircle(h.getX() + 55, h.getY() + 55, (h.getRange()), yellow_paintbrush_stroke);
-                            canvas.drawCircle(h.getX() + 50, h.getY() + 50, (h.getRange()), yellow_paintbrush_stroke);
-                            canvas.drawCircle(h.getX() + 35, h.getY() + 35, (h.getRange()), yellow_paintbrush_stroke);
+                            a_canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()), yellow_paintbrush_stroke);
+                            a_canvas.drawCircle(h.getX() + 55, h.getY() + 55, (h.getRange()), yellow_paintbrush_stroke);
+                            a_canvas.drawCircle(h.getX() + 50, h.getY() + 50, (h.getRange()), yellow_paintbrush_stroke);
+                            a_canvas.drawCircle(h.getX() + 35, h.getY() + 35, (h.getRange()), yellow_paintbrush_stroke);
                     }
                     else{
-                        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS) >= (m_hero.get(0).getAttack_speed() / 4)){
+                        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS) >= 100){
                             knight_attack_animation_start = false;
                         }
                     }
@@ -1463,99 +1466,99 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
             // draws the monsters
-            for(Monster m: monster){
-                m.draw(canvas);
+            for(Monster m: m_monster){
+                m.draw(a_canvas);
 
                 // the line is 125 pixels long
                 double percentage = (double)125 / (double)m.getStartHealth();
                 // calculates the the missing health
                 double health_difference = m.getStartHealth() - m.getHealth();
-                canvas.drawLine(m.getX(), m.getY(), m.getX() + (float)(125 - (health_difference * percentage)), m.getY(), red_paintbrush_stroke);
-                //canvas.drawLine(m.getX(), m.getY() + 130, m.getX() + 125, m.getY() + 130, red_paintbrush_stroke);
-                //canvas.drawLine();
+                a_canvas.drawLine(m.getX(), m.getY(), m.getX() + (float)(125 - (health_difference * percentage)), m.getY(), red_paintbrush_stroke);
+                //a_canvas.drawLine(m.getX(), m.getY() + 130, m.getX() + 125, m.getY() + 130, red_paintbrush_stroke);
+                //a_canvas.drawLine();
             }
 
             // draws towershot
-            for (TowerShot ts: towershot){
-                ts.draw(canvas);
+            for (TowerShot ts: m_towershot){
+                ts.draw(a_canvas);
             }
 
             // draws hero attacks
-            if(infiity){
+            if(m_infiity){
                 for(HeroAttack a: m_hero_attack){
-                    a.draw(canvas);
+                    a.draw(a_canvas);
                 }
             }
 
            // if(PopsUpIsUp == true){
-                for(MyPopUpMenu mp: mypopupmenus){
-                    mp.draw(canvas);
+                for(MyPopUpMenu mp: m_mypopupmenus){
+                    mp.draw(a_canvas);
                 }
            // }
 
             for(Start_Monster_Wave_Icon i: mIcons){
-                i.draw(canvas);
+                i.draw(a_canvas);
             }
 
             // Error Message For buying things from shop
-            if(Error){
-                canvas.drawText(errormessage, 750, 770, error_text);
-                canvas.drawText(errormessage2, 700, 900, error_text);
+            if(m_Error){
+                a_canvas.drawText(errormessage, 750, 770, error_text);
+                a_canvas.drawText(errormessage2, 700, 900, error_text);
             }
             // After seconds make the message dissapear
-            if(TimeUnit.SECONDS.convert(System.nanoTime() - errorStartTime, TimeUnit.NANOSECONDS) >= 3){
+            if(TimeUnit.SECONDS.convert(System.nanoTime() - m_errorStartTime, TimeUnit.NANOSECONDS) >= 3){
 
-                Error = false;
+                m_Error = false;
             }
 
             //Money Text/ Bottom Left of Screen *****************************
-            canvas.drawText("" + player.GetHealth(), 135, 1420, health_text);
-            canvas.drawText("" + player.GetMoney(), 395, 1420, money_text);
+            a_canvas.drawText("" + player.GetHealth(), 135, 1420, health_text);
+            a_canvas.drawText("" + player.GetMoney(), 395, 1420, money_text);
 
             // draw the wave number into the bottom right by the shop
-            canvas.drawText("Wave Number: " + wavenumber, 1300,1420, money_text );
+            a_canvas.drawText("Wave Number: " + m_wavenumber, 1300,1420, money_text );
 
 
 /*
             // debugging perpuses horizontal grid lines( up and down lines)
             //for(int i = 0; i < 23; i++){
             for(int i = 0; i < 21; i++){
-                //canvas.drawLine((float)(i * 120), 0, (float)(i * 120), HEIGHT, red_paintbrush_stroke);
+                //a_canvas.drawLine((float)(i * 120), 0, (float)(i * 120), HEIGHT, red_paintbrush_stroke);
                 // doing this bottom one because the images are about 130 by 130
-                canvas.drawLine((float)(i * 130), 0, (float)(i * 130), HEIGHT, red_paintbrush_stroke);
+                a_canvas.drawLine((float)(i * 130), 0, (float)(i * 130), HEIGHT, red_paintbrush_stroke);
             }
 
             // vertical grid lines
             for(int i = 0; i < 14; i++){
-                //canvas.drawLine( 0 , (float)(i * 112.5), WIDTH, (float)(i * 112.5), red_paintbrush_stroke);
+                //a_canvas.drawLine( 0 , (float)(i * 112.5), WIDTH, (float)(i * 112.5), red_paintbrush_stroke);
                 // doing this bottom one because the images are about 130 by 130
-                canvas.drawLine( 0 , (float)(i * 130), WIDTH, (float)(i * 130), red_paintbrush_stroke);
+                a_canvas.drawLine( 0 , (float)(i * 130), WIDTH, (float)(i * 130), red_paintbrush_stroke);
             }
 */
 
 
-            canvas.restoreToCount(savedState);
+            a_canvas.restoreToCount(savedState);
         }
     }
 
-    public int getXcoord(int x){
+    public int getXcoord(int a_x){
         //return Math.round(x / 120);
         // doing this bottom one because images are 130 by 130
-        return Math.round(x / 130);
+        return Math.round(a_x / 130);
     }
 
-    public int getYcoord(int y){
+    public int getYcoord(int a_y){
         //double newy = Math.round(y/119.5);
         // doing this bottom one because images are 130 by 130
-        double newy = Math.round(y/130);
+        double newy = Math.round(a_y/130);
         int thisy = (int) newy;
         return thisy;
     }
 
     // the collision class, checks to see if tower shots hit monster
-    public boolean collision(GameObject a, GameObject b){
+    public boolean collision(GameObject a_a, GameObject a_b){
 
-        if(Rect.intersects(a.getRectangle(), b.getRectangle())){
+        if(Rect.intersects(a_a.getRectangle(), a_b.getRectangle())){
 
             return true;
         }
@@ -1565,123 +1568,123 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
     // return true if monster is in the array, return false if its not
-    public boolean addmonster(int wavenumber){
+    public boolean addmonster(int a_wavenumber){
 
         // is used for infinity mode, when the wave goes over 13 waves, the limit is turned on
         int infinityFactor = 0;
         int hp_mult = 1;
-       if(infiity){
-           if( wavenumber / 7 >= 2){
-               hp_mult = wavenumber / 7;
+       if(m_infiity){
+           if( a_wavenumber / 7 >= 2){
+               hp_mult = a_wavenumber / 7;
            }
            // >= 12 because it starts at 0 so wave 12 is wave 13
-           if(wavenumber >= 12){
-               infinityFactor = wavenumber;
+           if(a_wavenumber >= 12){
+               infinityFactor = a_wavenumber;
            }
        }
-        if(wavenumber + 1 > monsterwaves.length && !infiity){
-            wavesalldone = true;
+        if(a_wavenumber + 1 > m_monster_wavesArray.length && !m_infiity){
+            m_wavesalldone = true;
             return false;
         }
         else{
-            for(int x = 0; x < monsterwaves[wavenumber - infinityFactor].length; x++){
-                switch(monsterwaves[wavenumber - infinityFactor][x]){
+            for(int x = 0; x < m_monster_wavesArray[a_wavenumber - infinityFactor].length; x++){
+                switch(m_monster_wavesArray[a_wavenumber - infinityFactor][x]){
                     // means already done it
                     case 0:
                         break;
                     //red dot
                     case 1:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_01_red_dot),
-                                -130 , 520, 125, 128, 8, currentroom, 1, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_01_red_dot),
+                                -130 , 520, 125, 128, 8, m_currentroom, 1, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // green blob
                     case 2:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_02_green_blob),
-                                -130 , 520, 125, 128, 8, currentroom, 2, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_02_green_blob),
+                                -130 , 520, 125, 128, 8, m_currentroom, 2, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // mouse
                     case 3:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_03_mouse),
-                                -130 , 520, 125, 128, 8, currentroom, 3, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_03_mouse),
+                                -130 , 520, 125, 128, 8, m_currentroom, 3, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // bannana man
                     case 4:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_04_bannana_man),
-                                -130 , 520, 125, 128, 8, currentroom, 4, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_04_bannana_man),
+                                -130 , 520, 125, 128, 8, m_currentroom, 4, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // lion
                     case 5:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_05_lion),
-                                -130 , 520, 125, 128, 8, currentroom, 5, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_05_lion),
+                                -130 , 520, 125, 128, 8, m_currentroom, 5, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // red theif
                     case 6:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_06_red_theif),
-                                -130 , 520, 125, 128, 8, currentroom, 6, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_06_red_theif),
+                                -130 , 520, 125, 128, 8, m_currentroom, 6, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // white knight
                     case 7:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_07_white_knight),
-                                -130 , 520, 125, 128, 8, currentroom, 7, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_07_white_knight),
+                                -130 , 520, 125, 128, 8, m_currentroom, 7, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // blue knight
                     case 8:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_08_blue_knight),
-                                -130 , 520, 125, 128, 8, currentroom, 8, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_08_blue_knight),
+                                -130 , 520, 125, 128, 8, m_currentroom, 8, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // bomb man
                     case 9:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_09_bomb_man),
-                                -130 , 520, 125, 128, 8, currentroom, 9, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_09_bomb_man),
+                                -130 , 520, 125, 128, 8, m_currentroom, 9, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // fire spirit
                     case 10:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_10_fire_spirit),
-                                -130 , 520, 125, 128, 8, currentroom, 10, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_10_fire_spirit),
+                                -130 , 520, 125, 128, 8, m_currentroom, 10, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // baby dragon
                     case 11:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_11_baby_dragon),
-                                -130 , 520, 125, 128, 11, currentroom, 11, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_11_baby_dragon),
+                                -130 , 520, 125, 128, 11, m_currentroom, 11, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // silver dragon
                     case 12:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_12_silver_dragon),
-                                -130 , 520, 125, 128, 8, currentroom, 12, wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_12_silver_dragon),
+                                -130 , 520, 125, 128, 8, m_currentroom, 12, a_wavenumber + x, hp_mult));
 
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // king of beasts
                     case 13:
-                        monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_13_king_of_beast),
-                                -130 , 520, 125, 128, 8, currentroom, 13, wavenumber + x, hp_mult));
-                        monsterwaves[wavenumber - infinityFactor][x] = 0;
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_13_king_of_beast),
+                                -130 , 520, 125, 128, 8, m_currentroom, 13, a_wavenumber + x, hp_mult));
+                        m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // means that the game is over after everything in the monster array is gone
                     case 14:
-                        game_done = true;
+                        m_game_done = true;
                         break;
 
                 }
@@ -1695,15 +1698,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         return false;
     }
 
-    public Tower getTowerByCoord(int x, int y){
+    public Tower getTowerByCoord(int a_x, int a_y){
 
-        for(int i = 0; i < tower.size(); i++){
-            if (tower.get(i).getX() == (x * 130) && tower.get(i).getY() == (y * 130)){
-                return tower.get(i);
+        for(int i = 0; i < m_tower.size(); i++){
+            if (m_tower.get(i).getX() == (a_x * 130) && m_tower.get(i).getY() == (a_y * 130)){
+                return m_tower.get(i);
             }
         }
 
-        return tower.get(-1);
+        return m_tower.get(-1);
     }
 
 

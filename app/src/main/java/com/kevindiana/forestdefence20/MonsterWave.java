@@ -14,7 +14,7 @@ public class MonsterWave extends GameObject {
     // 0 means empty space(spawn nothing)
     // 14 means after all the monsters in the array are gone the game is over
 
-    // map 1 easy
+    // easy
     private int[][] monsterroom11 = new int[][]{
 
             //{10},
@@ -36,7 +36,7 @@ public class MonsterWave extends GameObject {
 
     };
 
-    // map 1 normal
+    // normal
     private int[][] monsterroom12 = new int[][]{
 
 
@@ -52,9 +52,25 @@ public class MonsterWave extends GameObject {
             {11, 7, 7, 10, 11, 6, 4, 4, 11, 12, 10, 10, 10},
             {12, 12, 11, 11, 12, 11, 12, 11, 12, 12 ,0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 10},
             {1, 1, 6, 2, 3, 2, 3, 4, 5, 7, 7, 8, 9, 10, 10, 11, 9, 12, 13, 13, 13, 11, 11, 11, 10, 10, 10, 10},
-            {13, 13, 13, 13, 13, 13,  0, 0, 0, 0, 0, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10}
+            {13, 13, 13, 13, 13, 13,  0, 0, 0, 0, 0, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 14}
 
 
+
+    };
+
+    private int[][] monsterroom13 = new int[][]{
+            {1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1},
+            {2, 2, 2, 3, 3, 2, 2, 2, 3, 3, 3, 2, 2, 2, 3, 3, 3, 2, 2, 3},
+            {2, 2, 3, 3, 4, 4, 3, 3, 3, 4, 2, 2, 4, 2, 2, 4, 2, 2, 4, 0, 0, 0, 0, 3},
+            {2, 2, 4, 4, 3, 3, 5, 2, 2, 2, 3, 6, 5, 2, 3, 4, 4, 5, 3, 3},
+            {4, 4, 4, 3, 3, 3, 5, 5, 2, 2, 2, 7, 5, 4, 4, 4, 7, 2, 3, 3},
+            {5, 4, 4, 7, 7, 4, 4, 8, 7, 5, 5, 8, 8, 5, 7, 5, 5, 8, 7, 7},
+            {7, 7, 5, 6, 7, 8, 9, 9, 4, 4, 9, 9, 5, 7, 7, 7, 7, 7, 9, 8},
+            {10, 7, 7, 7, 7, 8, 8, 10, 9, 9, 7, 7, 7, 9, 10, 7, 7, 8, 10},
+            {9, 10, 11, 8, 7, 7, 7, 11, 9, 10, 10, 11, 8, 8, 9, 9, 9, 10},
+            {11, 11, 11, 12, 10, 10, 10, 8, 7, 7, 7, 11, 12, 9, 10, 10, 12},
+            {1, 1, 3, 3, 9, 9, 10, 10, 8, 8, 11, 11, 12, 12, 9, 10, 10, 10, 13},
+            {13, 13, 13, 13, 9, 13, 9, 10, 13, 10, 13, 9, 9, 9, 9, 10, 10, 10, 9, 14}
 
     };
 
@@ -82,7 +98,7 @@ public class MonsterWave extends GameObject {
     };
 
 
-    public int [][] infinite(int wave_number){
+    public int [][] infinite(){
 
 
             monsterroom12 = new int [1][20];
@@ -109,7 +125,7 @@ public class MonsterWave extends GameObject {
 
             // hard
             case 13:
-                break;
+                return monsterroom13;
 
             // infinite
             case 14:

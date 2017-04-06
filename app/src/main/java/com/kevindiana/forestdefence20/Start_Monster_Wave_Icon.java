@@ -8,36 +8,36 @@ import android.graphics.Canvas;
  */
 
 public class Start_Monster_Wave_Icon extends GameObject {
-    private Bitmap spritesheet;
-    private Animation animation = new Animation();
+    private Bitmap m_spritesheet;
+    private Animation m_animation = new Animation();
 
-    Start_Monster_Wave_Icon(Bitmap res, int x, int y, int numframes ){
-        super.x = x;
-        super.y = y;
+    Start_Monster_Wave_Icon(Bitmap a_res, int a_x, int a_y, int a_numframes ){
+        m_x = a_x;
+        m_y = a_y;
        // super.width = 32;
         //super.height = 32;
-        super.width = 128;
-        super.height = 128;
+        m_width = 128;
+        m_height = 128;
 
-        Bitmap image[] = new Bitmap[numframes];
-        spritesheet = res;
+        Bitmap image[] = new Bitmap[a_numframes];
+        m_spritesheet = a_res;
 
         for(int i = 0; i < image.length; i++){
-            image[i] = Bitmap.createBitmap(spritesheet, 0, i*height, width, height);
+            image[i] = Bitmap.createBitmap(m_spritesheet, 0, i*m_height, m_width, m_height);
         }
 
-        animation.setFrames(image);
-        animation.setDelay(360);
+        m_animation.setFrames(image);
+        m_animation.setDelay(360);
 
     }
 
     public void update(){
-        animation.update();
+        m_animation.update();
     }
 
     public void draw(Canvas canvas) {
         try{
-            canvas.drawBitmap(animation.getImage(),x,y,null);
+            canvas.drawBitmap(m_animation.getImage(),m_x,m_y,null);
         }catch(Exception e){}
     }
 

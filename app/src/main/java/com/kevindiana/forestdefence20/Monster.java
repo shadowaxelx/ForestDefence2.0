@@ -45,12 +45,12 @@ public class Monster extends GameObject{
     // x is x coord it will spawn, y is the y coord, w is width of sprit h is height
     public Monster(Bitmap res, int x, int y, int w, int h, int numFrames, int [][] currentroom, int monstertype, int monsterID, int hp_mult){
 
-        super.x = x;
-        super.y = y;
+        m_x = x;
+        m_y = y;
         this.currentroom = currentroom;
 
-        width = w;
-        height = h;
+        m_width = w;
+        m_height = h;
         this.numFrames = numFrames;
         this.monsterID = monsterID;
 
@@ -63,14 +63,14 @@ public class Monster extends GameObject{
         // starts by moving to the right
         moveDirection = 0;
 
-        image[0] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-        image[1] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
-        image[2] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-        image[3] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
-        image[4] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-        image[5] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
-        image[6] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-        image[7] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+        image[0] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+        image[1] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
+        image[2] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+        image[3] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
+        image[4] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+        image[5] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
+        image[6] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+        image[7] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
 
         animation.setFrames(image);
 
@@ -83,7 +83,7 @@ public class Monster extends GameObject{
                 walk_speed = 26;
                 health = 10 * hp_mult;
                 starthealth = health;
-                super.power = 1;
+                m_power = 1;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -93,13 +93,14 @@ public class Monster extends GameObject{
                 //health = 15;
                 health = 25 * hp_mult;
                 starthealth = health;
-                super.power = 1;
+                m_power = 1;
                 money = 2;
                 animation.setDelay(390 - walk_speed);
                 break;
             // mouse monster
             case 3:
                 walk_speed = 26;
+                m_power = 1;
                 //health = 7;
                 health = 15 * hp_mult;
                 starthealth = health;
@@ -112,7 +113,7 @@ public class Monster extends GameObject{
                 //health = 50;
                 health = 100 * hp_mult;
                 starthealth = health;
-                super.power = 1;
+                m_power = 1;
                 money = 4;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -122,7 +123,7 @@ public class Monster extends GameObject{
                 //health = 125;
                 health = 275 * hp_mult;
                 starthealth = health;
-                super.power = 2;
+                m_power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -131,7 +132,7 @@ public class Monster extends GameObject{
                 walk_speed = 26;
                 health = 100 * hp_mult;
                 starthealth = health;
-                super.power = 1;
+                m_power = 1;
                 money = 12;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -141,7 +142,7 @@ public class Monster extends GameObject{
                // health = 175;
                 health =325 * hp_mult;
                 starthealth = health;
-                super.power = 2;
+                m_power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -151,7 +152,7 @@ public class Monster extends GameObject{
                 //health = 300;
                 health = 550 * hp_mult;
                 starthealth = health;
-                super.power = 3;
+                m_power = 3;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -161,7 +162,7 @@ public class Monster extends GameObject{
                 //health = 200;
                 health = 375 * hp_mult;
                 starthealth = health;
-                super.power = 2;
+                m_power = 2;
                 money = 6;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -171,7 +172,7 @@ public class Monster extends GameObject{
                 //health = 250;
                 health = 475 * hp_mult;
                 starthealth = health;
-                super.power = 2;
+                m_power = 2;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -181,7 +182,7 @@ public class Monster extends GameObject{
                 //health = 350;
                 health = 900 * hp_mult;
                 starthealth = health;
-                super.power = 2;
+                m_power = 2;
                 money = 8;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -191,7 +192,7 @@ public class Monster extends GameObject{
                // health = 600;
                 health = 1200 * hp_mult;
                 starthealth = health;
-                super.power = 4;
+                m_power = 4;
                 money = 10;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -201,7 +202,7 @@ public class Monster extends GameObject{
                 //health = 850;
                 health = 2000 * hp_mult;
                 starthealth = health;
-                super.power = 5;
+                m_power = 5;
                 money = 12;
                 animation.setDelay(390 - walk_speed);
                 break;
@@ -219,10 +220,10 @@ public class Monster extends GameObject{
     // change the direction they are walking
     public void update(){
         // gets the coordinate of the image in grid terms
-        System.out.println("x: " + x);
-        System.out.println("y " + y);
-        gridx = getXcoord(x);
-        gridy = getYcoord(y);
+        System.out.println("x: " + m_x);
+        System.out.println("y " + m_y);
+        gridx = getXcoord(m_x);
+        gridy = getYcoord(m_y);
 
         //System.out.println("x:" + gridx);
         //System.out.println("y" + gridy);
@@ -275,27 +276,27 @@ public class Monster extends GameObject{
 
                     Bitmap[] image = new Bitmap[numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 5*height, width, height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 5*height, width, height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 5*height, width, height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 5*height, width, height);
+                    image[0] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
+                    image[1] = Bitmap.createBitmap(spritesheet, 0, 5*m_height, m_width, m_height);
+                    image[2] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
+                    image[3] = Bitmap.createBitmap(spritesheet, 0, 5*m_height, m_width, m_height);
+                    image[4] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
+                    image[5] = Bitmap.createBitmap(spritesheet, 0, 5*m_height, m_width, m_height);
+                    image[6] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
+                    image[7] = Bitmap.createBitmap(spritesheet, 0, 5*m_height, m_width, m_height);
 
                     animation.setFrames(image);
 
                 }
                // y-=walk_speed;
                 if (slow_effect == 0) {
-                    back_on_course = (y % walk_speed);
+                    back_on_course = (m_y % walk_speed);
 
-                    y -= walk_speed + back_on_course;
+                    m_y -= walk_speed + back_on_course;
                 }
                 else{
                    // back_on_course = (y % (int)slow_effect);
-                    y-= slow_effect;// + back_on_course;
+                    m_y-= slow_effect;// + back_on_course;
 
                 }
 
@@ -309,27 +310,27 @@ public class Monster extends GameObject{
 
                     Bitmap[] image = new Bitmap[numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
+                    image[0] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
+                    image[1] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
+                    image[2] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
+                    image[3] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
+                    image[4] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
+                    image[5] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
+                    image[6] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
+                    image[7] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
 
                     animation.setFrames(image);
 
                 }
                 //y+=walk_speed;
                 if (slow_effect == 0) {
-                    back_on_course = (y % walk_speed);
+                    back_on_course = (m_y % walk_speed);
 
-                    y += walk_speed + back_on_course;
+                    m_y += walk_speed + back_on_course;
                 }
                 else{
                    // back_on_course = (y % (int)slow_effect);
-                    y+= slow_effect;// + back_on_course;
+                    m_y+= slow_effect;// + back_on_course;
                 }
 
             }
@@ -342,14 +343,14 @@ public class Monster extends GameObject{
 
                     Bitmap[] image = new Bitmap[numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+                    image[0] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+                    image[1] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
+                    image[2] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+                    image[3] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
+                    image[4] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+                    image[5] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
+                    image[6] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+                    image[7] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
 
                     animation.setFrames(image);
 
@@ -357,13 +358,13 @@ public class Monster extends GameObject{
                 //x+=walk_speed;
                 // means slow effect is off
                 if (slow_effect == 0) {
-                    back_on_course = (x % walk_speed);
+                    back_on_course = (m_x % walk_speed);
 
-                    x += walk_speed + back_on_course;
+                    m_x += walk_speed + back_on_course;
                 }
                 else{
                     //back_on_course = (x % (int)slow_effect);
-                    x+= slow_effect;// + back_on_course;
+                    m_x+= slow_effect;// + back_on_course;
                 }
 
             }
@@ -376,27 +377,27 @@ public class Monster extends GameObject{
 
                     Bitmap[] image = new Bitmap[numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 2*height, width, height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 2*height, width, height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 2*height, width, height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 2*height, width, height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
+                    image[0] = Bitmap.createBitmap(spritesheet, 0, 2*m_height, m_width, m_height);
+                    image[1] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
+                    image[2] = Bitmap.createBitmap(spritesheet, 0, 2*m_height, m_width, m_height);
+                    image[3] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
+                    image[4] = Bitmap.createBitmap(spritesheet, 0, 2*m_height, m_width, m_height);
+                    image[5] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
+                    image[6] = Bitmap.createBitmap(spritesheet, 0, 2*m_height, m_width, m_height);
+                    image[7] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
 
                     animation.setFrames(image);
 
                 }
                // x-=walk_speed;
                 if (slow_effect == 0) {
-                    back_on_course = (x % walk_speed);
+                    back_on_course = (m_x % walk_speed);
 
-                    x -= walk_speed + back_on_course;
+                    m_x -= walk_speed + back_on_course;
                 }
                 else{
                    // back_on_course = (x % (int)slow_effect);
-                    x-= slow_effect; //+ back_on_course;
+                    m_x-= slow_effect; //+ back_on_course;
 
                 }
 
@@ -415,25 +416,25 @@ public class Monster extends GameObject{
                     // means slow effect is off
                     if (slow_effect == 0) {
 
-                        back_on_course = ((gridx + 1) * 130) - x;
+                        back_on_course = ((gridx + 1) * 130) - m_x;
                         if(back_on_course < walk_speed){
-                            x += walk_speed - (walk_speed - back_on_course);
+                            m_x += walk_speed - (walk_speed - back_on_course);
                         }
                         else{
                             //back_on_course = (130 % (int)slow_effect);
-                            x+= walk_speed; //+ back_on_course;
+                            m_x+= walk_speed; //+ back_on_course;
                         }
                     }
 
                     // slow effect is on, need to track check to stop monster from turning around or going of their trail
                     else{
-                        back_on_course = ((gridx + 1) * 130) - x;
+                        back_on_course = ((gridx + 1) * 130) - m_x;
                         if(back_on_course < slow_effect){
-                            x += slow_effect - (slow_effect - back_on_course);
+                            m_x += slow_effect - (slow_effect - back_on_course);
                         }
                         else{
                             //back_on_course = (130 % (int)slow_effect);
-                            x+= slow_effect; //+ back_on_course;
+                            m_x+= slow_effect; //+ back_on_course;
                         }
                     }
 
@@ -443,13 +444,13 @@ public class Monster extends GameObject{
                     // means slow effect is off
                     if (slow_effect == 0) {
 
-                        back_on_course = x - ((gridx - 1) * 130);
+                        back_on_course = m_x - ((gridx - 1) * 130);
                         if(back_on_course < walk_speed){
-                            x-= walk_speed -(walk_speed - back_on_course);
+                            m_x-= walk_speed -(walk_speed - back_on_course);
                         }
                         else{
                             //back_on_course = (130 % (int)slow_effect);
-                            x-=  walk_speed; //+ back_on_course;
+                            m_x-=  walk_speed; //+ back_on_course;
 
                         }
 
@@ -457,13 +458,13 @@ public class Monster extends GameObject{
                     // this is to make sure that right before it gets to the edge of a block it will be exactly divisible by 130
                     // so things it wont turn the wrong way
                     else{
-                        back_on_course = x - ((gridx - 1) * 130);
+                        back_on_course = m_x - ((gridx - 1) * 130);
                         if(back_on_course < slow_effect){
-                            x-= slow_effect -(slow_effect - back_on_course);
+                            m_x-= slow_effect -(slow_effect - back_on_course);
                         }
                         else{
                             //back_on_course = (130 % (int)slow_effect);
-                            x-=  slow_effect; //+ back_on_course;
+                            m_x-=  slow_effect; //+ back_on_course;
 
                         }
 
@@ -474,26 +475,26 @@ public class Monster extends GameObject{
                 case 2:
                     if (slow_effect == 0) {
 
-                        back_on_course = y - ((gridy - 1) * 130);
+                        back_on_course = m_y - ((gridy - 1) * 130);
                         if(back_on_course < walk_speed){
-                            y-= walk_speed -(walk_speed - back_on_course);
+                            m_y-= walk_speed -(walk_speed - back_on_course);
                         }
                         else{
                             //back_on_course = (130 % (int)slow_effect);
-                            y-=  walk_speed; //+ back_on_course;
+                            m_y-=  walk_speed; //+ back_on_course;
 
                         }
                     }
                     // this is to make sure that right before it gets to the edge of a block it will be exactly divisible by 130
                     // so things it wont turn the wrong way
                     else{
-                        back_on_course = y - ((gridy - 1) * 130);
+                        back_on_course = m_y - ((gridy - 1) * 130);
                         if(back_on_course < slow_effect){
-                            y-= slow_effect -(slow_effect - back_on_course);
+                            m_y-= slow_effect -(slow_effect - back_on_course);
                         }
                         else{
                             //back_on_course = (130 % (int)slow_effect);
-                            y-=  slow_effect; //+ back_on_course;
+                            m_y-=  slow_effect; //+ back_on_course;
 
                         }
 
@@ -504,25 +505,25 @@ public class Monster extends GameObject{
                 case 3:
                     if (slow_effect == 0) {
 
-                        back_on_course = ((gridy + 1) * 130) - y;
+                        back_on_course = ((gridy + 1) * 130) - m_y;
                         if(back_on_course < walk_speed){
-                            y += walk_speed - (walk_speed - back_on_course);
+                            m_y += walk_speed - (walk_speed - back_on_course);
                         }
                         else{
                             //back_on_course = (130 % (int)slow_effect);
-                            y+= walk_speed; //+ back_on_course;
+                            m_y+= walk_speed; //+ back_on_course;
                         }
                     }
                     // this is to make sure that right before it gets to the edge of a block it will be exactly divisible by 130
                     // so things it wont turn the wrong way
                     else{
-                        back_on_course = ((gridy + 1) * 130) - y;
+                        back_on_course = ((gridy + 1) * 130) - m_y;
                         if(back_on_course < slow_effect){
-                            y += slow_effect - (slow_effect - back_on_course);
+                            m_y += slow_effect - (slow_effect - back_on_course);
                         }
                         else{
                             //back_on_course = (130 % (int)slow_effect);
-                            y+= slow_effect; //+ back_on_course;
+                            m_y+= slow_effect; //+ back_on_course;
                         }
 
 
@@ -546,7 +547,7 @@ public class Monster extends GameObject{
     public void draw(Canvas canvas){
 
         try{
-            canvas.drawBitmap(animation.getImage(),x,y,null);
+            canvas.drawBitmap(animation.getImage(),m_x,m_y,null);
         }catch(Exception e){}
 
     }

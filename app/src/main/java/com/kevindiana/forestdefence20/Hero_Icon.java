@@ -9,18 +9,18 @@ import android.graphics.Canvas;
 
 public class Hero_Icon extends GameObject {
 
-    private Bitmap image;
+    private Bitmap m_image;
 
-    Hero_Icon(Bitmap res, int x, int y){
-        super.x = x;
-        super.y = y;
-        super.width = 128;
-        super.height = 128;
-        image = res;
+    Hero_Icon(Bitmap a_res, int a_x, int a_y){
+        m_x = a_x;
+        m_y = a_y;
+        m_width = 128;
+        m_height = 128;
+        m_image = a_res;
 
     }
 
     public void draw(Canvas canvas){
-        canvas.drawBitmap(image, x, y, null);
+        canvas.drawBitmap(m_image, m_x, m_y, null);
     }
 }

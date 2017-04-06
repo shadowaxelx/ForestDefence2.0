@@ -10,28 +10,28 @@ import android.graphics.Paint;
  */
 
 public class Shop extends GameObject {
-    private Bitmap image;
+    private Bitmap m_image;
     private int gold;
-    private int cost;
+    private int m_cost;
 
     // for now only 3 different towers
-    public Shop(Bitmap res, int x, int y, int towertype){
+    public Shop(Bitmap a_res, int a_x, int a_y, int a_towertype){
 
-        super.x = x;
-        super.y = y;
-        super.width = 130;
-        super.height = 130;
-        image = res;
+        m_x = a_x;
+        m_y = a_y;
+        m_width = 130;
+        m_height = 130;
+        m_image = a_res;
 
-        switch(towertype){
+        switch(a_towertype){
             case 1:
-                cost = 5;
+                m_cost = 5;
                 break;
             case 2:
-                cost = 5;
+                m_cost = 5;
                 break;
             case 3:
-                cost = 5;
+                m_cost = 5;
                 break;
         }
     }
@@ -43,16 +43,16 @@ public class Shop extends GameObject {
     public void draw(Canvas canvas){
 
         // to color and make the grid
-        Paint gray_paintbrush_fill;
-        gray_paintbrush_fill = new Paint();
-        gray_paintbrush_fill.setColor(Color.GRAY);
-        gray_paintbrush_fill.setStyle(Paint.Style.FILL);
+        //Paint gray_paintbrush_fill;
+        //gray_paintbrush_fill = new Paint();
+        //gray_paintbrush_fill.setColor(Color.GRAY);
+        //gray_paintbrush_fill.setStyle(Paint.Style.FILL);
         //red_paintbrush_stroke.setStrokeWidth(10);
 
-        canvas.drawBitmap(image, x, y, null);
+        canvas.drawBitmap(m_image, m_x, m_y, null);
     }
 
     public int getCost(){
-        return cost;
+        return m_cost;
     }
 }

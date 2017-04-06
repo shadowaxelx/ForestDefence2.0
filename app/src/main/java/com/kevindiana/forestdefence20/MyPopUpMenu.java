@@ -11,17 +11,17 @@ import android.graphics.Paint;
 
 public class MyPopUpMenu extends GameObject {
 
-    private Bitmap image;
+    private Bitmap m_image;
 
     //public PopUpMenu(Bitmap res, int towertype, int towerLvl){
-    public MyPopUpMenu(Bitmap res){
+    public MyPopUpMenu(Bitmap a_res){
 
         // x, y are the x, y coordinates
-        super.x = 1170;
-        super.y = 520;
-        super.width = 520;
-        super.height = 390;
-        image = res;
+        m_x = 1170;
+        m_y = 520;
+        m_width = 520;
+        m_height = 390;
+        m_image = a_res;
 
     }
 
@@ -32,7 +32,7 @@ public class MyPopUpMenu extends GameObject {
 
     public void draw(Canvas canvas){
 
-        canvas.drawBitmap(image, x, y, null);
+        canvas.drawBitmap(m_image, m_x, m_y, null);
     }
 
 }

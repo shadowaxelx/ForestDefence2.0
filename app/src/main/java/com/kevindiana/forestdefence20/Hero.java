@@ -30,25 +30,25 @@ public class Hero extends GameObject {
     private int neededExp;
 
 
-    Hero(Bitmap res, int x, int y, int hero_type){
-        super.x = x;
-        super.y = y;
-        newxLocation = x;
-        newyLocation = y;
-        super.width = 128;
-        super.height = 128;
-        type = hero_type;
+    Hero(Bitmap a_res, int a_x, int a_y, int a_hero_type){
+        m_x = a_x;
+        m_y = a_y;
+        newxLocation = a_x;
+        newyLocation = a_y;
+        m_width = 128;
+        m_height = 128;
+        type = a_hero_type;
 
         // hero starts out standing still so not moving
         moving = false;
 
         // giongto cycle through 2 images
         Bitmap image[] = new Bitmap[2];
-        spritesheet = res;
+        spritesheet = a_res;
 
         // image starts out facing forwards
-        image[0] = Bitmap.createBitmap(spritesheet, 0, 9*height, width, height);
-        image[1] = Bitmap.createBitmap(spritesheet, 0, 9*height, width, height);
+        image[0] = Bitmap.createBitmap(spritesheet, 0, 9*m_height, m_width, m_height);
+        image[1] = Bitmap.createBitmap(spritesheet, 0, 9*m_height, m_width, m_height);
 
         //for(int i = 0; i < image.length; i++){
          //   image[i] = Bitmap.createBitmap(spritesheet, 0, i*height, width, height);
@@ -57,7 +57,7 @@ public class Hero extends GameObject {
         animation.setFrames(image);
         animation.setDelay(360);
 
-        switch (hero_type){
+        switch (a_hero_type){
             // knight
             case 1:
                 //(1 + .5) * 130
@@ -101,9 +101,9 @@ public class Hero extends GameObject {
     }
 
     // saving the new coordinates toupdate to from onclick event
-    public void move_to(int newx, int newy){
-        newxLocation = (newx * 130);
-        newyLocation = (newy * 130);
+    public void move_to(int a_newx, int a_newy){
+        newxLocation = (a_newx * 130);
+        newyLocation = (a_newy * 130);
         direction = still;
         moving = true;
     }
@@ -113,8 +113,8 @@ public class Hero extends GameObject {
         // done if the hero has finished a direction or no move command already set
         if(direction == still){
             // if x is furthest directino away move that way first
-            if((abs(newxLocation - x) > abs(newyLocation - y))){
-                if(newxLocation - x < 0){
+            if((abs(newxLocation - m_x) > abs(newyLocation - m_y))){
+                if(newxLocation - m_x < 0){
                     direction = left;
                     // function for switching direction
                     switchdirection(direction);
@@ -127,8 +127,8 @@ public class Hero extends GameObject {
                 moving = true;
             }
             // move in they y direction first
-            else if((abs(newxLocation - x) < abs(newyLocation - y))){
-                if(newyLocation - y < 0){
+            else if((abs(newxLocation - m_x) < abs(newyLocation - m_y))){
+                if(newyLocation - m_y < 0){
                     direction = up;
                     // function for switching direction
                     switchdirection(direction);
@@ -163,48 +163,48 @@ public class Hero extends GameObject {
 
     }
 
-    private void samedirection(int direction){
-        switch(direction){
+    private void samedirection(int a_direction){
+        switch(a_direction){
             case left:
 
                 // make sure hero doesnt over run anything
-                if(x - move_speed < newxLocation){
-                    x -= (x - newxLocation);
+                if(m_x - move_speed < newxLocation){
+                    m_x -= (m_x - newxLocation);
                     this.direction = 0;
                 }
                 else{
-                    x -= move_speed;
+                    m_x -= move_speed;
                 }
 
                 break;
             case right:
 
-                if(x + move_speed > newxLocation){
-                    x += (newxLocation - x);
+                if(m_x + move_speed > newxLocation){
+                    m_x += (newxLocation - m_x);
                     this.direction = 0;
                 }
                 else{
-                    x += move_speed;
+                    m_x += move_speed;
                 }
                 break;
             case up:
 
-                if(y - move_speed < newyLocation){
-                    y -= (y - newyLocation);
+                if(m_y - move_speed < newyLocation){
+                    m_y -= (m_y - newyLocation);
                     this.direction = 0;
                 }
                 else{
-                    y -= move_speed;
+                    m_y -= move_speed;
                 }
                 break;
             case down:
 
-                if(y + move_speed > newyLocation){
-                    y += (newyLocation - y);
+                if(m_y + move_speed > newyLocation){
+                    m_y += (newyLocation - m_y);
                     this.direction = 0;
                 }
                 else{
-                    y += move_speed;
+                    m_y += move_speed;
                 }
                 break;
             case still:
@@ -215,68 +215,68 @@ public class Hero extends GameObject {
         }
     }
 
-    private void switchdirection(int direction){
+    private void switchdirection(int a_direction){
 
         Bitmap[] image = new Bitmap[2];
-        switch(direction){
+        switch(a_direction){
             case left:
                 // change the bitmap images
-                image[0] = Bitmap.createBitmap(spritesheet, 0, 3*height, width, height);
-                image[1] = Bitmap.createBitmap(spritesheet, 0, 4*height, width, height);
+                image[0] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
+                image[1] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
                 animation.setFrames(image);
                 // make sure hero doesnt over run anything
-                if(x - move_speed < newxLocation){
-                    x -= (x - newxLocation);
+                if(m_x - move_speed < newxLocation){
+                    m_x -= (m_x - newxLocation);
                     this.direction = 0;
                 }
                 else{
-                    x -= move_speed;
+                    m_x -= move_speed;
                 }
 
                 break;
             case right:
 
                 // change the bitmap images
-                image[0] = Bitmap.createBitmap(spritesheet, 0, 0*height, width, height);
-                image[1] = Bitmap.createBitmap(spritesheet, 0, 1*height, width, height);
+                image[0] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
+                image[1] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
                 animation.setFrames(image);
 
-                if(x + move_speed > newxLocation){
-                    x += (newxLocation - x);
+                if(m_x + move_speed > newxLocation){
+                    m_x += (newxLocation - m_x);
                     this.direction = 0;
                 }
                 else{
-                    x += move_speed;
+                    m_x += move_speed;
                 }
                 break;
             case up:
 
                 // change the bitmap images
-                image[0] = Bitmap.createBitmap(spritesheet, 0, 6*height, width, height);
-                image[1] = Bitmap.createBitmap(spritesheet, 0, 7*height, width, height);
+                image[0] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
+                image[1] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
                 animation.setFrames(image);
 
-                if(y - move_speed < newyLocation){
-                    y -= (y - newyLocation);
+                if(m_y - move_speed < newyLocation){
+                    m_y -= (m_y - newyLocation);
                     this.direction = 0;
                 }
                 else{
-                    y -= move_speed;
+                    m_y -= move_speed;
                 }
                 break;
             case down:
 
                 // image starts out facing forwards
-                image[0] = Bitmap.createBitmap(spritesheet, 0, 9*height, width, height);
-                image[1] = Bitmap.createBitmap(spritesheet, 0, 10*height, width, height);
+                image[0] = Bitmap.createBitmap(spritesheet, 0, 9*m_height, m_width, m_height);
+                image[1] = Bitmap.createBitmap(spritesheet, 0, 10*m_height, m_width, m_height);
                 animation.setFrames(image);
 
-                if(y + move_speed > newyLocation){
-                    y += (newyLocation - y);
+                if(m_y + move_speed > newyLocation){
+                    m_y += (newyLocation - m_y);
                     this.direction = 0;
                 }
                 else{
-                    y += move_speed;
+                    m_y += move_speed;
                 }
                 break;
             case still:
@@ -291,8 +291,8 @@ public class Hero extends GameObject {
     public int getNeededExp(){return neededExp;}
     public int getEXP(){return exp;}
 
-    public void gainExp(int gainEXP){
-        exp += gainEXP;
+    public void gainExp(int a_gainEXP){
+        exp += a_gainEXP;
         if(exp >= neededExp){
             lvlUP();
         }
@@ -346,9 +346,11 @@ public class Hero extends GameObject {
     public void draw(Canvas canvas){
 
         try{
-            canvas.drawBitmap(animation.getImage(),x,y,null);
+            canvas.drawBitmap(animation.getImage(),m_x,m_y,null);
         }catch(Exception e){}
 
     }
+
+    public int getLevel(){return lvl;}
 
 }

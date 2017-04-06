@@ -6,30 +6,30 @@ package com.kevindiana.forestdefence20;
 
 public class Player {
 
-    private int health;
-    private int money;
+    private int m_health;
+    private int m_money;
 
     public Player(){
-        health = 200;
-        money = 2000;
+        m_health = 20;
+        m_money = 20;
 
     }
 
     public int GetHealth(){
-        return health;
+        return m_health;
     }
     public void SetHealth(int damage){
 
-        health -= damage;
+        m_health -= damage;
     }
     public int GetMoney(){
-        return money;
+        return m_money;
     }
     public void AddMoney(int income){
-        money += income;
+        m_money += income;
     }
     public void SubMoney(int purchase){
-        money -= purchase;
+        m_money -= purchase;
     }
 
 

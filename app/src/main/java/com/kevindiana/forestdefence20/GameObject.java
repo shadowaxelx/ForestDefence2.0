@@ -8,50 +8,45 @@ import android.graphics.Rect;
 
 // all objects in the game will eccept this class
 public class GameObject {
-    protected int x;
-    protected int y;
-    protected int width;
-    protected int height;
-    protected int [][]room;
-    protected int gold;
-    protected int level;
+    protected int m_x;
+    protected int m_y;
+    protected int m_width;
+    protected int m_height;
+    protected int [][]m_room;
+    protected int m_gold;
+    protected int m_level;
     //protected int range;
     //protected double attack_speed;
-    protected int power;
+    protected int m_power;
     protected int upgrade;
     protected int sell;
     protected int health;
 
-    public void setX(int x){
-        this.x = x;
+    public void setX(int a_x){
+        m_x = a_x;
     }
-    public void setY(int y){
-        this.y = y;
+    public void setY(int a_y){
+        m_y = a_y;
     }
-    public void setRoom(int [][]room){this.room = room;}
-    public int [][] setRoom(){return room;}
+    public void setRoom(int [][]a_room){m_room = a_room;}
+    public int [][] setRoom(){return m_room;}
     public int getX(){
-        return x;
+        return m_x;
     }
     public int getY(){
-        return y;
+        return m_y;
     }
-    public int getPower(){return power;}
-    //public int getRange() {return range;}
-   // public double getAttackSpeed() {return attack_speed;}
-    public int getGold(int towerType){return gold;}
-    public void setGold(int towerGold) {gold = towerGold;}
+    public int getPower(){return m_power;}
+    public int getGold(int towerType){return m_gold;}
+    public void setGold(int a_towerGold) {m_gold = a_towerGold;}
     public int getHeight(){
-        return height;
+        return m_height;
     }
     public int getWidth(){
-        return width;
+        return m_width;
     }
-   // public void setHealth(int damage){health -= damage;}
-    //public int getHealth(){return health;}
-    // checks if rectangle space is intersecting
     public Rect getRectangle(){
-        return new Rect(x, y, x+width -65, y+height - 65);
+        return new Rect(m_x, m_y, m_x+m_width -65, m_y+m_height - 65);
     }
 
 
