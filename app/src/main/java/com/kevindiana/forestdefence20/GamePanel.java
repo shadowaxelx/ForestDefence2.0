@@ -21,7 +21,92 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.StrictMath.abs;
 
+/**
+ Class GamePanel
 
+ NAME
+
+    GamePanel
+
+ SYNOPSIS
+
+     Room m_room -> Room object that holds image for the map
+     int [][]m_currentroom -> 2D array that holds the monsterpath for the map
+
+    ArrayList<Monster> m_monster -> ArrayList to hold the monster objects that will spawn
+    long m_monsterStartTime -> variable to hold the start of the monster spawntime
+
+    int m_wavenumber = 1 -> variable to keep track of what wave is being spawned
+    MonsterWave m_monster_waves -> MonsterWave object to retreive which set of waves for what difficulty
+    int [][]m_monster_wavesArray -> 2D array which holds every monsterwave for the map
+    m_wavesalldone -> If every wave is complete the game is over so it will become false
+
+    boolean m_game_done -> holds boolean for if the game is finished and should move to EndGame activity
+    long m_fiveSeconds -> is the start timer for the 5 second period of time
+    boolean m_end_timer -> when the game is over there is a 5 second delay before next activity is started
+    m_Context -> holds this games content in order to move to the next activity
+
+    ArrayList<Shop> m_shopitems -> ArrayList holding shoplist objects
+
+    ArrayList<Tower> m_tower -> ArrayList holding tower objects
+
+
+    ArrayList<TowerShot> m_towershot -> ArrayList holding towershot objects
+    long m_shotTimer [] -> array which holds the timers before towers can shoot again
+
+
+    ArrayList<MyPopUpMenu> m_mypopupmenus -> ArrayList holding MyPopUpMenu Objects
+    boolean PopsUpIsUp -> boolean which is set to true if a popup is up/ false if one isnt
+
+    boolean m_Error -> Set to true if an illegal move was made
+    long m_errorStartTime -> timer for how long the error statement is shown
+
+    boolean m_paused -> boolean to tell if the player has the game paused or not
+
+    int m_spot_number -> Holds the spot number of the first click the player makes
+    int m_second_press_Spot_num -> holds the number of the second press made by the player
+    boolean m_is_it_first_click -> true if its the player first click, flase if it isnt
+    int first_pressX = 0 ->  X coord of the players first click
+    int first_pressY = 0 -> Y coord of the players first click
+
+
+    Player player -> initializing a player object
+
+
+    ArrayList<Start_Monster_Wave_Icon> mIcons -> Creating array list for start wave icon
+
+ // # in ones place means difficulty, 1 easy, 2 normal, 3 hard
+    String m_map_difficulty -> will contain the difficult for the map that will be parsed
+
+    boolean m_infiity -> true if player has choosen infinite mode, false if they didnt
+    ArrayList<Hero> m_hero -> ArrayList for Hero object
+    boolean heroselected -> true if hero selected button was clicked, false if it is off
+ // wait time for hero's next attack after the last one
+    long attack_timer -> the time inbetween hero attacks
+    ArrayList<HeroAttack> m_hero_attack ->ArrayList holding HeroAttack images
+    boolean knight_attack_animation_start -> true if knight is attack
+    ArrayList<Hero_Icon> m_h_icon -> Array list containing hero attack icon
+
+    MainThread m_thread -> main thread for the entire game
+
+
+ DESCRIPTION
+
+    Activity that holds all of the information for the player to play the game
+
+ RETURNS
+
+ NA
+
+ AUTHOR
+
+ Kevin Diana
+
+ DATE
+
+ 12:24pm 12/29/2017
+
+ */
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
     // the demenstion of the game ***********
@@ -102,8 +187,39 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     // the main thread for the entire game
     private MainThread m_thread;
 
-    public GamePanel(Context a_context, String a_map_difficulty)
-    {
+
+
+    /**
+     public GamePanel(Context a_context, String a_map_difficulty)
+
+NAME
+
+     GamePanel(Context a_context, String a_map_difficulty)
+
+SYNOPSIS
+
+     public GamePanel(Context a_context, String a_map_difficulty)
+        Context a_context -> the contexts of the activity
+        String a_map_difficulty -> the string holding the map and dificulty to be later parsed
+
+DESCRIPTION
+
+        The Initializer for the GamePanel class
+
+RETURNS
+
+        NA
+
+AUTHOR
+
+        Kevin Diana
+
+DATE
+
+        1:07Am 12/29/2001
+
+*/
+    public GamePanel(Context a_context, String a_map_difficulty) {
         super(a_context);
         m_Context = a_context;
         m_map_difficulty = a_map_difficulty;
@@ -117,9 +233,39 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         setFocusable(true);
     }
 
+    // if i wanted to change the surface of the activity
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int a_format, int a_width, int a_height){}
+    public void surfaceChanged(SurfaceHolder a_holder, int a_format, int a_width, int a_height){}
 
+    /**
+     public void surfaceDestroyed(SurfaceHolder a_holder)
+
+     NAME
+
+     surfaceDestroyed
+
+     SYNOPSIS
+
+     public void surfaceDestroyed(SurfaceHolder a_holder)
+        SurfaceHolder a_holder -> the content of the surface
+
+     DESCRIPTION
+
+     Deconstructor of the surface when the activity ends
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     @Override
     public void surfaceDestroyed(SurfaceHolder a_holder){
         boolean retry = true;
@@ -134,6 +280,36 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
+    /**
+     public void surfaceCreated(SurfaceHolder a_holder)
+
+     NAME
+
+    surfaceCreated
+
+     SYNOPSIS
+
+     public void surfaceCreated(SurfaceHolder a_holder)
+        SurfaceHolder a_holder -> content to create surface
+
+     DESCRIPTION
+
+    Creates a surface for the thread as soon as the activity is started up, it initializes
+     all the starting objects like the map, difficulty, type of hero selected.
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     @Override
     public void surfaceCreated(SurfaceHolder a_holder){
         // parse string holding information with map number and difficulty into an int
@@ -318,9 +494,39 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
+
+    //*********************************************************************
+    /**
+     public boolean onTouchEvent(MotionEvent a_event)
+
+     NAME
+
+     onTouchEvent
+
+     SYNOPSIS
+
+     public boolean onTouchEvent(MotionEvent a_event)
+        MotionEvent a_event -> contains the data from the on touch event like x and y coords
+
+     DESCRIPTION
+
+        Reads the players touch actions on the screen to determain what should be done
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     @Override
-    public boolean onTouchEvent(MotionEvent a_event)
-    {
+    public boolean onTouchEvent(MotionEvent a_event) {
         int eventX = (int)a_event.getX();
         int eventY = (int)a_event.getY();
 
@@ -367,6 +573,36 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         return super.onTouchEvent(a_event);
     }
 
+    /**
+     public void first_ButtonPress(int a_eventX, int a_eventY)
+
+     NAME
+
+        first_ButtonPress
+
+     SYNOPSIS
+
+        public void first_ButtonPress(int a_eventX, int a_eventY)
+            int a_eventX -> Holds the x coordinates of first button touch
+            int a_eventY -> Holds the y coordinates of the first buttton touch
+
+     DESCRIPTION
+
+        Figures out what there first button press what and what should happen next
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     public void first_ButtonPress(int a_eventX, int a_eventY){
         if (m_is_it_first_click){
 
@@ -554,6 +790,37 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    /**
+     public boolean second_ButtonPress(int a_eventX, int a_eventY)
+
+     NAME
+
+        second_ButtonPress
+
+     SYNOPSIS
+
+        public boolean second_ButtonPress(int a_eventX, int a_eventY)
+            int a_eventX -> x coord for second button press
+            int a_eventY -> y coord for second button press
+
+     DESCRIPTION
+
+        Figures out what to do on the players second button press if their first button press
+        was sucessful
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     public boolean second_ButtonPress(int a_eventX, int a_eventY){
         if (!m_is_it_first_click){
 
@@ -702,14 +969,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                                 player.SubMoney(15);
 
                             }
-                            // else create an error message for player for insuficent gold or cant put on thatspot
-                            else{
 
-                                // make error true to start the popup timmer
-                                m_Error = true;
-                                m_errorStartTime = System.nanoTime();
-                            }
+                        }
+                        // else create an error message for player for insuficent gold or cant put on thatspot
+                        else{
 
+                            // make error true to start the popup timmer
+                            m_Error = true;
+                            m_errorStartTime = System.nanoTime();
                         }
 
                         m_is_it_first_click = true;
@@ -734,14 +1001,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                                 player.SubMoney(25);
 
                             }
-                            // else create an error message for player for insuficent gold or cant put on thatspot
-                            else{
 
-                                // make error true to start the popup timmer
-                                m_Error = true;
-                                m_errorStartTime = System.nanoTime();
-                            }
+                        }
+                        // else create an error message for player for insuficent gold or cant put on thatspot
+                        else{
 
+                            // make error true to start the popup timmer
+                            m_Error = true;
+                            m_errorStartTime = System.nanoTime();
                         }
 
                         m_is_it_first_click = true;
@@ -792,10 +1059,39 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             return false;
         }
     }
+    //**********************************************************************
 
+    //**********************************************************************
+    /**
+     public void update()
 
-    public void update()
-    {
+     NAME
+
+     update
+
+     SYNOPSIS
+
+     public void update()
+
+     DESCRIPTION
+
+        Updates the images and other objects of the game like if a monster dies, to make the monster
+     move, to make the hero move, towers attack, towershots moving
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
+    public void update() {
         if(!m_paused){
             m_room.update();
 
@@ -932,6 +1228,34 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
+    /**
+     public void hero_Attack()
+
+     NAME
+
+     hero_Attack
+
+     SYNOPSIS
+
+     public void hero_Attack()
+
+     DESCRIPTION
+
+     updates the Heros Attack and determins when they can attack next
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     // checks to see if the hero needs to attack or not
     // basically same as tower shot function
     public void hero_Attack(){
@@ -986,10 +1310,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 
             }
+            if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS) >= m_hero.get(0).getAttack_speed()){
+                attack_timer = 0;
+            }
 
         }
         else{
             attack_timer = 0;
+            knight_attack_animation_start = false;
         }
 
 
@@ -1094,6 +1422,36 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
+    /**
+     public void  getKnightsdamage(int a_hero_x, int a_hero_y)
+
+     NAME
+
+     getKnightsdamage
+
+     SYNOPSIS
+
+        public void  getKnightsdamage(int a_hero_x, int a_hero_y)
+            int a_hero_x -> x coord if the knight hero was chosen
+            int a_her_y -> y coord if the knight hero was chosen
+
+     DESCRIPTION
+
+        Updates the night attack animation and determins when he can attack next
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     public void  getKnightsdamage(int a_hero_x, int a_hero_y){
 
         // now update the attack and store monster and attack to be deleted later
@@ -1151,6 +1509,34 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         m_towershot.removeAll(tstemplist);
     }
 
+    /**
+     public void tower_Attack()
+
+     NAME
+
+     tower_Attack
+
+     SYNOPSIS
+
+     public void tower_Attack()
+
+     DESCRIPTION
+
+     updates the towershots that the towers shoot and determins when the towers can attack again
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     public void tower_Attack(){
         // This is where we will have to check to see if the tower will shoot.. probably make this into a seperate function with everything else
         // need to check every monster and see if it is within any tower range
@@ -1355,7 +1741,37 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         m_monster.removeAll(mtemplist);
 
     }
+    //**********************************************************************
 
+    /**
+     public void draw(Canvas a_canvas)
+
+     NAME
+
+     draw
+
+     SYNOPSIS
+
+        public void draw(Canvas a_canvas)
+            Canvas a_canvas -> is the canvas(the screen) which things will be drawn to
+
+     DESCRIPTION
+
+        Draws things to the screen so people can see whats happening
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     @Override
     public void draw(Canvas a_canvas){
 
@@ -1541,12 +1957,72 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
+    //**********************************************************************
+
+    /**
+     public int getXcoord(int a_x)
+
+     NAME
+
+     getXcoord
+
+     SYNOPSIS
+
+        public int getXcoord(int a_x)
+            int a_x -> x coord
+
+     DESCRIPTION
+
+     turn the x coord into the 130 grid which the game uses
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     public int getXcoord(int a_x){
         //return Math.round(x / 120);
         // doing this bottom one because images are 130 by 130
         return Math.round(a_x / 130);
     }
 
+    /**
+     public int getYcoord(int a_y)
+
+     NAME
+
+     getYcoord
+
+     SYNOPSIS
+
+     public int getYcoord(int a_y)
+     int a_y -> y coord
+
+     DESCRIPTION
+
+     turn the y coord into the 130 grid which the game uses
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     public int getYcoord(int a_y){
         //double newy = Math.round(y/119.5);
         // doing this bottom one because images are 130 by 130
@@ -1555,7 +2031,36 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         return thisy;
     }
 
-    // the collision class, checks to see if tower shots hit monster
+    /**
+     public boolean collision(GameObject a_a, GameObject a_b)
+
+     NAME
+
+     collision
+
+     SYNOPSIS
+
+        public boolean collision(GameObject a_a, GameObject a_b)
+            GameObject a_a -> first game object
+            GameObject a_b -> second game Object
+
+     DESCRIPTION
+
+     Checks for unit collesion for gameobject a and b
+
+     RETURNS
+
+     true if the objects collide
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:07Am 12/29/2001
+
+     */
     public boolean collision(GameObject a_a, GameObject a_b){
 
         if(Rect.intersects(a_a.getRectangle(), a_b.getRectangle())){
@@ -1567,15 +2072,43 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    // return true if monster is in the array, return false if its not
+    /**
+     public boolean addmonster(int a_wavenumber)
+
+     NAME
+
+     addmonster
+
+     SYNOPSIS
+
+        public boolean addmonster(int a_wavenumber)
+            int a_wavenumber -> the wave number that is giong to be spawned
+
+     DESCRIPTION
+
+     adds monster to the monster ArrayList depending on what monsters are in the wave
+
+     RETURNS
+
+     true of the monster is in the array otherwise return false if there are no more monster to spawn
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:47Am 12/29/2001
+
+     */
     public boolean addmonster(int a_wavenumber){
 
         // is used for infinity mode, when the wave goes over 13 waves, the limit is turned on
         int infinityFactor = 0;
         int hp_mult = 1;
        if(m_infiity){
-           if( a_wavenumber / 7 >= 2){
-               hp_mult = a_wavenumber / 7;
+           if( a_wavenumber - 13 / 2 >= 1){
+               hp_mult = (a_wavenumber -13) / 2;
            }
            // >= 12 because it starts at 0 so wave 12 is wave 13
            if(a_wavenumber >= 12){
@@ -1698,6 +2231,37 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         return false;
     }
 
+    /**
+     public Tower getTowerByCoord(int a_x, int a_y)
+
+     NAME
+
+     getTowerByCoord
+
+     SYNOPSIS
+
+        public Tower getTowerByCoord(int a_x, int a_y)
+            int a_x -> x coord
+            int a_y -> y coord
+
+     DESCRIPTION
+
+     searches tower in the towerArraylist for the exact a_x and a_y coord, if the tower is found return tower number
+     else return -1
+
+     RETURNS
+
+     true of the monster is in the array otherwise return false if there are no more monster to spawn
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     1:47Am 12/29/2001
+
+     */
     public Tower getTowerByCoord(int a_x, int a_y){
 
         for(int i = 0; i < m_tower.size(); i++){

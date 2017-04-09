@@ -409,7 +409,26 @@ public class Monster extends GameObject{
         // this way they will never get too far off track and not follow the tracking system
         // on course gets the remainder from the location x or y, then adds it with the walkspeed to keep
         // them on course
+
         else{
+            no_wall_hit();
+        }
+
+
+
+            // resets slow effect back to 0 if slow effect wares off
+        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - slow_timer_count, TimeUnit.NANOSECONDS) >= 2000 ){
+            slow_effect = 0;
+        }
+
+        animation.update();
+
+
+
+    }
+
+    private void no_wall_hit(){
+
             switch(moveDirection){
                 // move right
                 case 0:
@@ -531,16 +550,6 @@ public class Monster extends GameObject{
                     //y+=walk_speed - slow_effect;
                     break;
             }
-        }
-
-            // resets slow effect back to 0 if slow effect wares off
-        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - slow_timer_count, TimeUnit.NANOSECONDS) >= 2000 ){
-            slow_effect = 0;
-        }
-
-        animation.update();
-
-
 
     }
 
