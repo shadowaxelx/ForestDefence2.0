@@ -7,6 +7,38 @@ import java.util.Random;
  * Created by kevin on 1/4/2017.
  */
 
+/**
+ class MonsterWave
+
+ NAME
+
+ MonsterWave
+
+ SYNOPSIS
+    class MonsterWave
+
+        int [][] monsterroom11 -> 2D array containing the monster wave for easy difficulty
+        int [][] monsterroom12 -> 2D array containing the monster wave for normal difficulty
+        int [][] monsterroom13 -> 2D array containing the monster wave for hard difficulty
+        int [][] monsterroom14 -> 2D array containing the monster wave for infinite difficulty
+
+ DESCRIPTION
+
+ Creates the monsters, gives them all of their stats, keeps them on the correct path, and animates them
+
+ RETURNS
+
+ NA
+
+ AUTHOR
+
+ Kevin Diana
+
+ DATE
+
+ 4:00Pm 1/4/2016
+
+ */
 public class MonsterWave extends GameObject {
 
     // each array contains the wave so the first array is round 1
@@ -76,9 +108,6 @@ public class MonsterWave extends GameObject {
 
     private int[][] monsterroom14 = new int[][]{
 
-            //{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-           // {1},
-
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
             {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
@@ -98,6 +127,33 @@ public class MonsterWave extends GameObject {
     };
 
 
+    /**
+     public int [][] infinite()
+
+     NAME
+
+     infinite
+
+     SYNOPSIS
+     public int [][] infinite()
+
+     DESCRIPTION
+
+        keeps generating new monster waves randomly for infinite mode
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     4:00Pm 1/4/2016
+
+     */
     public int [][] infinite(){
 
 
@@ -113,8 +169,9 @@ public class MonsterWave extends GameObject {
         return monsterroom12;
     }
 
-    public int [][] getwave(int roomnum){
-        switch(roomnum){
+    // retuns wave for difficulty selected
+    public int [][] getwave(int a_difficulty){
+        switch(a_difficulty){
             // easy
             case 11:
                 return monsterroom11;

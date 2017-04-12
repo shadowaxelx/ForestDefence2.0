@@ -15,23 +15,23 @@ import android.graphics.Bitmap;
 
  SYNOPSIS
 
-    Animation
-        Bitmap[] m_frames -> array to hold bitmap images
-        int m_currentFrame -> hold the current image number from the animation
-        long m_startTime -> The time in which the animation start using System.nanoTime
-        long m_delay -> the delay between the image switching
-        boolean m_playedOnce -> some animations should only play once
+ Animation
+ Bitmap[] m_frames -> array to hold bitmap images
+ int m_currentFrame -> hold the current image number from the animation
+ long m_startTime -> The time in which the animation start using System.nanoTime
+ long m_delay -> the delay between the image switching
+ boolean m_playedOnce -> some animations should only play once
 
  a_savedInstanceState -> The saved state of the application being passed in as a bundle
 
 
  DESCRIPTION
 
-    This class is to animate images
+ This class is to animate images
 
  RETURNS
 
-    NA
+ NA
 
  AUTHOR
 

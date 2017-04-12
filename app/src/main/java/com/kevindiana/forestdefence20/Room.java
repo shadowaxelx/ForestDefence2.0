@@ -9,9 +9,39 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Room{
-    private Bitmap image;
+/**
+ class  Room
 
+ NAME
+
+ Room
+
+ SYNOPSIS
+    class Room
+        Bitmap m_image -> holds the image being used for the map
+        int [][] room1 -> holds the numbers that create the grid for map 1
+        int [][] room2 -> holds the numbers that create the grid for map 2
+        int [][] room3 -> hold the numbers that create the grid for map 3
+
+ DESCRIPTION
+
+    Sets up the map image and the map 2D array for gameplay
+
+ RETURNS
+
+ NA
+
+ AUTHOR
+
+ Kevin Diana
+
+ DATE
+
+ 8:00Pm 12/28/2016
+
+ */
+public class Room{
+    private Bitmap m_image;
 
     // x is the x coord, y is the y coords and dx is the vector
     private int x, y, dx;
@@ -74,9 +104,9 @@ public class Room{
             {5, 5, 5, 5, 5, 5, 5, 2, 3, 4, 0, 0, 5, 5, 5, 5, 5, 5, 7, 0, 0}
     };
 
-
-    public Room(Bitmap res){
-        image = res;
+    // constructor setting the image for the map selected
+    public Room(Bitmap a_res){
+        m_image = a_res;
     }
     // updates the background
     public void update(){
@@ -92,17 +122,50 @@ public class Room{
         }
     }
 
+    /**
+     public void update(int a_monster_x, int a_monster_y)
+
+     NAME
+
+     update
+
+     SYNOPSIS
+
+     public void update(int a_monster_x, int a_monster_y)
+     int a_monster_x -> monsters x coord
+     int a_monster_y -> monsters y coord
+
+
+     DESCRIPTION
+
+     updates the position of the attack to move closer and closer to the monster
+     it was assigned to attack
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     6:20pm 3/30/2017
+
+     */
     public void draw(Canvas canvas){
-        canvas.drawBitmap(image, x, y, null);
+        canvas.drawBitmap(m_image, x, y, null);
         // for scrolling the image, if part of the image is off screen
         // draw image ontop of it
         if(x<0){
-            canvas.drawBitmap(image, x+GamePanel.WIDTH, y, null);
+            canvas.drawBitmap(m_image, x+GamePanel.WIDTH, y, null);
             //canvas.drawBitmap()
         }
 
     }
 
+    // returns the room that was chosen from select screen
     public int [][] getroom(int roomnum){
         switch(roomnum){
             case 1:
@@ -115,7 +178,4 @@ public class Room{
         return room1;
     }
 
-    public void setVector(int dx){
-        this.dx = dx;
-    }
 }

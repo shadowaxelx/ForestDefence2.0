@@ -9,6 +9,41 @@ import static android.R.attr.bitmap;
  * Created by kevin on 2/7/2017.
  */
 
+/**
+ class Tower
+
+ NAME
+
+ Tower
+
+ SYNOPSIS
+
+ class Tower
+    Bitmap m_image -> holds the image
+    int m_tower_type -> number which determin what type of tower it is
+    int m_tower_lvl -> lvl of the tower
+    int m_sell_cost -> money that will be returned if tower is sold
+    int m_upgrade_cost -> money it cost to upgrade tower
+    float m_range -> range of the tower
+    double m_attack_speed -> attack speed of tower in milliseconds
+
+ DESCRIPTION
+
+    Creates a tower object that is the main source of defending against the monsters
+
+ RETURNS
+
+ NA
+
+ AUTHOR
+
+ Kevin Diana
+
+ DATE
+
+ 7:11pm 2/7/2017
+
+ */
 public class Tower extends GameObject{
     private Bitmap m_image;
     // 1 is sniper, 2 double shot, 3 slow
@@ -20,6 +55,38 @@ public class Tower extends GameObject{
     // it is in milla seconds
     private double m_attack_speed;
 
+    /**
+     public Tower(Bitmap a_res, int a_x, int a_y, int a_towertype)
+
+     NAME
+
+     Tower
+
+     SYNOPSIS
+
+     public Tower(Bitmap a_res, int a_x, int a_y, int a_towertype)
+        Bitmap a_res -> image being passed in to use
+        int a_x -> x coord where the image will be drawn
+        int a_y -> y coord where the image ill be drawn
+        int a_towertype -> type of tower to create
+
+     DESCRIPTION
+
+        Constructor which creates tower of specific type with specific stats
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     7:11pm 2/7/2017
+
+     */
     // tower type 1 sniper, 2 shoots 2, 3 slows
     public Tower(Bitmap a_res, int a_x, int a_y, int a_towertype){
         m_x = a_x;
@@ -78,23 +145,60 @@ public class Tower extends GameObject{
 
     }
 
+    // if you wanted to add tower animation
     public void update(){
 
     }
 
+    /**
+     public void draw(Canvas canvas)
+
+     NAME
+
+     draw
+
+     SYNOPSIS
+
+     public void draw(Canvas canvas)
+     Canvas canvas -> the canvas the game is using(the screen) to draw things on
+
+     DESCRIPTION
+
+     is called in order to draw the images to the canvas
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     2:30pm 3/31/2017
+
+     */
     public void draw(Canvas canvas) {
         canvas.drawBitmap(m_image, m_x, m_y, null);
     }
 
+    // return tower type
     public int getTowerType(){
         return m_tower_type;
     }
+    // return the amount of gold player will get back if tower is sold
     public int getSell_cost() {return m_sell_cost; }
+    // returns the amount of gold to upgrade tower
     public int getUpgrade_cost() {return m_upgrade_cost; }
+    // returns the towers range
     public float getRange() {return m_range;}
+    // return the towers attack speed
     public double getAttackSpeed() {return m_attack_speed;}
+    // returns the towers lvl
     public int getTowerLvl() {return m_tower_lvl; }
 
+    // upgrades the tower
     public void upgrade_tower(){
 
         // sniper tower

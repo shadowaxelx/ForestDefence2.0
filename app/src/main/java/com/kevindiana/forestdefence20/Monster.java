@@ -13,198 +13,290 @@ import static java.lang.StrictMath.abs;
  * Created by kevin on 12/29/2016.
  */
 
+/**
+ class MainThread
+
+ NAME
+
+ MainThread
+
+ SYNOPSIS
+
+ class MainThread
+    Bitmap m_spritesheet -> hold the image being used
+    int m_health -> monster current health
+     int m_starthealth -> monster max/starting health
+     int m_money -> money monster will give
+     int m_walk_speed -> how fast monster will move on screen
+    int m_gridx, m_gridy -> the x and y grid numbers for the 2D array of the room
+     // these are changed depending on the direction
+    int m_gridx_search , m_gridy_serach -> Is the direction that is being looked at 1 space ahead
+
+     int [][] m_currentroom -> the current 2D array room that is being used to path the monsters
+
+     Animation m_animation -> animation Object to animate the sprites
+     int m_numFrames -> number of frames for the animation / image to cycle through
+     // 0 is to right, 1 is to left, 2 is up, 3 is down
+     int m_moveDirection -> the direction the monster is moving in
+
+     // added to make bullet tracking easier
+     int m_monsterID -> the id given to the monster when it is created
+
+     // For the slow tower effect
+     double m_slow_effect -> the amount the monster is being slowed by
+     // slow effect should last for 1.5 seconds
+     long m_slow_timer_count -> timer for the slow of the monster
+     //gets monster back on a correct corse so its walking doesnt get messed up
+     int m_back_on_course -> helps the monster stay on the path and not wonder off after/ durring slow
+
+
+
+ DESCRIPTION
+
+    Creates the monsters, gives them all of their stats, keeps them on the correct path, and animates them
+
+ RETURNS
+
+ NA
+
+ AUTHOR
+
+ Kevin Diana
+
+ DATE
+
+ 12:00Am 12/29/2016
+
+ */
 public class Monster extends GameObject{
-    private Bitmap spritesheet;
-    private int health;
-    private int starthealth;
-    private int money;
-    private int walk_speed;
-    private int gridx, gridy;
+    private Bitmap m_spritesheet;
+    private int m_health;
+    private int m_starthealth;
+    private int m_money;
+    private int m_walk_speed;
+    private int m_gridx, m_gridy;
     // these are changed depending on the direction
-    private int gridx_search = 0, gridy_serach = 0;
+    private int m_gridx_search = 0, m_gridy_serach = 0;
     private int x_next = 0, y_next = 0;
 
-    private int [][] currentroom;
+    private int [][] m_currentroom;
     //private boolean playing;
-    private Animation animation = new Animation();
-    private long startTime;
-    private int numFrames;
+    private Animation m_animation = new Animation();
+    private int m_numFrames;
     // 0 is to right, 1 is to left, 2 is up, 3 is down
-    private int moveDirection = -1;
+    private int m_moveDirection = -1;
 
     // added to make bullet tracking easier
-    private int monsterID;
+    private int m_monsterID;
 
     // For the slow tower effect
-    private double slow_effect = 0;
+    private double m_slow_effect = 0;
     // slow effect should last for 1.5 seconds
-    private long slow_timer_count;
+    private long m_slow_timer_count;
     //gets monster back on a correct corse so its walking doesnt get messed up
-    private int back_on_course;
-
-    // x is x coord it will spawn, y is the y coord, w is width of sprit h is height
-    public Monster(Bitmap res, int x, int y, int w, int h, int numFrames, int [][] currentroom, int monstertype, int monsterID, int hp_mult){
-
-        m_x = x;
-        m_y = y;
-        this.currentroom = currentroom;
-
-        m_width = w;
-        m_height = h;
-        this.numFrames = numFrames;
-        this.monsterID = monsterID;
+    private int m_back_on_course;
 
 
+    /**
+     public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames, int [][] a_currentroom, int a_monstertype, int a_monsterID, int a_hp_mult)
 
-        Bitmap[] image = new Bitmap[numFrames];
+     NAME
 
-        spritesheet = res;
+     Monster
+
+     SYNOPSIS
+
+     public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames, int [][] a_currentroom, int a_monstertype, int a_monsterID, int a_hp_mult)
+
+        Bitmap a_res -> where the image is stored for the monster
+        int a_x -> x coord of the monster when it is created
+        int a_y -> y coord of the monster when it is created
+        int a_w -> width of the image
+        int a_h -> height of the image
+        int a_numFrames -> number of frames that will cycle through
+        int [][] a_currentroom -> holds the room/map information to help track the monster to keep them on path
+        int a_monstertype -> helps decide which type of monster will be made with corresponding image
+        int a_monsterID -> number given to monster on creation
+        int a_hp_mult -> is used when infinite mode is being played on to increase monster hp
+
+     DESCRIPTION
+
+        Constructor for the class which creates the specific type of monster chosen
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     12:00Am 12/29/2016
+
+     */
+    public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames, int [][] a_currentroom, int a_monstertype, int a_monsterID, int a_hp_mult){
+
+        m_x = a_x;
+        m_y = a_y;
+        m_currentroom = a_currentroom;
+
+        m_width = a_w;
+        m_height = a_h;
+        m_numFrames = a_numFrames;
+        m_monsterID = a_monsterID;
+
+
+
+        Bitmap[] image = new Bitmap[m_numFrames];
+
+        m_spritesheet = a_res;
 
         // starts by moving to the right
-        moveDirection = 0;
+        m_moveDirection = 0;
 
-        image[0] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
-        image[1] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
-        image[2] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
-        image[3] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
-        image[4] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
-        image[5] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
-        image[6] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
-        image[7] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
+        image[0] = Bitmap.createBitmap(m_spritesheet, 0, 0*m_height, m_width, m_height);
+        image[1] = Bitmap.createBitmap(m_spritesheet, 0, 1*m_height, m_width, m_height);
+        image[2] = Bitmap.createBitmap(m_spritesheet, 0, 0*m_height, m_width, m_height);
+        image[3] = Bitmap.createBitmap(m_spritesheet, 0, 1*m_height, m_width, m_height);
+        image[4] = Bitmap.createBitmap(m_spritesheet, 0, 0*m_height, m_width, m_height);
+        image[5] = Bitmap.createBitmap(m_spritesheet, 0, 1*m_height, m_width, m_height);
+        image[6] = Bitmap.createBitmap(m_spritesheet, 0, 0*m_height, m_width, m_height);
+        image[7] = Bitmap.createBitmap(m_spritesheet, 0, 1*m_height, m_width, m_height);
 
-        animation.setFrames(image);
+        m_animation.setFrames(image);
 
         // each top of monster has different movespeed and hp
         // need to keep movement speed divisble by # that can divide 130 equally
-        switch (monstertype){
+        switch (a_monstertype){
             // red_dot monster
             case 1:
                //walk_speed = 13;
-                walk_speed = 26;
-                health = 10 * hp_mult;
-                starthealth = health;
+                m_walk_speed = 26;
+                m_health = 10 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 1;
-                money = 2;
-                animation.setDelay(390 - walk_speed);
+                m_money = 2;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // green blob momster
             case 2:
-                walk_speed = 10;
+                m_walk_speed = 10;
                 //health = 15;
-                health = 25 * hp_mult;
-                starthealth = health;
+                m_health = 25 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 1;
-                money = 2;
-                animation.setDelay(390 - walk_speed);
+                m_money = 2;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // mouse monster
             case 3:
-                walk_speed = 26;
+                m_walk_speed = 26;
                 m_power = 1;
                 //health = 7;
-                health = 15 * hp_mult;
-                starthealth = health;
-                money = 2;
-                animation.setDelay(390 - walk_speed);
+                m_health = 15 * a_hp_mult;
+                m_starthealth = m_health;
+                m_money = 2;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // bannana monster
             case 4:
-                walk_speed = 10;
+                m_walk_speed = 10;
                 //health = 50;
-                health = 100 * hp_mult;
-                starthealth = health;
+                m_health = 100 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 1;
-                money = 4;
-                animation.setDelay(390 - walk_speed);
+                m_money = 4;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // lion monster
             case 5:
-                walk_speed = 5;
+                m_walk_speed = 5;
                 //health = 125;
-                health = 275 * hp_mult;
-                starthealth = health;
+                m_health = 275 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 2;
-                money = 6;
-                animation.setDelay(390 - walk_speed);
+                m_money = 6;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             //theif monster // rare monster
             case 6:
-                walk_speed = 26;
-                health = 100 * hp_mult;
-                starthealth = health;
+                m_walk_speed = 26;
+                m_health = 100 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 1;
-                money = 12;
-                animation.setDelay(390 - walk_speed);
+                m_money = 12;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // white knight
             case 7:
-                walk_speed = 10;
+                m_walk_speed = 10;
                // health = 175;
-                health =325 * hp_mult;
-                starthealth = health;
+                m_health =325 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 2;
-                money = 6;
-                animation.setDelay(390 - walk_speed);
+                m_money = 6;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // Blue knight
             case 8:
-                walk_speed = 5;
+                m_walk_speed = 5;
                 //health = 300;
-                health = 550 * hp_mult;
-                starthealth = health;
+                m_health = 550 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 3;
-                money = 8;
-                animation.setDelay(390 - walk_speed);
+                m_money = 8;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // bomb man
             case 9:
-                walk_speed = 13;
+                m_walk_speed = 13;
                 //health = 200;
-                health = 375 * hp_mult;
-                starthealth = health;
+                m_health = 375 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 2;
-                money = 6;
-                animation.setDelay(390 - walk_speed);
+                m_money = 6;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // fire spirite
             case 10:
-                walk_speed = 13;
+                m_walk_speed = 13;
                 //health = 250;
-                health = 475 * hp_mult;
-                starthealth = health;
+                m_health = 475 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 2;
-                money = 8;
-                animation.setDelay(390 - walk_speed);
+                m_money = 8;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // baby dragon
             case 11:
-                walk_speed = 10;
+                m_walk_speed = 10;
                 //health = 350;
-                health = 900 * hp_mult;
-                starthealth = health;
+                m_health = 900 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 2;
-                money = 8;
-                animation.setDelay(390 - walk_speed);
+                m_money = 8;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // silver dragon
             case 12:
-                walk_speed = 5;
+                m_walk_speed = 5;
                // health = 600;
-                health = 1200 * hp_mult;
-                starthealth = health;
+                m_health = 1200 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 4;
-                money = 10;
-                animation.setDelay(390 - walk_speed);
+                m_money = 10;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
             // King of Beast
             case 13:
-                walk_speed = 5;
-                //health = 850;
-                health = 2000 * hp_mult;
-                starthealth = health;
+                m_walk_speed = 5;
+                m_health = 2000 * a_hp_mult;
+                m_starthealth = m_health;
                 m_power = 5;
-                money = 12;
-                animation.setDelay(390 - walk_speed);
+                m_money = 12;
+                m_animation.setDelay(390 - m_walk_speed);
                 break;
 
 
@@ -215,37 +307,63 @@ public class Monster extends GameObject{
     }
 
 
-    // this would be where you would do different animation for
-    // the different way they are walking as well as
-    // change the direction they are walking
+    /**
+     public void update()
+
+     NAME
+
+     update
+
+     SYNOPSIS
+
+     public void update()
+
+     DESCRIPTION
+
+        updates the monsters x and y location if they have to change direction and calls animation class in order to
+            make the monster actually look like they are moving.  Also changes the image for different direction changes.
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     6:20pm 3/30/2017
+
+     */
     public void update(){
         // gets the coordinate of the image in grid terms
         System.out.println("x: " + m_x);
         System.out.println("y " + m_y);
-        gridx = getXcoord(m_x);
-        gridy = getYcoord(m_y);
+        m_gridx = getXcoord(m_x);
+        m_gridy = getYcoord(m_y);
 
         //System.out.println("x:" + gridx);
         //System.out.println("y" + gridy);
 
         //System.out.println(gridx + " : " + gridy);
 
-        switch(moveDirection){
+        switch(m_moveDirection){
             // move right
             case 0:
-                gridx_search = 1;
-                gridy_serach = 0;
+                m_gridx_search = 1;
+                m_gridy_serach = 0;
                 x_next = 0;
                 break;
             // move left
             case 1:
-                gridx_search = -1;
-                gridy_serach = 0;
+                m_gridx_search = -1;
+                m_gridy_serach = 0;
                 break;
             // move up
             case 2:
-                gridx_search = 0;
-                gridy_serach = -1;
+                m_gridx_search = 0;
+                m_gridy_serach = -1;
                 // need to do this becuase it determins what square its in by the upper part
                 // of its boddy, so as soon as uper hits the next square it thinks its in the next
                 // square when it isnt yet
@@ -253,8 +371,8 @@ public class Monster extends GameObject{
                 break;
             // move down
             case 3:
-                gridx_search = 0;
-                gridy_serach = +1;
+                m_gridx_search = 0;
+                m_gridy_serach = +1;
                 break;
 
 
@@ -262,142 +380,142 @@ public class Monster extends GameObject{
 
         //System.out.println(currentroom[gridy + gridy_serach][gridx + gridx_search]);
         // means change direction
-        if(currentroom[gridy + gridy_serach][gridx + gridx_search] != 1){
+        if(m_currentroom[m_gridy + m_gridy_serach][m_gridx + m_gridx_search] != 1){
 
-            int checkgridx = gridx;
-            int checkgridy = gridy;
+            int checkgridx = m_gridx;
+            int checkgridy = m_gridy;
 
             // check upwards
-            if(currentroom[checkgridy - 1][checkgridx] == 1 && moveDirection != 3){
+            if(m_currentroom[checkgridy - 1][checkgridx] == 1 && m_moveDirection != 3){
 
-                if(moveDirection != 2){
+                if(m_moveDirection != 2){
                     System.gc();
-                    moveDirection = 2;
+                    m_moveDirection = 2;
 
-                    Bitmap[] image = new Bitmap[numFrames];
+                    Bitmap[] image = new Bitmap[m_numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 5*m_height, m_width, m_height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 5*m_height, m_width, m_height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 5*m_height, m_width, m_height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 4*m_height, m_width, m_height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 5*m_height, m_width, m_height);
+                    image[0] = Bitmap.createBitmap(m_spritesheet, 0, 4*m_height, m_width, m_height);
+                    image[1] = Bitmap.createBitmap(m_spritesheet, 0, 5*m_height, m_width, m_height);
+                    image[2] = Bitmap.createBitmap(m_spritesheet, 0, 4*m_height, m_width, m_height);
+                    image[3] = Bitmap.createBitmap(m_spritesheet, 0, 5*m_height, m_width, m_height);
+                    image[4] = Bitmap.createBitmap(m_spritesheet, 0, 4*m_height, m_width, m_height);
+                    image[5] = Bitmap.createBitmap(m_spritesheet, 0, 5*m_height, m_width, m_height);
+                    image[6] = Bitmap.createBitmap(m_spritesheet, 0, 4*m_height, m_width, m_height);
+                    image[7] = Bitmap.createBitmap(m_spritesheet, 0, 5*m_height, m_width, m_height);
 
-                    animation.setFrames(image);
+                    m_animation.setFrames(image);
 
                 }
-               // y-=walk_speed;
-                if (slow_effect == 0) {
-                    back_on_course = (m_y % walk_speed);
+               // y-=m_walk_speed;
+                if (m_slow_effect == 0) {
+                    m_back_on_course = (m_y % m_walk_speed);
 
-                    m_y -= walk_speed + back_on_course;
+                    m_y -= m_walk_speed + m_back_on_course;
                 }
                 else{
                    // back_on_course = (y % (int)slow_effect);
-                    m_y-= slow_effect;// + back_on_course;
+                    m_y-= m_slow_effect;// + back_on_course;
 
                 }
 
             }
             // check down
-            else if(currentroom[checkgridy + 1][checkgridx] == 1 && moveDirection != 2){
+            else if(m_currentroom[checkgridy + 1][checkgridx] == 1 && m_moveDirection != 2){
 
-                if(moveDirection != 3){
+                if(m_moveDirection != 3){
                     System.gc();
-                    moveDirection = 3;
+                    m_moveDirection = 3;
 
-                    Bitmap[] image = new Bitmap[numFrames];
+                    Bitmap[] image = new Bitmap[m_numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 6*m_height, m_width, m_height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 7*m_height, m_width, m_height);
+                    image[0] = Bitmap.createBitmap(m_spritesheet, 0, 6*m_height, m_width, m_height);
+                    image[1] = Bitmap.createBitmap(m_spritesheet, 0, 7*m_height, m_width, m_height);
+                    image[2] = Bitmap.createBitmap(m_spritesheet, 0, 6*m_height, m_width, m_height);
+                    image[3] = Bitmap.createBitmap(m_spritesheet, 0, 7*m_height, m_width, m_height);
+                    image[4] = Bitmap.createBitmap(m_spritesheet, 0, 6*m_height, m_width, m_height);
+                    image[5] = Bitmap.createBitmap(m_spritesheet, 0, 7*m_height, m_width, m_height);
+                    image[6] = Bitmap.createBitmap(m_spritesheet, 0, 6*m_height, m_width, m_height);
+                    image[7] = Bitmap.createBitmap(m_spritesheet, 0, 7*m_height, m_width, m_height);
 
-                    animation.setFrames(image);
+                    m_animation.setFrames(image);
 
                 }
-                //y+=walk_speed;
-                if (slow_effect == 0) {
-                    back_on_course = (m_y % walk_speed);
+                //y+=m_walk_speed;
+                if (m_slow_effect == 0) {
+                    m_back_on_course = (m_y % m_walk_speed);
 
-                    m_y += walk_speed + back_on_course;
+                    m_y += m_walk_speed + m_back_on_course;
                 }
                 else{
-                   // back_on_course = (y % (int)slow_effect);
-                    m_y+= slow_effect;// + back_on_course;
+                   // m_back_on_course = (y % (int)m_slow_effect);
+                    m_y+= m_slow_effect;// + m_back_on_course;
                 }
 
             }
             // check right
-            else if(currentroom[checkgridy][checkgridx + 1]  == 1 && moveDirection != 1){
+            else if(m_currentroom[checkgridy][checkgridx + 1]  == 1 && m_moveDirection != 1){
 
-                if(moveDirection != 0){
+                if(m_moveDirection != 0){
                     System.gc();
-                    moveDirection = 0;
+                    m_moveDirection = 0;
 
-                    Bitmap[] image = new Bitmap[numFrames];
+                    Bitmap[] image = new Bitmap[m_numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 0*m_height, m_width, m_height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 1*m_height, m_width, m_height);
+                    image[0] = Bitmap.createBitmap(m_spritesheet, 0, 0*m_height, m_width, m_height);
+                    image[1] = Bitmap.createBitmap(m_spritesheet, 0, 1*m_height, m_width, m_height);
+                    image[2] = Bitmap.createBitmap(m_spritesheet, 0, 0*m_height, m_width, m_height);
+                    image[3] = Bitmap.createBitmap(m_spritesheet, 0, 1*m_height, m_width, m_height);
+                    image[4] = Bitmap.createBitmap(m_spritesheet, 0, 0*m_height, m_width, m_height);
+                    image[5] = Bitmap.createBitmap(m_spritesheet, 0, 1*m_height, m_width, m_height);
+                    image[6] = Bitmap.createBitmap(m_spritesheet, 0, 0*m_height, m_width, m_height);
+                    image[7] = Bitmap.createBitmap(m_spritesheet, 0, 1*m_height, m_width, m_height);
 
-                    animation.setFrames(image);
+                    m_animation.setFrames(image);
 
                 }
-                //x+=walk_speed;
+                //x+=m_walk_speed;
                 // means slow effect is off
-                if (slow_effect == 0) {
-                    back_on_course = (m_x % walk_speed);
+                if (m_slow_effect == 0) {
+                    m_back_on_course = (m_x % m_walk_speed);
 
-                    m_x += walk_speed + back_on_course;
+                    m_x += m_walk_speed + m_back_on_course;
                 }
                 else{
-                    //back_on_course = (x % (int)slow_effect);
-                    m_x+= slow_effect;// + back_on_course;
+                    //m_back_on_course = (x % (int)m_slow_effect);
+                    m_x+= m_slow_effect;// + m_back_on_course;
                 }
 
             }
             // check left
-            else if(currentroom[checkgridy][checkgridx - 1]  == 1 && moveDirection != 0){
+            else if(m_currentroom[checkgridy][checkgridx - 1]  == 1 && m_moveDirection != 0){
 
-                if(moveDirection != 1){
+                if(m_moveDirection != 1){
                     System.gc();
-                    moveDirection = 1;
+                    m_moveDirection = 1;
 
-                    Bitmap[] image = new Bitmap[numFrames];
+                    Bitmap[] image = new Bitmap[m_numFrames];
 
-                    image[0] = Bitmap.createBitmap(spritesheet, 0, 2*m_height, m_width, m_height);
-                    image[1] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
-                    image[2] = Bitmap.createBitmap(spritesheet, 0, 2*m_height, m_width, m_height);
-                    image[3] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
-                    image[4] = Bitmap.createBitmap(spritesheet, 0, 2*m_height, m_width, m_height);
-                    image[5] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
-                    image[6] = Bitmap.createBitmap(spritesheet, 0, 2*m_height, m_width, m_height);
-                    image[7] = Bitmap.createBitmap(spritesheet, 0, 3*m_height, m_width, m_height);
+                    image[0] = Bitmap.createBitmap(m_spritesheet, 0, 2*m_height, m_width, m_height);
+                    image[1] = Bitmap.createBitmap(m_spritesheet, 0, 3*m_height, m_width, m_height);
+                    image[2] = Bitmap.createBitmap(m_spritesheet, 0, 2*m_height, m_width, m_height);
+                    image[3] = Bitmap.createBitmap(m_spritesheet, 0, 3*m_height, m_width, m_height);
+                    image[4] = Bitmap.createBitmap(m_spritesheet, 0, 2*m_height, m_width, m_height);
+                    image[5] = Bitmap.createBitmap(m_spritesheet, 0, 3*m_height, m_width, m_height);
+                    image[6] = Bitmap.createBitmap(m_spritesheet, 0, 2*m_height, m_width, m_height);
+                    image[7] = Bitmap.createBitmap(m_spritesheet, 0, 3*m_height, m_width, m_height);
 
-                    animation.setFrames(image);
+                    m_animation.setFrames(image);
 
                 }
-               // x-=walk_speed;
-                if (slow_effect == 0) {
-                    back_on_course = (m_x % walk_speed);
+               // x-=m_walk_speed;
+                if (m_slow_effect == 0) {
+                    m_back_on_course = (m_x % m_walk_speed);
 
-                    m_x -= walk_speed + back_on_course;
+                    m_x -= m_walk_speed + m_back_on_course;
                 }
                 else{
-                   // back_on_course = (x % (int)slow_effect);
-                    m_x-= slow_effect; //+ back_on_course;
+                   // m_back_on_course = (x % (int)m_slow_effect);
+                    m_x-= m_slow_effect; //+ m_back_on_course;
 
                 }
 
@@ -405,7 +523,7 @@ public class Monster extends GameObject{
 
         }
         // didnt hit a wall
-        // reason for back_on_course is so that 130 is always divisible by monster walk
+        // reason for m_back_on_course is so that 130 is always divisible by monster walk
         // this way they will never get too far off track and not follow the tracking system
         // on course gets the remainder from the location x or y, then adds it with the walkspeed to keep
         // them on course
@@ -417,43 +535,71 @@ public class Monster extends GameObject{
 
 
             // resets slow effect back to 0 if slow effect wares off
-        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - slow_timer_count, TimeUnit.NANOSECONDS) >= 2000 ){
-            slow_effect = 0;
+        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - m_slow_timer_count, TimeUnit.NANOSECONDS) >= 2000 ){
+            m_slow_effect = 0;
         }
 
-        animation.update();
+        m_animation.update();
 
 
 
     }
 
+    /**
+     private void no_wall_hit()
+
+     NAME
+
+     no_wall_hit
+
+     SYNOPSIS
+
+     private void no_wall_hit()
+
+     DESCRIPTION
+
+        updates the monsters x and y coord if they monster does not have to change direction
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     6:20pm 3/30/2017
+
+     */
     private void no_wall_hit(){
 
-            switch(moveDirection){
+            switch(m_moveDirection){
                 // move right
                 case 0:
                     // means slow effect is off
-                    if (slow_effect == 0) {
+                    if (m_slow_effect == 0) {
 
-                        back_on_course = ((gridx + 1) * 130) - m_x;
-                        if(back_on_course < walk_speed){
-                            m_x += walk_speed - (walk_speed - back_on_course);
+                        m_back_on_course = ((m_gridx + 1) * 130) - m_x;
+                        if(m_back_on_course < m_walk_speed){
+                            m_x += m_walk_speed - (m_walk_speed - m_back_on_course);
                         }
                         else{
-                            //back_on_course = (130 % (int)slow_effect);
-                            m_x+= walk_speed; //+ back_on_course;
+                            //m_back_on_course = (130 % (int)m_slow_effect);
+                            m_x+= m_walk_speed; //+ m_back_on_course;
                         }
                     }
 
                     // slow effect is on, need to track check to stop monster from turning around or going of their trail
                     else{
-                        back_on_course = ((gridx + 1) * 130) - m_x;
-                        if(back_on_course < slow_effect){
-                            m_x += slow_effect - (slow_effect - back_on_course);
+                        m_back_on_course = ((m_gridx + 1) * 130) - m_x;
+                        if(m_back_on_course < m_slow_effect){
+                            m_x += m_slow_effect - (m_slow_effect - m_back_on_course);
                         }
                         else{
-                            //back_on_course = (130 % (int)slow_effect);
-                            m_x+= slow_effect; //+ back_on_course;
+                            //m_back_on_course = (130 % (int)m_slow_effect);
+                            m_x+= m_slow_effect; //+ m_back_on_course;
                         }
                     }
 
@@ -461,15 +607,15 @@ public class Monster extends GameObject{
                 // move left
                 case 1:
                     // means slow effect is off
-                    if (slow_effect == 0) {
+                    if (m_slow_effect == 0) {
 
-                        back_on_course = m_x - ((gridx - 1) * 130);
-                        if(back_on_course < walk_speed){
-                            m_x-= walk_speed -(walk_speed - back_on_course);
+                        m_back_on_course = m_x - ((m_gridx - 1) * 130);
+                        if(m_back_on_course < m_walk_speed){
+                            m_x-= m_walk_speed -(m_walk_speed - m_back_on_course);
                         }
                         else{
-                            //back_on_course = (130 % (int)slow_effect);
-                            m_x-=  walk_speed; //+ back_on_course;
+                            //m_back_on_course = (130 % (int)m_slow_effect);
+                            m_x-=  m_walk_speed; //+ m_back_on_course;
 
                         }
 
@@ -477,102 +623,133 @@ public class Monster extends GameObject{
                     // this is to make sure that right before it gets to the edge of a block it will be exactly divisible by 130
                     // so things it wont turn the wrong way
                     else{
-                        back_on_course = m_x - ((gridx - 1) * 130);
-                        if(back_on_course < slow_effect){
-                            m_x-= slow_effect -(slow_effect - back_on_course);
+                        m_back_on_course = m_x - ((m_gridx - 1) * 130);
+                        if(m_back_on_course < m_slow_effect){
+                            m_x-= m_slow_effect -(m_slow_effect - m_back_on_course);
                         }
                         else{
-                            //back_on_course = (130 % (int)slow_effect);
-                            m_x-=  slow_effect; //+ back_on_course;
+                            //m_back_on_course = (130 % (int)m_slow_effect);
+                            m_x-=  m_slow_effect; //+ m_back_on_course;
 
                         }
 
                     }
-                    //x-=walk_speed - slow_effect;
+                    //x-=m_walk_speed - m_slow_effect;
                     break;
                 // move up
                 case 2:
-                    if (slow_effect == 0) {
+                    if (m_slow_effect == 0) {
 
-                        back_on_course = m_y - ((gridy - 1) * 130);
-                        if(back_on_course < walk_speed){
-                            m_y-= walk_speed -(walk_speed - back_on_course);
+                        m_back_on_course = m_y - ((m_gridy - 1) * 130);
+                        if(m_back_on_course < m_walk_speed){
+                            m_y-= m_walk_speed -(m_walk_speed - m_back_on_course);
                         }
                         else{
-                            //back_on_course = (130 % (int)slow_effect);
-                            m_y-=  walk_speed; //+ back_on_course;
+                            //m_back_on_course = (130 % (int)m_slow_effect);
+                            m_y-=  m_walk_speed; //+ m_back_on_course;
 
                         }
                     }
                     // this is to make sure that right before it gets to the edge of a block it will be exactly divisible by 130
                     // so things it wont turn the wrong way
                     else{
-                        back_on_course = m_y - ((gridy - 1) * 130);
-                        if(back_on_course < slow_effect){
-                            m_y-= slow_effect -(slow_effect - back_on_course);
+                        m_back_on_course = m_y - ((m_gridy - 1) * 130);
+                        if(m_back_on_course < m_slow_effect){
+                            m_y-= m_slow_effect -(m_slow_effect - m_back_on_course);
                         }
                         else{
-                            //back_on_course = (130 % (int)slow_effect);
-                            m_y-=  slow_effect; //+ back_on_course;
+                            //m_back_on_course = (130 % (int)m_slow_effect);
+                            m_y-=  m_slow_effect; //+ m_back_on_course;
 
                         }
 
                     }
-                    //y-=walk_speed - slow_effect;
+                    //y-=m_walk_speed - m_slow_effect;
                     break;
                 // move down
                 case 3:
-                    if (slow_effect == 0) {
+                    if (m_slow_effect == 0) {
 
-                        back_on_course = ((gridy + 1) * 130) - m_y;
-                        if(back_on_course < walk_speed){
-                            m_y += walk_speed - (walk_speed - back_on_course);
+                        m_back_on_course = ((m_gridy + 1) * 130) - m_y;
+                        if(m_back_on_course < m_walk_speed){
+                            m_y += m_walk_speed - (m_walk_speed - m_back_on_course);
                         }
                         else{
-                            //back_on_course = (130 % (int)slow_effect);
-                            m_y+= walk_speed; //+ back_on_course;
+                            //m_back_on_course = (130 % (int)m_slow_effect);
+                            m_y+= m_walk_speed; //+ m_back_on_course;
                         }
                     }
                     // this is to make sure that right before it gets to the edge of a block it will be exactly divisible by 130
                     // so things it wont turn the wrong way
                     else{
-                        back_on_course = ((gridy + 1) * 130) - m_y;
-                        if(back_on_course < slow_effect){
-                            m_y += slow_effect - (slow_effect - back_on_course);
+                        m_back_on_course = ((m_gridy + 1) * 130) - m_y;
+                        if(m_back_on_course < m_slow_effect){
+                            m_y += m_slow_effect - (m_slow_effect - m_back_on_course);
                         }
                         else{
-                            //back_on_course = (130 % (int)slow_effect);
-                            m_y+= slow_effect; //+ back_on_course;
+                            //m_back_on_course = (130 % (int)m_slow_effect);
+                            m_y+= m_slow_effect; //+ m_back_on_course;
                         }
 
 
                     }
-                    //y+=walk_speed - slow_effect;
+                    //y+=m_walk_speed - m_slow_effect;
                     break;
             }
 
     }
 
+    /**
+     public void draw(Canvas canvas)
+
+     NAME
+
+     draw
+
+     SYNOPSIS
+
+     public void draw(Canvas canvas)
+     Canvas canvas -> the canvas the game is using(the screen) to draw things on
+
+     DESCRIPTION
+
+     is called in order to draw the images to the canvas
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     2:30pm 3/31/2017
+
+     */
     public void draw(Canvas canvas){
 
         try{
-            canvas.drawBitmap(animation.getImage(),m_x,m_y,null);
+            canvas.drawBitmap(m_animation.getImage(),m_x,m_y,null);
         }catch(Exception e){}
 
     }
 
+    // divides x coord by 130 to fit the grid
     public int getXcoord(int x){
         //return Math.round(x / 120);
         // doing this bottom one because images are 130 by 130
         return Math.round(x / 130);
     }
 
+    // divides y coord by 130 to fit the grid
     public int getYcoord(int y){
         //double newy = Math.round(y/119.5);
         // doing this bottom one because images are 130 by 130
         //Want to round number up when moving left or upwards
         double newy;
-        if(moveDirection == 2){
+        if(m_moveDirection == 2){
             newy = Math.ceil(y/130.0);
         }
         else{
@@ -587,23 +764,27 @@ public class Monster extends GameObject{
         return thisy;
     }
 
+    // returns money monster gives
     public int GetMoney(){
-        return money;
+        return m_money;
     }
+    // return monster id number
     public int getID(){
-        return monsterID;
+        return m_monsterID;
     }
-    public int getHealth(){return health;}
-    public int getStartHealth(){return starthealth; }
-    public void setHealth(int damage){health -= damage;}
-    public int getMoveSpeed(){return  walk_speed;}
-    public int getMonsterID(){return monsterID;}
-
+    // return monster health
+    public int getHealth(){return m_health;}
+    // returns monsters starting hp
+    public int getStartHealth(){return m_starthealth; }
+    // damages the monster when hit
+    public void setHealth(int a_damage){m_health -= a_damage;}
+    // returns monster id number
+    public int getMonsterID(){return m_monsterID;}
     // slow efefects cuts the walkspeed in half
     public void setSlow_effect(){
 
-        slow_effect = Math.floor(walk_speed / 2.0);
-        slow_timer_count = System.nanoTime();
+        m_slow_effect = Math.floor(m_walk_speed / 2.0);
+        m_slow_timer_count = System.nanoTime();
     }
 
 }

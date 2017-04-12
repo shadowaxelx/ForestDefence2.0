@@ -969,15 +969,16 @@ DATE
                                 player.SubMoney(15);
 
                             }
+                            // else create an error message for player for insuficent gold or cant put on thatspot
+                            else{
+
+                                // make error true to start the popup timmer
+                                m_Error = true;
+                                m_errorStartTime = System.nanoTime();
+                            }
 
                         }
-                        // else create an error message for player for insuficent gold or cant put on thatspot
-                        else{
 
-                            // make error true to start the popup timmer
-                            m_Error = true;
-                            m_errorStartTime = System.nanoTime();
-                        }
 
                         m_is_it_first_click = true;
                         break;
@@ -1001,14 +1002,14 @@ DATE
                                 player.SubMoney(25);
 
                             }
+                            // else create an error message for player for insuficent gold or cant put on thatspot
+                            else{
 
-                        }
-                        // else create an error message for player for insuficent gold or cant put on thatspot
-                        else{
+                                // make error true to start the popup timmer
+                                m_Error = true;
+                                m_errorStartTime = System.nanoTime();
+                            }
 
-                            // make error true to start the popup timmer
-                            m_Error = true;
-                            m_errorStartTime = System.nanoTime();
                         }
 
                         m_is_it_first_click = true;

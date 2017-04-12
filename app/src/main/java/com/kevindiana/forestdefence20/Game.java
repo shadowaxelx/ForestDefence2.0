@@ -37,7 +37,7 @@ import android.view.WindowManager;
 public class Game extends Activity {
 
     /**
-protected void onCreate(Bundle savedInstanceState)
+protected void onCreate(Bundle a_savedInstanceState)
 
 NAME
 

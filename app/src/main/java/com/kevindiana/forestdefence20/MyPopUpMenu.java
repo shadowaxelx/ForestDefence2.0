@@ -9,14 +9,71 @@ import android.graphics.Paint;
  * Created by kevin on 2/8/2017.
  */
 
+/**
+ class MyPopUpMenu
+
+ NAME
+
+ MyPopUpMenu
+
+ SYNOPSIS
+ class MyPopUpMenu
+    Bitmap m_image -> hold image used for pop_up
+
+
+ DESCRIPTION
+
+    Creates a popup menu when towers are selected for player select what to do with tower
+
+ RETURNS
+
+ NA
+
+ AUTHOR
+
+ Kevin Diana
+
+ DATE
+
+ 4:23Pm 2/8/2017
+
+ */
 public class MyPopUpMenu extends GameObject {
 
     private Bitmap m_image;
 
-    //public PopUpMenu(Bitmap res, int towertype, int towerLvl){
+    /**
+     public MyPopUpMenu(Bitmap a_res)
+
+     NAME
+
+     MyPopUpMenu
+
+     SYNOPSIS
+     public MyPopUpMenu(Bitmap a_res)
+        Bitmap a_res -> the image being passed in to use
+
+
+     DESCRIPTION
+
+        Constructor for MyPopUpMenu
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     4:23Pm 2/8/2017
+
+     */
     public MyPopUpMenu(Bitmap a_res){
 
-        // x, y are the x, y coordinates
+        // x, y are the x, y coordinates where it will appear
         m_x = 1170;
         m_y = 520;
         m_width = 520;
@@ -30,6 +87,35 @@ public class MyPopUpMenu extends GameObject {
 
     }
 
+    /**
+     public void draw(Canvas canvas)
+
+     NAME
+
+     draw
+
+     SYNOPSIS
+
+     public void draw(Canvas canvas)
+     Canvas canvas -> the canvas the game is using(the screen) to draw things on
+
+     DESCRIPTION
+
+     is called in order to draw the images to the canvas
+
+     RETURNS
+
+     NA
+
+     AUTHOR
+
+     Kevin Diana
+
+     DATE
+
+     4:30pm 2/8/2017
+
+     */
     public void draw(Canvas canvas){
 
         canvas.drawBitmap(m_image, m_x, m_y, null);
