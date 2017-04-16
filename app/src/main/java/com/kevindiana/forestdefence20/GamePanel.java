@@ -2108,7 +2108,7 @@ DATE
         int infinityFactor = 0;
         int hp_mult = 1;
        if(m_infiity){
-           if( a_wavenumber - 13 / 2 >= 1){
+           if( a_wavenumber > 13 && (a_wavenumber - 13) / 2 >= 2){
                hp_mult = (a_wavenumber -13) / 2;
            }
            // >= 12 because it starts at 0 so wave 12 is wave 13
