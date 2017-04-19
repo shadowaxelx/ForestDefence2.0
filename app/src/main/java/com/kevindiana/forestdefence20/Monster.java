@@ -24,8 +24,8 @@ import static java.lang.StrictMath.abs;
 
  class MainThread
     Bitmap m_spritesheet -> hold the image being used
-    int m_health -> monster current health
-     int m_starthealth -> monster max/starting health
+    double m_health -> monster current health
+     double m_starthealth -> monster max/starting health
      int m_money -> money monster will give
      int m_walk_speed -> how fast monster will move on screen
     int m_gridx, m_gridy -> the x and y grid numbers for the 2D array of the room
@@ -70,8 +70,8 @@ import static java.lang.StrictMath.abs;
  */
 public class Monster extends GameObject{
     private Bitmap m_spritesheet;
-    private int m_health;
-    private int m_starthealth;
+    private double m_health;
+    private double m_starthealth;
     private int m_money;
     private int m_walk_speed;
     private int m_gridx, m_gridy;
@@ -136,7 +136,7 @@ public class Monster extends GameObject{
      12:00Am 12/29/2016
 
      */
-    public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames, int [][] a_currentroom, int a_monstertype, int a_monsterID, int a_hp_mult){
+    public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames, int [][] a_currentroom, int a_monstertype, int a_monsterID, double a_hp_mult){
 
         m_x = a_x;
         m_y = a_y;
@@ -773,9 +773,9 @@ public class Monster extends GameObject{
         return m_monsterID;
     }
     // return monster health
-    public int getHealth(){return m_health;}
+    public double getHealth(){return m_health;}
     // returns monsters starting hp
-    public int getStartHealth(){return m_starthealth; }
+    public double getStartHealth(){return m_starthealth; }
     // damages the monster when hit
     public void setHealth(int a_damage){m_health -= a_damage;}
     // returns monster id number

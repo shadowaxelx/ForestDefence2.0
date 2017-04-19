@@ -2,15 +2,13 @@ package com.kevindiana.forestdefence20;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v7.widget.PopupMenu;
+import static java.lang.Math.pow;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -2106,10 +2104,14 @@ DATE
 
         // is used for infinity mode, when the wave goes over 13 waves, the limit is turned on
         int infinityFactor = 0;
-        int hp_mult = 1;
+        double hp_mult = 1;
        if(m_infiity){
-           if( a_wavenumber > 13 && (a_wavenumber - 13) / 2 >= 2){
-               hp_mult = (a_wavenumber -13) / 2;
+           if( a_wavenumber > 13){
+               hp_mult = 3;
+               if(((a_wavenumber - 12) / 2) >= 2){
+                   hp_mult = pow(2,((a_wavenumber -13) / 2));
+               }
+
            }
            // >= 12 because it starts at 0 so wave 12 is wave 13
            if(a_wavenumber >= 12){
