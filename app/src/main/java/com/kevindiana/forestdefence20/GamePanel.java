@@ -621,11 +621,13 @@ DATE
 
                     // means probably clicked on the start wave icon thing
                     case 1:
-                        // if there are icons stored in the array, meaning that they are out and able to click on
+                        // if there are icons stored in the array, meaning that they are out
+                        // and able to click on
                         if(mIcons.size() > 0){
 
                             for(Start_Monster_Wave_Icon i: mIcons){
-                                if(getXcoord(i.getX()) == first_pressX && getYcoord(i.getY()) == first_pressY){
+                                if(getXcoord(i.getX()) == first_pressX &&
+                                        getYcoord(i.getY()) == first_pressY){
                                     mIcons.remove(i);
                                 }
                             }
@@ -647,7 +649,8 @@ DATE
                     case 6:
 
                         // then add popup menu
-                        m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.in_game_menu)));
+                        m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                (getResources(), R.drawable.in_game_menu)));
 
                         m_paused = true;
                         // pause the thread
@@ -677,28 +680,32 @@ DATE
                         // different pop ups for tower lvl 1-4;
                         switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
                             case 1:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.pop_upmenue_sniper_lvl_1)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.pop_upmenue_sniper_lvl_1)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 2:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl2)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type1_lvl2)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 3:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl3)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type1_lvl3)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 4:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type1_lvl4)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type1_lvl4)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
@@ -714,28 +721,32 @@ DATE
                         // different pop ups for tower lvl 1-4;
                         switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
                             case 1:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl1)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type2_lvl1)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 2:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl2)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type2_lvl2)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 3:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl3)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type2_lvl3)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 4:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type2_lvl4)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type2_lvl4)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
@@ -751,28 +762,32 @@ DATE
                         // different pop ups for tower lvl 1-4;
                         switch(getTowerByCoord(first_pressX, first_pressY).getTowerLvl()){
                             case 1:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl1)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type3_lvl1)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 2:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl2)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type3_lvl2)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 3:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl3)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type3_lvl3)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
                                 m_is_it_first_click = false;
                                 break;
                             case 4:
-                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource(getResources(), R.drawable.popup_menu_tower_type3_lvl4)));
+                                m_mypopupmenus.add(new MyPopUpMenu(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.popup_menu_tower_type3_lvl4)));
                                 // will only draw if popup is true dont think you need this
                                 //PopsUpIsUp = true;
 
@@ -847,7 +862,8 @@ DATE
                 else if(a_eventX == 9 && a_eventY == 6){
 
                     for(Tower t: m_tower){
-                        if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
+                        if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) ==
+                                first_pressY){
                             player.AddMoney(t.getSell_cost());
                             m_tower.remove(t);
                             // then remove from the map itself
@@ -864,7 +880,8 @@ DATE
                 // upgrade tower
                 else if(a_eventX == 12 && a_eventY == 6){
                     for(Tower t: m_tower){
-                        if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
+                        if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) ==
+                                first_pressY){
                             // check to see if player has the money to upgrade
                             if(player.GetMoney() >= t.getUpgrade_cost()){
                                 player.SubMoney(t.getUpgrade_cost());
@@ -922,10 +939,12 @@ DATE
                             // check to see if player has enough money
                             if(player.GetMoney() >= 5 ){
 
-                                //ttemp.add((new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertowershopbutton), (eventX * 130), (eventY * 130), 1)));
-                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.whiteflowertower), (a_eventX * 130), (a_eventY * 130), 1));
+                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.whiteflowertower), (a_eventX * 130),
+                                        (a_eventY * 130), 1));
 
-                                // this makes the empty spot a tower 1 spot now by putting replacing 0 with 11
+                                // this makes the empty spot a tower 1 spot now by putting
+                                // replacing 0 with 11
                                 m_currentroom[a_eventY][a_eventX] = 11;
 
                                 // reset first button click
@@ -934,7 +953,8 @@ DATE
                                 player.SubMoney(5);
 
                             }
-                            // else create an error message for player for insuficent gold or cant put on thatspot
+                            // else create an error message for player for insuficent gold or
+                            // cant put on thatspot
                             else{
 
                                 // make error true to start the popup timmer
@@ -956,9 +976,12 @@ DATE
                             // check to see if player has enough money
                             if(player.GetMoney() >= 15 ){
 
-                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower), (a_eventX * 130), (a_eventY * 130), 2));
+                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.double_shot_tower), (a_eventX * 130),
+                                        (a_eventY * 130), 2));
 
-                                // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
+                                // this makes the empty spot a tower 2 spot now by putting
+                                // replacing 0 with 11
                                 m_currentroom[a_eventY][a_eventX] = 12;
 
                                 // reset first button click
@@ -967,7 +990,8 @@ DATE
                                 player.SubMoney(15);
 
                             }
-                            // else create an error message for player for insuficent gold or cant put on thatspot
+                            // else create an error message for player for insuficent
+                            // gold or cant put on thatspot
                             else{
 
                                 // make error true to start the popup timmer
@@ -989,9 +1013,12 @@ DATE
                             // check to see if player has enough money
                             if(player.GetMoney() >= 25 ){
 
-                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(), R.drawable.ice_tower), (a_eventX * 130), (a_eventY * 130), 3));
+                                m_tower.add(new Tower(BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.ice_tower), (a_eventX * 130),
+                                        (a_eventY * 130), 3));
 
-                                // this makes the empty spot a tower 2 spot now by putting replacing 0 with 11
+                                // this makes the empty spot a tower 2 spot now by
+                                // putting replacing 0 with 11
                                 m_currentroom[a_eventY][a_eventX] = 13;
 
                                 // reset first button click
@@ -1000,7 +1027,8 @@ DATE
                                 player.SubMoney(25);
 
                             }
-                            // else create an error message for player for insuficent gold or cant put on thatspot
+                            // else create an error message for player for insuficent gold
+                            // or cant put on thatspot
                             else{
 
                                 // make error true to start the popup timmer
@@ -1101,7 +1129,8 @@ DATE
                 m_Context.startActivity(intent);
             }
 
-            // if game_done is true and there is nothing in monster array wait 5 seconds then go to end screen
+            // if game_done is true and there is nothing in monster array wait
+            // 5 seconds then go to end screen
             // set timer and start the 5 second wait
             if(m_game_done && m_monster.size() == 0 && !m_end_timer){
                 m_fiveSeconds = System.nanoTime();
@@ -1109,7 +1138,8 @@ DATE
             }
             // if all the requirements are ment go to the end screen
             if(m_game_done && m_monster.size() == 0 && m_end_timer){
-                if(TimeUnit.SECONDS.convert(System.nanoTime() - m_fiveSeconds, TimeUnit.NANOSECONDS) >= 5 ){
+                if(TimeUnit.SECONDS.convert(System.nanoTime() - m_fiveSeconds,
+                        TimeUnit.NANOSECONDS) >= 5 ){
 
                     //Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
                     Intent intent = new Intent("com.kevindiana.forestdefence20.End_Of_Game");
@@ -1146,7 +1176,8 @@ DATE
                                 }
 
                             }
-                                mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource(getResources(), R.drawable.start_wave), 0, 520, 5));
+                                mIcons.add(new Start_Monster_Wave_Icon(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.start_wave), 0, 520, 5));
 
                         }
                     }
@@ -1271,7 +1302,8 @@ DATE
                 int monster_y = m_monster.get(i).getY();
 
                 if(attack_timer == 0){
-                    if(abs(monster_x - hero_x) + abs(monster_y - hero_y) <= m_hero.get(0).getRange() ){
+                    if(abs(monster_x - hero_x) + abs(monster_y - hero_y) <=
+                            m_hero.get(0).getRange() ){
 
                         switch(m_hero.get(0).getType()){
                             // knight
@@ -1285,13 +1317,17 @@ DATE
                                 break;
                             // archer
                             case 2:
-                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource(getResources(), R.drawable.attack_archer), hero_x, hero_y, 2, m_hero.get(0).getDamage(), m_monster.get(i).getID(), 2));
+                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.attack_archer), hero_x, hero_y,
+                                        2, m_hero.get(0).getDamage(), m_monster.get(i).getID(), 2));
                                 System.out.println("Creating Heroattack: " + i);
                                 attack_timer = System.nanoTime();
                                 break;
                             // mage
                             case 3:
-                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource(getResources(), R.drawable.attack_wizard), hero_x, hero_y, 2,  m_hero.get(0).getDamage(), m_monster.get(i).getID(), 3));
+                                m_hero_attack.add(new HeroAttack(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.attack_wizard), hero_x, hero_y,
+                                        2,  m_hero.get(0).getDamage(), m_monster.get(i).getID(),3));
                                 System.out.println("Creating Heroattack: " + i);
                                 attack_timer = System.nanoTime();
                                 break;
@@ -1302,14 +1338,16 @@ DATE
                 }
                 else{
 
-                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS) >= m_hero.get(0).getAttack_speed()){
+                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer,
+                            TimeUnit.NANOSECONDS) >= m_hero.get(0).getAttack_speed()){
                         attack_timer = 0;
                     }
                 }
 
 
             }
-            if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS) >= m_hero.get(0).getAttack_speed()){
+            if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS)
+                    >= m_hero.get(0).getAttack_speed()){
                 attack_timer = 0;
             }
 
@@ -1343,7 +1381,8 @@ DATE
                         // sets subtracts bullter damage to monster health
                         m_monster.get(j).setHealth(m_hero_attack.get(i).getPower());
 
-                        // checks the monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
+                        // checks the monster hp if it is less then or = 0 get rid of it
+                        // along with all shots moving to that target
                         if(m_monster.get(j).getHealth() <= 0){
 
                             // gain 2 exp for monster kill
@@ -1354,9 +1393,11 @@ DATE
                             // removes other tower shots
                             for(int y = 0; y < m_hero_attack.size(); y++){
 
-                                // this is so the original shot isnt removed before checking all shots
+                                // this is so the original shot isnt removed before checking
+                                // all shots
                                 if(y != i){
-                                    if(m_hero_attack.get(y).getMonsterID() == m_hero_attack.get(i).getMonsterID()){
+                                    if(m_hero_attack.get(y).getMonsterID() ==
+                                            m_hero_attack.get(i).getMonsterID()){
 
                                         //towershot.remove(y);
                                         hatemplist.add(m_hero_attack.get(y));
@@ -1370,8 +1411,10 @@ DATE
                             // removes other tower shots
                             for(int y = 0; y < m_towershot.size(); y++){
 
-                                // this is so the original shot isnt removed before checking all shots
-                                    if(m_towershot.get(y).getMonsterID() == m_hero_attack.get(i).getMonsterID()){
+                                // this is so the original shot isnt removed before
+                                // checking all shots
+                                    if(m_towershot.get(y).getMonsterID() ==
+                                            m_hero_attack.get(i).getMonsterID()){
 
                                         //towershot.remove(y);
                                         tstemplist.add(m_towershot.get(y));
@@ -1462,7 +1505,8 @@ DATE
             int m_monster_y = m_monster.get(i).getY();
 
             // m_monster is in range
-            if(abs(m_monster_x - a_hero_x) + abs(m_monster_y - a_hero_y) <= m_hero.get(0).getRange() ){
+            if(abs(m_monster_x - a_hero_x) + abs(m_monster_y - a_hero_y) <=
+                    m_hero.get(0).getRange() ){
 
                 // sets subtracts bullter damage to m_monster health
                 m_monster.get(i).setHealth(m_hero.get(0).getDamage());
@@ -1479,7 +1523,8 @@ DATE
 
                         // this is so the original shot isnt removed before checking all shots
 
-                            if(m_towershot.get(y).getMonsterID() == m_monster.get(i).getMonsterID()){
+                            if(m_towershot.get(y).getMonsterID() == m_monster.get(i).
+                                    getMonsterID()){
 
                                 //towershot.remove(y);
                                 tstemplist.add(m_towershot.get(y));
@@ -1537,7 +1582,8 @@ DATE
 
      */
     public void tower_Attack(){
-        // This is where we will have to check to see if the tower will shoot.. probably make this into a seperate function with everything else
+        // This is where we will have to check to see if the tower will shoot..
+        // probably make this into a seperate function with everything else
         // need to check every monster and see if it is within any tower range
         for(int i = 0; i < m_tower.size(); i++){
             int tower_x = m_tower.get(i).getX();
@@ -1561,7 +1607,10 @@ DATE
                         case 1:
                             // means the shot is in range
                             if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.fire_flower_shot), m_tower.get(i).getX(), m_tower.get(i).getY(), 2, m_tower.get(i).getPower(), m_monster.get(j).getID(), 1));
+                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.fire_flower_shot),
+                                        m_tower.get(i).getX(), m_tower.get(i).getY(), 2,
+                                        m_tower.get(i).getPower(), m_monster.get(j).getID(), 1));
                                 System.out.println("Creating tower shot: " + i);
                                 // break afer wards for first monster
 
@@ -1574,19 +1623,29 @@ DATE
                         case 2:
 
                             if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range){
-                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), m_tower.get(i).getX(), m_tower.get(i).getY(), 2, m_tower.get(i).getPower(), m_monster.get(j).getID(), 2));
+                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.double_shot_tower_projectile),
+                                        m_tower.get(i).getX(), m_tower.get(i).getY(), 2,
+                                        m_tower.get(i).getPower(), m_monster.get(j).getID(), 2));
 
                                 // THen check to see if a second monsterr can be shot at as well
 
                                 for(int k = 0; k < m_monster.size(); k++){
 
-                                    // This makes sure we arent going to shoot at the same monster the tower already has targeted
+                                    // This makes sure we arent going to shoot at the same
+                                    // monster the tower already has targeted
                                     if(m_monster.get(k).getID() != m_monster.get(j).getID()) {
                                         int monster2_x = m_monster.get(k).getX();
                                         int monster2_y = m_monster.get(k).getY();
 
-                                        if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y) <= tower_range){
-                                            m_towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.double_shot_tower_projectile), m_tower.get(i).getX(), m_tower.get(i).getY(), 2, m_tower.get(i).getPower(), m_monster.get(k).getID(), 2));
+                                        if(abs(monster2_x - tower_x) + abs(monster2_y - tower_y)
+                                                <= tower_range){
+                                            m_towershot.add(new TowerShot(BitmapFactory.
+                                                    decodeResource(getResources(),
+                                                            R.drawable.double_shot_tower_projectile)
+                                                    , m_tower.get(i).getX(), m_tower.get(i).getY(),
+                                                    2, m_tower.get(i).getPower(),
+                                                    m_monster.get(k).getID(), 2));
 
                                             m_shotTimer[i] = System.nanoTime();
                                             break;
@@ -1602,7 +1661,10 @@ DATE
 
                             // means the shot is in range
                             if(abs(monster_x - tower_x) + abs(monster_y - tower_y) <= tower_range ){
-                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource(getResources(), R.drawable.ice_towr_projectile), m_tower.get(i).getX(), m_tower.get(i).getY(), 3, m_tower.get(i).getPower(), m_monster.get(j).getID(), 3));
+                                m_towershot.add(new TowerShot(BitmapFactory.decodeResource
+                                        (getResources(), R.drawable.ice_towr_projectile),
+                                        m_tower.get(i).getX(), m_tower.get(i).getY(), 3,
+                                        m_tower.get(i).getPower(), m_monster.get(j).getID(), 3));
                                 System.out.println("Creating tower shot: " + i);
                                 // break afer wards for first monster
 
@@ -1619,7 +1681,8 @@ DATE
                 // check to see if the tower has already waited for its attack speed to shoot again
                 else{
 
-                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - m_shotTimer[i], TimeUnit.NANOSECONDS) >= m_tower.get(i).getAttackSpeed() ){
+                    if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - m_shotTimer[i],
+                            TimeUnit.NANOSECONDS) >= m_tower.get(i).getAttackSpeed() ){
                         m_shotTimer[i] = 0;
                     }
                 }
@@ -1641,7 +1704,8 @@ DATE
 
             //if(towershot.get(i) != null){
 
-            // This case is incase the monster dies, then get rid of the tower shot following the monster
+            // This case is incase the monster dies, then get rid of the tower shot
+            // following the monster
 
             // gets monster X and Y that the towershot is locked on
             for(int k = 0; k < m_monster.size(); k++){
@@ -1665,7 +1729,8 @@ DATE
                             m_monster.get(k).setSlow_effect();
                         }
 
-                        // checks the m_monster hp if it is less then or = 0 get rid of it along with all shots moving to that target
+                        // checks the m_monster hp if it is less then or = 0 get rid of it
+                        // along with all shots moving to that target
                         if(m_monster.get(k).getHealth() <= 0){
 
                             player.AddMoney(m_monster.get(k).GetMoney());
@@ -1673,9 +1738,11 @@ DATE
                             // removes other tower shots
                             for(int y = 0; y < m_towershot.size(); y++){
 
-                                // this is so the original shot isnt removed before checking all shots
+                                // this is so the original shot isnt removed before
+                                // checking all shots
                                 if(y != i){
-                                    if(m_towershot.get(y).getMonsterID() == m_towershot.get(i).getMonsterID()){
+                                    if(m_towershot.get(y).getMonsterID() ==
+                                            m_towershot.get(i).getMonsterID()){
 
                                         //towershot.remove(y);
                                         tstemplist.add(m_towershot.get(y));
@@ -1690,8 +1757,10 @@ DATE
                                 // removes other tower shots
                                 for(int y = 0; y < m_hero_attack.size(); y++){
 
-                                    // this is so the original shot isnt removed before checking all shots
-                                        if(m_hero_attack.get(y).getMonsterID() == m_towershot.get(i).getMonsterID()){
+                                    // this is so the original shot isnt removed
+                                    // before checking all shots
+                                        if(m_hero_attack.get(y).getMonsterID() ==
+                                                m_towershot.get(i).getMonsterID()){
 
                                             //towershot.remove(y);
                                             hatemplist.add(m_hero_attack.get(y));
