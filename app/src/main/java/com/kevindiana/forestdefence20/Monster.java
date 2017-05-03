@@ -98,7 +98,8 @@ public class Monster extends GameObject{
 
 
     /**
-     public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames, int [][] a_currentroom, int a_monstertype, int a_monsterID, int a_hp_mult)
+     public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames,
+     int [][] a_currentroom, int a_monstertype, int a_monsterID, int a_hp_mult)
 
      NAME
 
@@ -106,7 +107,8 @@ public class Monster extends GameObject{
 
      SYNOPSIS
 
-     public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames, int [][] a_currentroom, int a_monstertype, int a_monsterID, int a_hp_mult)
+     public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames,
+     int [][] a_currentroom, int a_monstertype, int a_monsterID, int a_hp_mult)
 
         Bitmap a_res -> where the image is stored for the monster
         int a_x -> x coord of the monster when it is created
@@ -114,8 +116,10 @@ public class Monster extends GameObject{
         int a_w -> width of the image
         int a_h -> height of the image
         int a_numFrames -> number of frames that will cycle through
-        int [][] a_currentroom -> holds the room/map information to help track the monster to keep them on path
-        int a_monstertype -> helps decide which type of monster will be made with corresponding image
+        int [][] a_currentroom -> holds the room/map information to help track the
+            monster to keep them on path
+        int a_monstertype -> helps decide which type of monster will be made with
+            corresponding image
         int a_monsterID -> number given to monster on creation
         int a_hp_mult -> is used when infinite mode is being played on to increase monster hp
 

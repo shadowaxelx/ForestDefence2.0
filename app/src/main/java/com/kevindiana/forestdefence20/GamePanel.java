@@ -1896,7 +1896,8 @@ DATE
                 t.draw(a_canvas);
                 // draw tower radius for player to see when tower is clicked on
                 if(getXcoord(t.getX()) == first_pressX && getYcoord(t.getY()) == first_pressY){
-                    a_canvas.drawCircle(t.getX() + 65, t.getY() + 65, t.getRange(), red_paintbrush_stroke);
+                    a_canvas.drawCircle(t.getX() + 65, t.getY() + 65, t.getRange(),
+                            red_paintbrush_stroke);
                 }
 
             }
@@ -1920,27 +1921,36 @@ DATE
                     // show exp bar
                     double percentage = (double)125 / (double)h.getNeededExp();
                     double exp_difference = h.getEXP();
-                    a_canvas.drawLine(h.getX(), h.getY(), h.getX() + (float)((exp_difference * percentage)), h.getY(), gray_paintbrush_stroke);
+                    a_canvas.drawLine(h.getX(), h.getY(), h.getX() + (float)((exp_difference *
+                            percentage)), h.getY(), gray_paintbrush_stroke);
 
                     if(heroselected){
-                        a_canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()), red_paintbrush_stroke);
+                        a_canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()),
+                                red_paintbrush_stroke);
 
                         // while selcted see stats
                         a_canvas.drawText("Level: " + h.getLevel(), 2000, 1290, Herostats);
-                        a_canvas.drawText("Range: " + (((h.getRange() / 130) + .5)-1), 2000, 1210, Herostats);
+                        a_canvas.drawText("Range: " + (((h.getRange() / 130) + .5)-1), 2000, 1210,
+                                Herostats);
                         a_canvas.drawText("Power: " + h.getDamage(), 2000, 1130, Herostats);
-                        a_canvas.drawText("AttackSp: " + (h.getAttack_speed()/1000), 2000, 1050, Herostats);
+                        a_canvas.drawText("AttackSp: " + (h.getAttack_speed()/1000), 2000, 1050,
+                                Herostats);
                     }
 
                     // do knight animation attack
                     if(h.getType() == 1 && attack_timer != 0 && knight_attack_animation_start){
-                            a_canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()), yellow_paintbrush_stroke);
-                            a_canvas.drawCircle(h.getX() + 55, h.getY() + 55, (h.getRange()), yellow_paintbrush_stroke);
-                            a_canvas.drawCircle(h.getX() + 50, h.getY() + 50, (h.getRange()), yellow_paintbrush_stroke);
-                            a_canvas.drawCircle(h.getX() + 35, h.getY() + 35, (h.getRange()), yellow_paintbrush_stroke);
+                            a_canvas.drawCircle(h.getX() + 65, h.getY() + 65, (h.getRange()),
+                                    yellow_paintbrush_stroke);
+                            a_canvas.drawCircle(h.getX() + 55, h.getY() + 55, (h.getRange()),
+                                    yellow_paintbrush_stroke);
+                            a_canvas.drawCircle(h.getX() + 50, h.getY() + 50, (h.getRange()),
+                                    yellow_paintbrush_stroke);
+                            a_canvas.drawCircle(h.getX() + 35, h.getY() + 35, (h.getRange()),
+                                    yellow_paintbrush_stroke);
                     }
                     else{
-                        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer, TimeUnit.NANOSECONDS) >= 100){
+                        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - attack_timer,
+                                TimeUnit.NANOSECONDS) >= 100){
                             knight_attack_animation_start = false;
                         }
                     }
@@ -1957,8 +1967,10 @@ DATE
                 double percentage = (double)125 / (double)m.getStartHealth();
                 // calculates the the missing health
                 double health_difference = m.getStartHealth() - m.getHealth();
-                a_canvas.drawLine(m.getX(), m.getY(), m.getX() + (float)(125 - (health_difference * percentage)), m.getY(), red_paintbrush_stroke);
-                //a_canvas.drawLine(m.getX(), m.getY() + 130, m.getX() + 125, m.getY() + 130, red_paintbrush_stroke);
+                a_canvas.drawLine(m.getX(), m.getY(), m.getX() + (float)(125 -
+                        (health_difference * percentage)), m.getY(), red_paintbrush_stroke);
+                //a_canvas.drawLine(m.getX(), m.getY() + 130, m.getX() + 125, m.getY() + 130,
+                // red_paintbrush_stroke);
                 //a_canvas.drawLine();
             }
 
@@ -1990,7 +2002,8 @@ DATE
                 a_canvas.drawText(errormessage2, 700, 900, error_text);
             }
             // After seconds make the message dissapear
-            if(TimeUnit.SECONDS.convert(System.nanoTime() - m_errorStartTime, TimeUnit.NANOSECONDS) >= 3){
+            if(TimeUnit.SECONDS.convert(System.nanoTime() - m_errorStartTime,
+                    TimeUnit.NANOSECONDS) >= 3){
 
                 m_Error = false;
             }
@@ -2003,20 +2016,25 @@ DATE
             a_canvas.drawText("Wave Number: " + m_wavenumber, 1300,1420, money_text );
 
 
+            // debugging purposes
 /*
             // debugging perpuses horizontal grid lines( up and down lines)
             //for(int i = 0; i < 23; i++){
             for(int i = 0; i < 21; i++){
-                //a_canvas.drawLine((float)(i * 120), 0, (float)(i * 120), HEIGHT, red_paintbrush_stroke);
+                //a_canvas.drawLine((float)(i * 120), 0, (float)(i * 120), HEIGHT,
+                red_paintbrush_stroke);
                 // doing this bottom one because the images are about 130 by 130
-                a_canvas.drawLine((float)(i * 130), 0, (float)(i * 130), HEIGHT, red_paintbrush_stroke);
+                a_canvas.drawLine((float)(i * 130), 0, (float)(i * 130), HEIGHT,
+                red_paintbrush_stroke);
             }
 
             // vertical grid lines
             for(int i = 0; i < 14; i++){
-                //a_canvas.drawLine( 0 , (float)(i * 112.5), WIDTH, (float)(i * 112.5), red_paintbrush_stroke);
+                //a_canvas.drawLine( 0 , (float)(i * 112.5), WIDTH, (float)(i * 112.5),
+                red_paintbrush_stroke);
                 // doing this bottom one because the images are about 130 by 130
-                a_canvas.drawLine( 0 , (float)(i * 130), WIDTH, (float)(i * 130), red_paintbrush_stroke);
+                a_canvas.drawLine( 0 , (float)(i * 130), WIDTH, (float)(i * 130), r
+                ed_paintbrush_stroke);
             }
 */
 
