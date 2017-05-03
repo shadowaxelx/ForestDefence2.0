@@ -2130,92 +2130,105 @@ DATE
                         break;
                     //red dot
                     case 1:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_01_red_dot),
-                                -130 , 520, 125, 128, 8, m_currentroom, 1, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_01_red_dot), -130 , 520, 125, 128, 8,
+                                m_currentroom, 1, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // green blob
                     case 2:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_02_green_blob),
-                                -130 , 520, 125, 128, 8, m_currentroom, 2, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_02_green_blob), -130 , 520, 125, 128, 8,
+                                m_currentroom, 2, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // mouse
                     case 3:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_03_mouse),
-                                -130 , 520, 125, 128, 8, m_currentroom, 3, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_03_mouse), -130 , 520, 125, 128, 8,
+                                m_currentroom, 3, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // bannana man
                     case 4:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_04_bannana_man),
-                                -130 , 520, 125, 128, 8, m_currentroom, 4, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_04_bannana_man), -130 , 520, 125, 128, 8,
+                                m_currentroom, 4, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // lion
                     case 5:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_05_lion),
-                                -130 , 520, 125, 128, 8, m_currentroom, 5, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_05_lion), -130 , 520, 125, 128, 8,
+                                m_currentroom, 5, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // red theif
                     case 6:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_06_red_theif),
-                                -130 , 520, 125, 128, 8, m_currentroom, 6, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_06_red_theif), -130 , 520, 125, 128, 8,
+                                m_currentroom, 6, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // white knight
                     case 7:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_07_white_knight),
-                                -130 , 520, 125, 128, 8, m_currentroom, 7, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_07_white_knight), -130 , 520, 125, 128, 8,
+                                m_currentroom, 7, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // blue knight
                     case 8:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_08_blue_knight),
-                                -130 , 520, 125, 128, 8, m_currentroom, 8, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_08_blue_knight), -130 , 520, 125, 128, 8,
+                                m_currentroom, 8, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // bomb man
                     case 9:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_09_bomb_man),
-                                -130 , 520, 125, 128, 8, m_currentroom, 9, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_09_bomb_man), -130 , 520, 125, 128, 8,
+                                m_currentroom, 9, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // fire spirit
                     case 10:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_10_fire_spirit),
-                                -130 , 520, 125, 128, 8, m_currentroom, 10, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_10_fire_spirit), -130 , 520, 125, 128, 8,
+                                m_currentroom, 10, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // baby dragon
                     case 11:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_11_baby_dragon),
-                                -130 , 520, 125, 128, 11, m_currentroom, 11, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_11_baby_dragon), -130 , 520, 125, 128, 8,
+                                m_currentroom, 11, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // silver dragon
                     case 12:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_12_silver_dragon),
-                                -130 , 520, 125, 128, 8, m_currentroom, 12, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_12_silver_dragon), -130 , 520, 125, 128, 8,
+                                m_currentroom, 12, a_wavenumber + x, hp_mult));
 
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // king of beasts
                     case 13:
-                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(), R.drawable.monster_13_king_of_beast),
-                                -130 , 520, 125, 128, 8, m_currentroom, 13, a_wavenumber + x, hp_mult));
+                        m_monster.add(new Monster(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.monster_13_king_of_beast), -130 , 520, 125, 128, 8,
+                                m_currentroom, 13, a_wavenumber + x, hp_mult));
                         m_monster_wavesArray[a_wavenumber - infinityFactor][x] = 0;
                         return true;
                     // means that the game is over after everything in the monster array is gone

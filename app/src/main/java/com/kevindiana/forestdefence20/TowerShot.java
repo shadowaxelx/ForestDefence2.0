@@ -86,7 +86,8 @@ public class TowerShot extends GameObject {
      10:11pm 2/12/2017
 
      */
-    public TowerShot(Bitmap a_res, int a_x, int a_y, int a_numFrames, int a_damage, int a_monsterID, int a_type){
+    public TowerShot(Bitmap a_res, int a_x, int a_y, int a_numFrames, int a_damage,
+                     int a_monsterID, int a_type){
         m_x = a_x;
         m_y = a_y;
         m_width = 125;

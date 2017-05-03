@@ -136,7 +136,8 @@ public class Monster extends GameObject{
      12:00Am 12/29/2016
 
      */
-    public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames, int [][] a_currentroom, int a_monstertype, int a_monsterID, double a_hp_mult){
+    public Monster(Bitmap a_res, int a_x, int a_y, int a_w, int a_h, int a_numFrames,
+                   int [][] a_currentroom, int a_monstertype, int a_monsterID, double a_hp_mult){
 
         m_x = a_x;
         m_y = a_y;
@@ -525,7 +526,8 @@ public class Monster extends GameObject{
         // didnt hit a wall
         // reason for m_back_on_course is so that 130 is always divisible by monster walk
         // this way they will never get too far off track and not follow the tracking system
-        // on course gets the remainder from the location x or y, then adds it with the walkspeed to keep
+        // on course gets the remainder from the location x or y, then adds it with the walkspeed
+        // to keep
         // them on course
 
         else{
@@ -535,7 +537,8 @@ public class Monster extends GameObject{
 
 
             // resets slow effect back to 0 if slow effect wares off
-        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - m_slow_timer_count, TimeUnit.NANOSECONDS) >= 2000 ){
+        if(TimeUnit.MILLISECONDS.convert(System.nanoTime() - m_slow_timer_count,
+                TimeUnit.NANOSECONDS) >= 2000 ){
             m_slow_effect = 0;
         }
 
